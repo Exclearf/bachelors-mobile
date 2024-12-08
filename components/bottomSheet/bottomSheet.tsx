@@ -1,10 +1,7 @@
 import { StyleSheet } from "react-native";
 import React, { forwardRef, useImperativeHandle, useRef } from "react";
-import BottomSheet, {
-  BottomSheetView,
-  useBottomSheetTimingConfigs,
-} from "@gorhom/bottom-sheet";
-import { Easing, SharedValue, useSharedValue } from "react-native-reanimated";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import { SharedValue, useSharedValue } from "react-native-reanimated";
 import AppRoundedPath from "../utils/AppRoundedPath";
 import { useBottomPath } from "@/utils/roundedPathCreators";
 
@@ -20,22 +17,19 @@ const AppBottomSheet = forwardRef<AppBottomSheetRef, Props>(
   ({ snapPoints, children }, ref) => {
     const bottomSheetRef = useRef<BottomSheet>(null);
     const animatedPosition = useSharedValue(0);
-    const animationConfigs = useBottomSheetTimingConfigs({
-      duration: 250,
-      easing: Easing.linear,
-    });
+
     useImperativeHandle(ref, () => ({
       animatedPosition,
     }));
 
     return (
       <BottomSheet
-        animationConfigs={animationConfigs}
         animatedPosition={animatedPosition}
         handleStyle={{
           display: "none",
           overflow: "hidden",
         }}
+        enableDynamicSizing={false}
         backgroundStyle={{
           display: "none",
         }}

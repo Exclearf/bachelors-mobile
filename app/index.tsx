@@ -1,4 +1,4 @@
-import { Dimensions, useColorScheme } from "react-native";
+import { Dimensions } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useEffect, useRef } from "react";
 import { StatusBar } from "expo-status-bar";
@@ -7,8 +7,7 @@ import { CameraView, useCameraPermissions } from "expo-camera";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AppDimensionsContext } from "@/contexts/appDimensions";
 import AppRoundedPath from "@/components/utils/AppRoundedPath";
-import { bottomLeft } from "@shopify/react-native-skia";
-import { useBottomPath, useTopPath } from "@/utils/roundedPathCreators";
+import { useTopPath } from "@/utils/roundedPathCreators";
 
 const windowDimensions = Dimensions.get("window");
 
@@ -19,7 +18,6 @@ const appDimensions = {
 
 export default function Index() {
   const [cameraPermission, requestPermission] = useCameraPermissions();
-  const currentColorScheme = useColorScheme() === "dark" ? "light" : "dark";
   const bottomPanelRef = useRef<BottomPanelRef>(null);
 
   useEffect(() => {
@@ -47,7 +45,7 @@ export default function Index() {
               zIndex={1}
               barHeight={30}
               handlePadColor="transparent"
-              animatedPosition={bottomPanelRef.current?.animatedPosition}
+              animatedPosition={bottomPanelRef.current?.animatedPosition!}
               pathCreator={useTopPath()}
             />
           }
