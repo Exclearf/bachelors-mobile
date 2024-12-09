@@ -1,5 +1,5 @@
 import { LayoutChangeEvent, StyleSheet, Text, View } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 import { SharedValue, useDerivedValue } from "react-native-reanimated";
 import { Canvas, Path, RoundedRect, Skia } from "@shopify/react-native-skia";
 import { AppDimensionsContext } from "@/contexts/appDimensions";
@@ -10,6 +10,7 @@ type Props = {
   animatedPosition: SharedValue<number>;
   pathCreator: (borderRadius: number) => string;
   zIndex: number;
+  style: any;
   handleColor?: string;
   handlePadColor?: string;
 };
@@ -19,25 +20,39 @@ const AppRoundedPath = ({
   pathCreator,
   barHeight,
   zIndex,
+  style,
   handleColor = "#1E1E1E",
-  handlePadColor = "#E2E2E2",
+  handlePadColor = "rgba(255,255,255,0.5)",
 }: Props) => {
   const [parentWidth, setParentWidth] = useState(0);
 
-  const onLayout = (event: LayoutChangeEvent) => {
-    const newWidth = event.nativeEvent.layout.width;
-    if (newWidth !== parentWidth) {
-      setParentWidth(newWidth);
-    }
-  };
+  const onLayout = useCallback(
+    (event: LayoutChangeEvent) => {
+      const newWidth = event.nativeEvent.layout.width;
+      if (newWidth !== parentWidth) {
+        setParentWidth(newWidth);
+      }
+    },
+    [parentWidth],
+  );
 
   const { height, width } = useContext(AppDimensionsContext);
   const skiaPath = useSkiaPath({ animatedPosition, height, pathCreator });
+  const scaleX = useMemo(
+    () => (parentWidth ? parentWidth / 100 : 1),
+    [parentWidth],
+  );
+  const containerStyle = useMemo(
+    () => ({
+      ...styles.container,
+      width,
+      zIndex,
+    }),
+    [width, barHeight, zIndex],
+  );
+
   return (
-    <View
-      style={{ ...styles.container, width, height: barHeight, zIndex }}
-      onLayout={onLayout}
-    >
+    <View style={[containerStyle, style]} onLayout={onLayout}>
       <Canvas
         style={{
           width: parentWidth,
@@ -45,13 +60,9 @@ const AppRoundedPath = ({
           backgroundColor: "rgba(0,0,0,0)",
         }}
       >
-        <Path
-          transform={[{ scaleX: parentWidth / 100 }]}
-          path={skiaPath}
-          color={handleColor}
-        />
+        <Path transform={[{ scaleX }]} path={skiaPath} color={handleColor} />
         <RoundedRect
-          transform={[{ scaleX: parentWidth / 100 }]}
+          transform={[{ scaleX }]}
           x={43}
           y={4}
           width={14}

@@ -34,11 +34,11 @@ const AppBottomSheet = forwardRef<AppBottomSheetRef, Props>(
           display: "none",
         }}
         containerStyle={{
-          zIndex: 10,
+          zIndex: 3,
         }}
         handleComponent={() => (
           <AppRoundedPath
-            zIndex={2}
+            zIndex={3}
             barHeight={30}
             animatedPosition={animatedPosition}
             pathCreator={useBottomPath()}
@@ -49,7 +49,7 @@ const AppBottomSheet = forwardRef<AppBottomSheetRef, Props>(
         snapPoints={snapPoints}
         ref={bottomSheetRef}
       >
-        <BottomSheetView style={{ backgroundColor: "#1E1E1E", height: "100%" }}>
+        <BottomSheetView style={{ zIndex: 10, flex: 1 }}>
           {children}
         </BottomSheetView>
       </BottomSheet>

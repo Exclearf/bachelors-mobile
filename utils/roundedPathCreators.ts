@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useDerivedValue } from "react-native-reanimated";
+import { SharedValue, useDerivedValue } from "react-native-reanimated";
 
 export const useBottomPath = () => {
   const pathCreator = useCallback((borderRadius: number) => {
@@ -33,7 +33,7 @@ export const useTopPath = () => {
 };
 
 interface UseSkiaPathProps {
-  animatedPosition: { get: () => number };
+  animatedPosition: SharedValue<number>;
   height: number;
   pathCreator: (borderRadius: number) => string;
 }
@@ -44,9 +44,9 @@ export function useSkiaPath({
   pathCreator,
 }: UseSkiaPathProps) {
   const borderRadius = useDerivedValue(() => {
-    const pos = animatedPosition?.get?.() ?? 0;
-    return (30 * pos) / height;
-  }, [animatedPosition, height]);
+    const pos = animatedPosition?.get() ?? 0;
+    return (32 * pos) / height;
+  }, [animatedPosition]);
 
   const skiaPath = useDerivedValue(() => {
     const path = pathCreator(borderRadius.value);
