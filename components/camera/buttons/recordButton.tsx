@@ -1,13 +1,9 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { CameraOverlayButtonProps } from "../cameraOverlay";
 
-type Props = {
-  color: string;
-  size: number;
-};
-
-const RecordButton = ({ size, color }: Props) => {
+const RecordButton = ({ size, color }: CameraOverlayButtonProps) => {
   return (
     <TouchableOpacity>
       <MaterialIcons

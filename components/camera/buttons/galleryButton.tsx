@@ -1,13 +1,9 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { CameraOverlayButtonProps } from "../cameraOverlay";
 
-type Props = {
-  color: string;
-  size: number;
-};
-
-const GalleryButton = ({ color, size }: Props) => {
+const GalleryButton = ({ color, size }: CameraOverlayButtonProps) => {
   return (
     <TouchableOpacity>
       <MaterialIcons name="photo-library" size={size} color={color} />

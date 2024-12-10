@@ -1,47 +1,99 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import CameraTopContainer from "./containers/cameraTopContainer";
 import CameraBottomContainer from "./containers/cameraBottomContainer";
-import { SharedValue, useDerivedValue } from "react-native-reanimated";
+import Animated, {
+  SharedValue,
+  useAnimatedStyle,
+  useDerivedValue,
+  useSharedValue,
+} from "react-native-reanimated";
 import GalleryButton from "./buttons/galleryButton";
 import RecordButton from "./buttons/recordButton";
 import FlipCameraButton from "./buttons/flipCameraButton";
 import SettingsButton from "./buttons/settingsButton";
 import FlashlightButton from "./buttons/flashlightButton";
+import SettingsModal from "./modals/settingsModal";
 
-type Props = {
+type CameraOverlayProps = {
   height: number;
+  width: number;
   animatedPosition?: SharedValue<number>;
+  setFlashOn: Dispatch<SetStateAction<boolean>>;
+  setIsBack: Dispatch<SetStateAction<boolean>>;
 };
 
-const iconsParameters = {
+export type CameraOverlayButtonProps = {
+  onClick?: () => void;
+  children?: React.ReactNode;
+} & IconParameters;
+
+export type IconParameters = {
+  color: string;
+  size: number;
+};
+
+const iconParameters: IconParameters = {
   color: "rgba(255,255,255,0.9)",
   size: 38,
 };
 
-const bottomContainerButtons = [GalleryButton, RecordButton, FlipCameraButton];
-
-const topContainerButtons = [SettingsButton, FlashlightButton];
-
-const CameraOverlay = ({ height, animatedPosition }: Props) => {
+const CameraOverlay = ({
+  height,
+  width,
+  animatedPosition,
+  setFlashOn,
+  setIsBack,
+}: CameraOverlayProps) => {
   const containersScale = useDerivedValue(() => {
     return (animatedPosition?.get() ?? 0) / height;
   });
 
+  const [settingsModalExpanded, setSettingsModalExpanded] = useState(false);
+
+  const topContainerButtons = useRef([
+    {
+      item: SettingsButton,
+      onClick: () => setSettingsModalExpanded((prev) => !prev),
+    },
+    { item: FlashlightButton, onClick: () => setFlashOn((prev) => !prev) },
+  ]);
+
+  const bottomContainerButtons = useRef([
+    { item: GalleryButton },
+    { item: RecordButton },
+    { item: FlipCameraButton, onClick: () => setIsBack((prev) => !prev) },
+  ]);
+
   return (
     <>
       <CameraTopContainer scale={containersScale}>
-        {topContainerButtons.map((Item, index) => (
-          <Item {...iconsParameters} key={index} />
+        {topContainerButtons.current.map((button, index) => (
+          <button.item
+            {...iconParameters}
+            key={index}
+            onClick={button.onClick}
+          />
         ))}
+        <SettingsModal
+          isVisible={settingsModalExpanded}
+          animatedPosition={animatedPosition}
+          iconParameters={iconParameters}
+          height={height}
+          width={width}
+        />
       </CameraTopContainer>
       <CameraBottomContainer
         appHeight={height}
         position={animatedPosition}
         scale={containersScale}
       >
-        {bottomContainerButtons.map((Item, index) => (
-          <Item {...iconsParameters} key={index} />
+        {bottomContainerButtons.current.map((button, index) => (
+          <button.item
+            {...iconParameters}
+            key={index}
+            onClick={button.onClick}
+          />
         ))}
       </CameraBottomContainer>
     </>

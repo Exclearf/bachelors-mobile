@@ -1,0 +1,65 @@
+import { StyleSheet } from "react-native";
+import React, { useEffect, useMemo } from "react";
+import Animated, {
+  Easing,
+  SharedValue,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from "react-native-reanimated";
+
+import { IconParameters } from "../cameraOverlay";
+
+type Props = {
+  height: number;
+  width: number;
+  iconParameters: IconParameters;
+  isVisible: boolean;
+  animatedPosition?: SharedValue<number>;
+};
+
+const SettingsModal = ({
+  height,
+  width,
+  isVisible,
+  animatedPosition,
+  iconParameters,
+}: Props) => {
+  const openState = useSharedValue(0);
+
+  useEffect(() => {
+    openState.set(isVisible ? 1 : 0);
+  }, [isVisible]);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    const adjustedHeight = (height - (animatedPosition?.get() ?? 0)) / 4;
+
+    const targetHeight = 300 - Math.min(adjustedHeight, 125);
+    return {
+      height: targetHeight,
+      opacity: withSpring(openState.get(), {
+        duration: 200,
+        dampingRatio: 1,
+      }),
+    };
+  });
+
+  const staticStyle = {
+    top: iconParameters.size * 1.5,
+    left: 15,
+    width: width - 30,
+    backgroundColor: "rgba(50,50,50,0.90)",
+    position: "absolute",
+    borderRadius: 10,
+  };
+
+  return (
+    withSpring(openState.get()) && (
+      <Animated.View style={[animatedStyle, staticStyle]} />
+    )
+  );
+};
+
+export default SettingsModal;
+
+const styles = StyleSheet.create({});

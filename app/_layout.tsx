@@ -1,6 +1,6 @@
 import { Dimensions, Text, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -24,6 +24,8 @@ const appDimensions = {
 
 export default function RootLayout() {
   const [cameraPermission, requestPermission] = useCameraPermissions();
+  const [flashOn, setFlashOn] = useState(false);
+  const [isBack, setIsBack] = useState(true);
 
   useEffect(() => {
     if (!cameraPermission?.granted) requestPermission();
@@ -60,10 +62,16 @@ export default function RootLayout() {
               width: "100%",
               height: "100%",
             }}
+            mode="video"
+            enableTorch={flashOn}
+            facing={isBack ? "back" : "front"}
           />
           <CameraOverlay
             height={appDimensions.height}
+            width={appDimensions.width}
             animatedPosition={appBottomSheetRef.current?.animatedPosition}
+            setFlashOn={setFlashOn}
+            setIsBack={setIsBack}
           />
           <AppBottomSheet
             ref={appBottomSheetRef}
