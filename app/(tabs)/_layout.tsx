@@ -1,4 +1,4 @@
-import { TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
@@ -10,14 +10,16 @@ const RootLayout = () => {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarStyle: {
-          backgroundColor: "#1e1e1e",
-          display: "flex",
-        },
+        tabBarStyle: styles.tabBarStyle,
+        tabBarItemStyle: styles.centerItems,
         tabBarShowLabel: false,
         tabBarButton: (props) => (
           //@ts-expect-error TODO: Fix the tabBarButton prop
-          <TouchableOpacity {...props} activeOpacity={1} />
+          <TouchableOpacity
+            {...props}
+            style={[styles.centerItems, styles.tabBarButton]}
+            activeOpacity={1}
+          />
         ),
         tabBarActiveTintColor: "white",
       }}
@@ -51,3 +53,19 @@ const RootLayout = () => {
 };
 
 export default RootLayout;
+
+const styles = StyleSheet.create({
+  tabBarStyle: {
+    backgroundColor: "#1e1e1e",
+    borderColor: "#5e5e5e",
+    borderTopWidth: 2,
+    borderWidth: 0,
+    height: 60,
+  },
+  centerItems: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  tabBarButton: { flex: 1, width: "100%" },
+});
