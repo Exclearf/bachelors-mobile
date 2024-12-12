@@ -11,7 +11,7 @@ type Props = {
   animatedPosition: SharedValue<number>;
   pathCreator: (borderRadius: number) => string;
   zIndex: number;
-  style: any;
+  style?: any;
   handleColor?: string;
   handlePadColor?: string;
 };

@@ -20,11 +20,22 @@ type CameraOverlayProps = {
 export type CameraOverlayButtonProps = {
   onClick?: () => void;
   children?: React.ReactNode;
-} & IconParameters;
+} & IconParameters &
+  ButtonParameters;
+
+export type ButtonParameters = {
+  buttonStyle?: any;
+};
 
 export type IconParameters = {
   color: string;
   size: number;
+};
+
+const buttonParameters: ButtonParameters = {
+  buttonStyle: {
+    padding: 10,
+  },
 };
 
 const iconParameters: IconParameters = {
@@ -65,6 +76,7 @@ const CameraOverlay = ({
         {topContainerButtons.current.map((button, index) => (
           <button.item
             {...iconParameters}
+            {...buttonParameters}
             key={index}
             onClick={button.onClick}
           />

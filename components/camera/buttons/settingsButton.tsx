@@ -9,7 +9,12 @@ import {
 } from "react-native-reanimated";
 import { Canvas, Path } from "@shopify/react-native-skia";
 
-const SettingsButton = ({ color, size, onClick }: CameraOverlayButtonProps) => {
+const SettingsButton = ({
+  color,
+  size,
+  onClick,
+  buttonStyle,
+}: CameraOverlayButtonProps) => {
   const openState = useSharedValue(0);
 
   // I really believe that the compiler would catch these
@@ -34,8 +39,9 @@ const SettingsButton = ({ color, size, onClick }: CameraOverlayButtonProps) => {
     <TouchableOpacity
       onPress={() => {
         onClick?.();
-        openState.set(withTiming(openState.get() ? 0 : 1, { duration: 200 }));
+        openState.set(withTiming(openState.get() ? 0 : 1, { duration: 150 }));
       }}
+      style={buttonStyle}
       activeOpacity={1}
     >
       <Canvas

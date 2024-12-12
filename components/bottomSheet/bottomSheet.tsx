@@ -1,4 +1,3 @@
-import { StyleSheet } from "react-native";
 import React, { forwardRef, useImperativeHandle, useRef } from "react";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { SharedValue, useSharedValue } from "react-native-reanimated";
@@ -58,5 +57,3 @@ const AppBottomSheet = forwardRef<AppBottomSheetRef, Props>(
 );
 
 export default AppBottomSheet;
-
-const styles = StyleSheet.create({});

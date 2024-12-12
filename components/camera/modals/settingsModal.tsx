@@ -36,8 +36,7 @@ const SettingsModal = ({
     return {
       height: targetHeight,
       opacity: withSpring(openState.get(), {
-        duration: 200,
-        dampingRatio: 1,
+        duration: 150,
       }),
     };
   });

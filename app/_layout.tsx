@@ -12,6 +12,7 @@ import AppBottomSheet, {
   AppBottomSheetRef,
 } from "@/components/bottomSheet/bottomSheet";
 import CameraOverlay from "@/components/camera/cameraOverlay";
+import { BottomSheetContext } from "@/contexts/bottomSheetContext";
 
 const windowDimensions = Dimensions.get("window");
 
@@ -24,60 +25,62 @@ export default function RootLayout() {
   const [cameraPermission, requestPermission] = useCameraPermissions();
   const [flashOn, setFlashOn] = useState(false);
   const [isBack, setIsBack] = useState(true);
+  const appBottomSheetRef = useRef<AppBottomSheetRef>(null);
 
   useEffect(() => {
     if (!cameraPermission?.granted) requestPermission();
   }, []);
-  const appBottomSheetRef = useRef<AppBottomSheetRef>(null);
 
   return (
     <GestureHandlerRootView>
-      <AppDimensionsContext.Provider value={appDimensions}>
-        <StatusBar
-          translucent={false}
-          style={"dark"}
-          backgroundColor="#1e1e1e"
-        />
-        <SafeAreaView
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <AppRoundedPath
-            zIndex={2}
-            style={{ top: 10 }}
-            barHeight={30}
-            handlePadColor="transparent"
-            animatedPosition={appBottomSheetRef.current?.animatedPosition!}
-            pathCreator={useTopPath()}
+      <BottomSheetContext.Provider value={appBottomSheetRef.current}>
+        <AppDimensionsContext.Provider value={appDimensions}>
+          <StatusBar
+            translucent={false}
+            style={"dark"}
+            backgroundColor="#1e1e1e"
           />
-          <CameraView
+          <SafeAreaView
             style={{
-              top: -30,
-              width: "100%",
-              height: "100%",
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
             }}
-            mode="video"
-            enableTorch={flashOn}
-            facing={isBack ? "back" : "front"}
-          />
-          <CameraOverlay
-            height={appDimensions.height}
-            width={appDimensions.width}
-            animatedPosition={appBottomSheetRef.current?.animatedPosition}
-            setFlashOn={setFlashOn}
-            setIsBack={setIsBack}
-          />
-          <AppBottomSheet
-            ref={appBottomSheetRef}
-            snapPoints={["10", "55", "100%"]}
           >
-            <Slot />
-          </AppBottomSheet>
-        </SafeAreaView>
-      </AppDimensionsContext.Provider>
+            <AppRoundedPath
+              zIndex={2}
+              style={{ top: 10 }}
+              barHeight={30}
+              handlePadColor="transparent"
+              animatedPosition={appBottomSheetRef.current?.animatedPosition!}
+              pathCreator={useTopPath()}
+            />
+            <CameraView
+              style={{
+                top: -30,
+                width: "100%",
+                height: "100%",
+              }}
+              mode="video"
+              enableTorch={flashOn}
+              facing={isBack ? "back" : "front"}
+            />
+            <CameraOverlay
+              height={appDimensions.height}
+              width={appDimensions.width}
+              animatedPosition={appBottomSheetRef.current?.animatedPosition}
+              setFlashOn={setFlashOn}
+              setIsBack={setIsBack}
+            />
+            <AppBottomSheet
+              ref={appBottomSheetRef}
+              snapPoints={["13", "55", "100%"]}
+            >
+              <Slot />
+            </AppBottomSheet>
+          </SafeAreaView>
+        </AppDimensionsContext.Provider>
+      </BottomSheetContext.Provider>
     </GestureHandlerRootView>
   );
 }
