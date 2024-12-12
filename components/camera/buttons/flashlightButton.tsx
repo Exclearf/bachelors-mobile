@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import React from "react";
 import Entypo from "@expo/vector-icons/Entypo";
 import { CameraOverlayButtonProps } from "../cameraOverlay";
@@ -60,5 +60,3 @@ const FlashlightButton = ({
 };
 
 export default FlashlightButton;
-
-const styles = StyleSheet.create({});

@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import React, { useRef } from "react";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { CameraOverlayButtonProps } from "../cameraOverlay";
@@ -50,5 +50,3 @@ const FlipCameraButton = ({
 };
 
 export default FlipCameraButton;
-
-const styles = StyleSheet.create({});

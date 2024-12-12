@@ -1,7 +1,7 @@
-import { LayoutChangeEvent, StyleSheet, Text, View } from "react-native";
+import { LayoutChangeEvent, StyleSheet, View } from "react-native";
 import React, { useCallback, useContext, useMemo, useState } from "react";
-import { SharedValue, useDerivedValue } from "react-native-reanimated";
-import { Canvas, Path, RoundedRect, Skia } from "@shopify/react-native-skia";
+import { SharedValue } from "react-native-reanimated";
+import { Canvas, Path, RoundedRect } from "@shopify/react-native-skia";
 import { AppDimensionsContext } from "@/contexts/appDimensions";
 import { useSkiaPath } from "@/utils/roundedPathCreators";
 import { useAppAppearanceSettings } from "@/stores/appAppearanceSettings";

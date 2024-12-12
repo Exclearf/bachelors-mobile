@@ -12,7 +12,6 @@ import AppBottomSheet, {
   AppBottomSheetRef,
 } from "@/components/bottomSheet/bottomSheet";
 import CameraOverlay from "@/components/camera/cameraOverlay";
-import { useAppAppearanceSettings } from "@/stores/appAppearanceSettings";
 
 const windowDimensions = Dimensions.get("window");
 

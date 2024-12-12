@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { View } from "react-native";
 import React from "react";
 import SelectGroup, {
   SelectionGroupItemConfig,
@@ -7,9 +7,7 @@ import TranslationBlob from "@/components/translationBlob";
 
 import { randomUUID } from "expo-crypto";
 
-type Props = {};
-
-const availableFunctions: SelectionGroupItemConfig = [
+const availableFunctions: SelectionGroupItemConfig[] = [
   {
     id: randomUUID(),
     title: "Signs",
@@ -22,7 +20,7 @@ const availableFunctions: SelectionGroupItemConfig = [
   },
 ];
 
-const IndexTab = (props: Props) => {
+const IndexTab = () => {
   return (
     <View style={{ backgroundColor: "#1e1e1e", flex: 1 }}>
       <SelectGroup items={availableFunctions} />
@@ -32,5 +30,3 @@ const IndexTab = (props: Props) => {
 };
 
 export default IndexTab;
-
-const styles = StyleSheet.create({});

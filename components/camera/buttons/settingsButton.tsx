@@ -1,5 +1,5 @@
-import { StyleSheet, TouchableOpacity } from "react-native";
-import React, { useEffect } from "react";
+import { TouchableOpacity } from "react-native";
+import React from "react";
 import { CameraOverlayButtonProps } from "../cameraOverlay";
 import {
   interpolate,
@@ -59,5 +59,3 @@ const SettingsButton = ({ color, size, onClick }: CameraOverlayButtonProps) => {
 };
 
 export default SettingsButton;
-
-const styles = StyleSheet.create({});

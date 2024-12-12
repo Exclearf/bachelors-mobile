@@ -1,7 +1,5 @@
-import { StyleSheet } from "react-native";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect } from "react";
 import Animated, {
-  Easing,
   SharedValue,
   useAnimatedStyle,
   useSharedValue,
@@ -55,11 +53,10 @@ const SettingsModal = ({
 
   return (
     withSpring(openState.get()) && (
+      //@ts-expect-error TODO: We know that the style is correct
       <Animated.View style={[animatedStyle, staticStyle]} />
     )
   );
 };
 
 export default SettingsModal;
-
-const styles = StyleSheet.create({});

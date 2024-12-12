@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import React from "react";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { CameraOverlayButtonProps } from "../cameraOverlay";
@@ -12,5 +12,3 @@ const GalleryButton = ({ color, size }: CameraOverlayButtonProps) => {
 };
 
 export default GalleryButton;
-
-const styles = StyleSheet.create({});

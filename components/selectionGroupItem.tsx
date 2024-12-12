@@ -1,11 +1,11 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Text } from "react-native";
 import React from "react";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 export type SelectionGroupItemProps = {
   title: string;
   onClick: () => void;
-  style: Readonly<Record<string, string>>;
+  style?: Readonly<Record<string, string>>;
 };
 
 const SelectionGroupItem = ({
@@ -21,5 +21,3 @@ const SelectionGroupItem = ({
 };
 
 export default SelectionGroupItem;
-
-const styles = StyleSheet.create({});

@@ -1,12 +1,11 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Feather from "@expo/vector-icons/Feather";
 import Entypo from "@expo/vector-icons/Entypo";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-type Props = {};
-const RootLayout = (props: Props) => {
+
+const RootLayout = () => {
   return (
     <Tabs
       screenOptions={{
@@ -15,8 +14,9 @@ const RootLayout = (props: Props) => {
           backgroundColor: "#1e1e1e",
           display: "flex",
         },
+        tabBarShowLabel: false,
         tabBarButton: (props) => (
-          //@ts-ignore
+          //@ts-expect-error TODO: Fix the tabBarButton prop
           <TouchableOpacity {...props} activeOpacity={1} />
         ),
         tabBarActiveTintColor: "white",
@@ -51,5 +51,3 @@ const RootLayout = (props: Props) => {
 };
 
 export default RootLayout;
-
-const styles = StyleSheet.create({});

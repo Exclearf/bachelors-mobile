@@ -1,13 +1,7 @@
-import { StyleSheet, Text, View } from "react-native";
 import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import CameraTopContainer from "./containers/cameraTopContainer";
 import CameraBottomContainer from "./containers/cameraBottomContainer";
-import Animated, {
-  SharedValue,
-  useAnimatedStyle,
-  useDerivedValue,
-  useSharedValue,
-} from "react-native-reanimated";
+import { SharedValue, useDerivedValue } from "react-native-reanimated";
 import GalleryButton from "./buttons/galleryButton";
 import RecordButton from "./buttons/recordButton";
 import FlipCameraButton from "./buttons/flipCameraButton";
@@ -101,5 +95,3 @@ const CameraOverlay = ({
 };
 
 export default CameraOverlay;
-
-const styles = StyleSheet.create({});

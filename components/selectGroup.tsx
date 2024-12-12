@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React, { useState } from "react";
 import SelectionGroupItem, {
   SelectionGroupItemProps,
@@ -6,6 +6,8 @@ import SelectionGroupItem, {
 
 export type SelectionGroupItemConfig = {
   id: string;
+  title: string;
+  onClick: () => void;
 } & SelectionGroupItemProps;
 
 type Props = {
@@ -25,6 +27,7 @@ const SelectGroup = ({ items }: Props) => {
             setChosen(item.id);
           }}
           title={item.title}
+          //@ts-expect-error  TODO: Fix the style prop
           style={item.id === chosen ? itemChosen : styles.item}
         />
       ))}
