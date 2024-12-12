@@ -1,5 +1,5 @@
 import { StyleSheet, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useRef } from "react";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { CameraOverlayButtonProps } from "../cameraOverlay";
 import Animated, {
@@ -15,8 +15,8 @@ const FlipCameraButton = ({
   size,
   onClick,
 }: CameraOverlayButtonProps) => {
+  const isRotated = useRef(false);
   const rotation = useSharedValue(0);
-
   const style = useAnimatedStyle(() => ({
     transform: [
       {
@@ -25,13 +25,17 @@ const FlipCameraButton = ({
     ],
   }));
 
+  const switchRotation = (state: boolean) => {
+    "worklet";
+    rotation.set(withTiming(state ? 0 : 180, { duration: 200 }));
+    return !state;
+  };
+
   return (
     <TouchableOpacity
       onPress={() => {
-        onClick?.();
-        rotation.set(
-          withTiming((rotation.get() + 180) % 360, { duration: 200 }),
-        );
+        onClick!();
+        isRotated.current = switchRotation(isRotated.current);
       }}
       activeOpacity={1}
     >

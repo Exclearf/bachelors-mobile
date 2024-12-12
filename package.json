@@ -20,6 +20,7 @@
     "@react-navigation/bottom-tabs": "^7.0.0",
     "@react-navigation/native": "^7.0.0",
     "@shopify/react-native-skia": "1.5.0",
+    "@tamagui/config": "^1.120.1",
     "babel-plugin-react-compiler": "^19.0.0-beta-df7b47d-20241124",
     "eslint-plugin-react-compiler": "^19.0.0-beta-df7b47d-20241124",
     "expo": "~52.0.17",
@@ -37,6 +38,7 @@
     "expo-symbols": "~0.2.0",
     "expo-system-ui": "~4.0.5",
     "expo-web-browser": "~14.0.1",
+    "immer": "^10.1.1",
     "react": "18.3.1",
     "react-compiler-runtime": "^19.0.0-beta-df7b47d-20241124",
     "react-dom": "18.3.1",
@@ -47,7 +49,9 @@
     "react-native-screen-corner-radius": "^0.2.2",
     "react-native-screens": "~4.1.0",
     "react-native-web": "~0.19.13",
-    "react-native-webview": "13.12.5"
+    "react-native-webview": "13.12.5",
+    "tamagui": "^1.120.1",
+    "zustand": "^5.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

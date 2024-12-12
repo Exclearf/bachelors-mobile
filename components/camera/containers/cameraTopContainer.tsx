@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import React from "react";
 import Animated, {
   DerivedValue,
@@ -15,7 +15,7 @@ const CameraTopContainer = ({ children, scale }: Props) => {
     "worklet";
     return {
       opacity: scale.get() * 2.31,
-      top: 30 - scale.get() * 30,
+      top: 40 - scale.get() * 30,
     };
   });
 

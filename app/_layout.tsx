@@ -1,4 +1,4 @@
-import { Dimensions, Text, View } from "react-native";
+import { Dimensions } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useEffect, useRef, useState } from "react";
 import { StatusBar } from "expo-status-bar";
@@ -11,9 +11,8 @@ import { Slot } from "expo-router";
 import AppBottomSheet, {
   AppBottomSheetRef,
 } from "@/components/bottomSheet/bottomSheet";
-import CameraBottomContainer from "@/components/camera/containers/cameraBottomContainer";
-import CameraTopContainer from "@/components/camera/containers/cameraTopContainer";
 import CameraOverlay from "@/components/camera/cameraOverlay";
+import { useAppAppearanceSettings } from "@/stores/appAppearanceSettings";
 
 const windowDimensions = Dimensions.get("window");
 
@@ -45,12 +44,11 @@ export default function RootLayout() {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
-            top: 13,
           }}
         >
           <AppRoundedPath
             zIndex={2}
-            style={{ top: 1 }}
+            style={{ top: 10 }}
             barHeight={30}
             handlePadColor="transparent"
             animatedPosition={appBottomSheetRef.current?.animatedPosition!}
