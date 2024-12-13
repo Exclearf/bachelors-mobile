@@ -3,14 +3,14 @@ import React from "react";
 
 type Props = {};
 
-const TranslationBlob = (props: Props) => {
+const ExpandableModal = (props: Props) => {
   return (
     <View>
-      <Text>TranslationBlob</Text>
+      <Text>ExpandableModal</Text>
     </View>
   );
 };
 
-export default TranslationBlob;
+export default ExpandableModal;
 
 const styles = StyleSheet.create({});

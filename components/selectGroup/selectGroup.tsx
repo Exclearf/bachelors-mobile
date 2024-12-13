@@ -1,18 +1,15 @@
-import { StyleSheet, View } from "react-native";
+import { StyleProp, StyleSheet, ViewStyle } from "react-native";
 import React, { useContext, useState } from "react";
-import SelectionGroupItem, {
-  SelectionGroupItemProps,
-} from "./selectionGroupItem";
+import SelectionGroupItem from "./selectionGroupItem";
 import { AppDimensionsContext } from "@/contexts/appDimensions";
-import { BottomSheetContext } from "@/contexts/bottomSheetContext";
-import { AnimatedView } from "react-native-reanimated/lib/typescript/component/View";
-import Animated, { useAnimatedStyle } from "react-native-reanimated";
+import Animated from "react-native-reanimated";
 
 export type SelectionGroupItemConfig = {
   id: string;
   title: string;
   onClick: () => void;
-} & SelectionGroupItemProps;
+  icon: (props: any) => React.ReactNode;
+};
 
 type Props = {
   items: SelectionGroupItemConfig[];
@@ -23,7 +20,7 @@ const SelectGroup = ({ items }: Props) => {
   const [chosen, setChosen] = useState(items?.[0]?.id);
 
   return (
-    <Animated.View style={[styles.container, { height: height * 0.13 - 36 }]}>
+    <Animated.View style={[styles.container, { height: height * 0.11 - 40 }]}>
       {items?.map((item) => (
         <SelectionGroupItem
           key={item.id}
@@ -32,8 +29,20 @@ const SelectGroup = ({ items }: Props) => {
             setChosen(item.id);
           }}
           title={item.title}
-          //@ts-expect-error  TODO: Fix the style prop
-          style={item.id === chosen ? itemChosen : styles.item}
+          Icon={
+            <item.icon
+              color={item.id === chosen ? "#5289e3" : "white"}
+              size={17}
+            />
+          }
+          itemStyle={
+            item.id === chosen
+              ? (itemChosen as StyleProp<ViewStyle>)
+              : styles.item
+          }
+          textStyle={
+            item.id === chosen ? styles.itemTextChosen : styles.itemText
+          }
         />
       ))}
     </Animated.View>
@@ -50,10 +59,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   item: {
-    backgroundColor: "#3e3e3e",
-    borderRadius: 10,
-    paddingHorizontal: 20,
-    paddingVertical: 5,
+    backgroundColor: "transparent",
+    borderRadius: 20,
+    paddingHorizontal: 30,
+    paddingVertical: 7,
     borderColor: "grey",
     borderWidth: 1,
     height: 35,
@@ -62,7 +71,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   itemChosen: {
-    backgroundColor: "#577B8D",
+    borderColor: "rgba(100, 146, 222, 0.3)",
+    color: "#5289e3",
+    backgroundColor: "rgba(100, 146, 222, 0.3)",
+  },
+  itemText: {
+    fontSize: 15,
+    color: "white",
+  },
+  itemTextChosen: {
+    fontSize: 15,
+    fontWeight: "bold",
+    color: "#5c97f7",
   },
 });
+
 const itemChosen = StyleSheet.compose(styles.item, styles.itemChosen);

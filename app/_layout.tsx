@@ -74,7 +74,7 @@ export default function RootLayout() {
             />
             <AppBottomSheet
               ref={appBottomSheetRef}
-              snapPoints={["13", "55", "100%"]}
+              snapPoints={["11", "55", "100%"]}
             >
               <Slot />
             </AppBottomSheet>

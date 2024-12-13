@@ -6,7 +6,7 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated";
 
-import { IconParameters } from "../cameraOverlay";
+import { IconParameters } from "../camera/cameraOverlay";
 
 type Props = {
   height: number;
@@ -16,7 +16,7 @@ type Props = {
   animatedPosition?: SharedValue<number>;
 };
 
-const SettingsModal = ({
+const CameraModal = ({
   height,
   width,
   isVisible,
@@ -58,4 +58,4 @@ const SettingsModal = ({
   );
 };
 
-export default SettingsModal;
+export default CameraModal;

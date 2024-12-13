@@ -22,7 +22,7 @@ const CameraBottomContainer = ({
   const bottomStyle = useAnimatedStyle(() => {
     "worklet";
     const newHeight = Math.min(
-      appHeight - (position?.get() ?? 0),
+      appHeight - (position?.get() ?? 0) - 10,
       appHeight * 0.55,
     );
     return {

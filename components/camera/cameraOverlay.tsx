@@ -7,7 +7,7 @@ import RecordButton from "./buttons/recordButton";
 import FlipCameraButton from "./buttons/flipCameraButton";
 import SettingsButton from "./buttons/settingsButton";
 import FlashlightButton from "./buttons/flashlightButton";
-import SettingsModal from "./modals/settingsModal";
+import SettingsModal from "../modals/settingsModal";
 
 type CameraOverlayProps = {
   height: number;
