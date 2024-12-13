@@ -6,12 +6,11 @@ import Animated, {
   useAnimatedStyle,
 } from "react-native-reanimated";
 
-type Props = {
+type Props = React.PropsWithChildren<{
   appHeight: number;
   scale: DerivedValue<number>;
-  children: React.JSX.Element | React.JSX.Element[];
   position?: SharedValue<number>;
-};
+}>;
 
 const CameraBottomContainer = ({
   position,

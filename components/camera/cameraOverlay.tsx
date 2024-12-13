@@ -17,10 +17,10 @@ type CameraOverlayProps = {
   setIsBack: Dispatch<SetStateAction<boolean>>;
 };
 
-export type CameraOverlayButtonProps = {
+export type CameraOverlayButtonProps = React.PropsWithChildren<{
   onClick?: () => void;
-  children?: React.ReactNode;
-} & IconParameters &
+}> &
+  IconParameters &
   ButtonParameters;
 
 export type ButtonParameters = {

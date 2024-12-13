@@ -3,10 +3,10 @@ import React from "react";
 import SelectGroup, {
   SelectionGroupItemConfig,
 } from "@/components/selectGroup/selectGroup";
-
 import { randomUUID } from "expo-crypto";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+
 const availableFunctions: SelectionGroupItemConfig[] = [
   {
     id: randomUUID(),

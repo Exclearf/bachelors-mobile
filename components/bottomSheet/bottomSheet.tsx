@@ -4,10 +4,9 @@ import { SharedValue, useSharedValue } from "react-native-reanimated";
 import AppRoundedPath from "../utils/AppRoundedPath";
 import { useBottomPath } from "@/utils/roundedPathCreators";
 
-type Props = {
+type Props = React.PropsWithChildren<{
   snapPoints: string[];
-  children?: React.JSX.Element | React.JSX.Element[];
-};
+}>;
 
 export interface AppBottomSheetRef {
   animatedPosition: SharedValue<number>;

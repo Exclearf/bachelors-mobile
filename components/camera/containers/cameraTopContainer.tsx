@@ -5,10 +5,9 @@ import Animated, {
   useAnimatedStyle,
 } from "react-native-reanimated";
 
-type Props = {
+type Props = React.PropsWithChildren<{
   scale: DerivedValue<number>;
-  children: React.ReactNode;
-};
+}>;
 
 const CameraTopContainer = ({ children, scale }: Props) => {
   const animStyle = useAnimatedStyle(() => {
