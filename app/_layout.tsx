@@ -1,6 +1,6 @@
 import { Dimensions } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -8,11 +8,9 @@ import { AppDimensionsContext } from "@/contexts/appDimensions";
 import AppRoundedPath from "@/components/utils/AppRoundedPath";
 import { useTopPath } from "@/utils/roundedPathCreators";
 import { Slot } from "expo-router";
-import AppBottomSheet, {
-  AppBottomSheetRef,
-} from "@/components/bottomSheet/bottomSheet";
+import AppBottomSheet from "@/components/bottomSheet/bottomSheet";
 import CameraOverlay from "@/components/camera/cameraOverlay";
-import { BottomSheetContext } from "@/contexts/bottomSheetContext";
+import BottomSheetProvider from "@/components/providers/bottomSheetProvider";
 
 const windowDimensions = Dimensions.get("window");
 
@@ -25,7 +23,6 @@ export default function RootLayout() {
   const [cameraPermission, requestPermission] = useCameraPermissions();
   const [flashOn, setFlashOn] = useState(false);
   const [isBack, setIsBack] = useState(true);
-  const appBottomSheetRef = useRef<AppBottomSheetRef>(null);
 
   useEffect(() => {
     if (!cameraPermission?.granted) requestPermission();
@@ -33,8 +30,8 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView>
-      <BottomSheetContext.Provider value={appBottomSheetRef.current}>
-        <AppDimensionsContext.Provider value={appDimensions}>
+      <AppDimensionsContext.Provider value={appDimensions}>
+        <BottomSheetProvider>
           <StatusBar
             translucent={false}
             style={"dark"}
@@ -52,7 +49,6 @@ export default function RootLayout() {
               style={{ top: 10 }}
               barHeight={30}
               handlePadColor="transparent"
-              animatedPosition={appBottomSheetRef.current?.animatedPosition!}
               pathCreator={useTopPath()}
             />
             <CameraView
@@ -65,22 +61,13 @@ export default function RootLayout() {
               enableTorch={flashOn}
               facing={isBack ? "back" : "front"}
             />
-            <CameraOverlay
-              height={appDimensions.height}
-              width={appDimensions.width}
-              animatedPosition={appBottomSheetRef.current?.animatedPosition}
-              setFlashOn={setFlashOn}
-              setIsBack={setIsBack}
-            />
-            <AppBottomSheet
-              ref={appBottomSheetRef}
-              snapPoints={["11", "55", "100%"]}
-            >
+            <CameraOverlay setFlashOn={setFlashOn} setIsBack={setIsBack} />
+            <AppBottomSheet snapPoints={["11", "55", "100%"]}>
               <Slot />
             </AppBottomSheet>
           </SafeAreaView>
-        </AppDimensionsContext.Provider>
-      </BottomSheetContext.Provider>
+        </BottomSheetProvider>
+      </AppDimensionsContext.Provider>
     </GestureHandlerRootView>
   );
 }

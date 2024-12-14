@@ -1,36 +1,31 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import Animated, {
-  SharedValue,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
 
 import { IconParameters } from "../camera/cameraOverlay";
+import { useBottomSheet } from "@/hooks/useBottomSheet";
+import { AppDimensionsContext } from "@/contexts/appDimensions";
 
 type Props = {
-  height: number;
-  width: number;
   iconParameters: IconParameters;
   isVisible: boolean;
-  animatedPosition?: SharedValue<number>;
 };
 
-const CameraModal = ({
-  height,
-  width,
-  isVisible,
-  animatedPosition,
-  iconParameters,
-}: Props) => {
+const CameraModal = ({ isVisible, iconParameters }: Props) => {
+  const { width, height } = useContext(AppDimensionsContext);
   const openState = useSharedValue(0);
+  const { bottomSheet } = useBottomSheet();
 
   useEffect(() => {
     openState.set(isVisible ? 1 : 0);
   }, [isVisible]);
 
   const animatedStyle = useAnimatedStyle(() => {
-    const adjustedHeight = (height - (animatedPosition?.get() ?? 0)) / 4;
+    const adjustedHeight =
+      (height - (bottomSheet?.animatedPosition?.get() ?? 0)) / 4;
 
     const targetHeight = 300 - Math.min(adjustedHeight, 125);
     return {

@@ -1,14 +1,14 @@
 import { LayoutChangeEvent, StyleSheet, View } from "react-native";
 import React, { useCallback, useContext, useMemo, useState } from "react";
-import { SharedValue } from "react-native-reanimated";
+import { useSharedValue } from "react-native-reanimated";
 import { Canvas, Path, RoundedRect } from "@shopify/react-native-skia";
 import { AppDimensionsContext } from "@/contexts/appDimensions";
 import { useSkiaPath } from "@/utils/roundedPathCreators";
 import { useAppAppearanceSettings } from "@/stores/appAppearanceSettings";
+import { useBottomSheet } from "@/hooks/useBottomSheet";
 
 type Props = {
   barHeight: number;
-  animatedPosition: SharedValue<number>;
   pathCreator: (borderRadius: number) => string;
   zIndex: number;
   style?: any;
@@ -17,7 +17,6 @@ type Props = {
 };
 
 const AppRoundedPath = ({
-  animatedPosition,
   pathCreator,
   barHeight,
   zIndex,
@@ -30,6 +29,10 @@ const AppRoundedPath = ({
   );
 
   const [parentWidth, setParentWidth] = useState(0);
+  const { bottomSheet } = useBottomSheet();
+
+  //TODO: Workaround
+  const sharedValue = useSharedValue(0);
 
   const onLayout = useCallback(
     (event: LayoutChangeEvent) => {
@@ -42,7 +45,11 @@ const AppRoundedPath = ({
   );
 
   const { height, width } = useContext(AppDimensionsContext);
-  const skiaPath = useSkiaPath({ animatedPosition, height, pathCreator });
+  const skiaPath = useSkiaPath({
+    animatedPosition: bottomSheet?.animatedPosition ?? sharedValue,
+    height,
+    pathCreator,
+  });
   const scaleX = useMemo(
     () => (parentWidth ? parentWidth / 100 : 1),
     [parentWidth],

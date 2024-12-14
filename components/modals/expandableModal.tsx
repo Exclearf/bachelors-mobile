@@ -1,4 +1,4 @@
-import { StyleProp, StyleSheet, Text, View, ViewStyle } from "react-native";
+import { StyleProp, Text, View, ViewStyle } from "react-native";
 import React, { useContext, useRef } from "react";
 import Animated, {
   interpolate,
@@ -8,7 +8,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { AppDimensionsContext } from "@/contexts/appDimensions";
-import { BottomSheetContext } from "@/contexts/bottomSheetContext";
+import { useBottomSheet } from "@/hooks/useBottomSheet";
 
 type Props = {
   initialHeight: number;
@@ -24,7 +24,7 @@ const ExpandableModal = ({
   const expansionFactor = useSharedValue(0);
   const isExpanding = useRef(false);
   const { height, width } = useContext(AppDimensionsContext);
-  const animatedPosition = useContext(BottomSheetContext);
+  const { bottomSheet } = useBottomSheet();
 
   const animateStyle = useAnimatedStyle(() => {
     return {
@@ -38,7 +38,7 @@ const ExpandableModal = ({
           initialHeight,
           Math.max(
             height * 0.55 - 100,
-            height - (animatedPosition?.animatedPosition.get() ?? 0) - 100,
+            height - (bottomSheet?.animatedPosition.get() ?? 0) - 100,
           ),
         ],
       ),
@@ -56,7 +56,7 @@ const ExpandableModal = ({
             isExpanding.current = !isExpanding.current;
           }}
         >
-          <Text>{animatedPosition?.animatedPosition.get()}</Text>
+          <Text>Modal Text</Text>
         </TouchableWithoutFeedback>
       </View>
       <Text>Expanda1bleModal</Text>
@@ -65,12 +65,3 @@ const ExpandableModal = ({
 };
 
 export default ExpandableModal;
-
-const styles = StyleSheet.create({
-  testStyle: {
-    width: 100,
-    height: 100,
-    position: "absolute",
-    backgroundColor: "rgba(255,255,255,0.5)",
-  },
-});

@@ -1,28 +1,29 @@
 import { StyleSheet } from "react-native";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import Animated, {
   DerivedValue,
-  SharedValue,
   useAnimatedStyle,
 } from "react-native-reanimated";
+import { useBottomSheet } from "@/hooks/useBottomSheet";
+import { AppDimensionsContext } from "@/contexts/appDimensions";
 
 type Props = React.PropsWithChildren<{
-  appHeight: number;
   scale: DerivedValue<number>;
-  position?: SharedValue<number>;
 }>;
 
-const CameraBottomContainer = ({
-  position,
-  appHeight,
-  children,
-  scale,
-}: Props) => {
+const CameraBottomContainer = ({ children, scale }: Props) => {
+  const { bottomSheet } = useBottomSheet();
+  const { height } = useContext(AppDimensionsContext);
+
+  useEffect(() => {
+    console.log(`BottomSheet ${bottomSheet}`);
+  }, []);
+
   const bottomStyle = useAnimatedStyle(() => {
     "worklet";
     const newHeight = Math.min(
-      appHeight - (position?.get() ?? 0) - 10,
-      appHeight * 0.55,
+      height - (bottomSheet?.animatedPosition?.get() ?? 0) - 10,
+      height * 0.55,
     );
     return {
       marginBottom: scale.get() * 24,

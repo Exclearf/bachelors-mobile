@@ -1,18 +1,23 @@
-import React, { Dispatch, SetStateAction, useRef, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useRef,
+  useState,
+} from "react";
 import CameraTopContainer from "./containers/cameraTopContainer";
 import CameraBottomContainer from "./containers/cameraBottomContainer";
-import { SharedValue, useDerivedValue } from "react-native-reanimated";
+import { useDerivedValue } from "react-native-reanimated";
 import GalleryButton from "./buttons/galleryButton";
 import RecordButton from "./buttons/recordButton";
 import FlipCameraButton from "./buttons/flipCameraButton";
 import SettingsButton from "./buttons/settingsButton";
 import FlashlightButton from "./buttons/flashlightButton";
 import SettingsModal from "../modals/settingsModal";
+import { useBottomSheet } from "@/hooks/useBottomSheet";
+import { AppDimensionsContext } from "@/contexts/appDimensions";
 
 type CameraOverlayProps = {
-  height: number;
-  width: number;
-  animatedPosition?: SharedValue<number>;
   setFlashOn: Dispatch<SetStateAction<boolean>>;
   setIsBack: Dispatch<SetStateAction<boolean>>;
 };
@@ -43,18 +48,15 @@ const iconParameters: IconParameters = {
   size: 38,
 };
 
-const CameraOverlay = ({
-  height,
-  width,
-  animatedPosition,
-  setFlashOn,
-  setIsBack,
-}: CameraOverlayProps) => {
+const CameraOverlay = ({ setFlashOn, setIsBack }: CameraOverlayProps) => {
+  const { height } = useContext(AppDimensionsContext);
+
   const containersScale = useDerivedValue(() => {
-    return (animatedPosition?.get() ?? 0) / height;
+    return (bottomSheet?.animatedPosition?.get() ?? 0) / height;
   });
 
   const [settingsModalExpanded, setSettingsModalExpanded] = useState(false);
+  const { bottomSheet } = useBottomSheet();
 
   const topContainerButtons = useRef([
     {
@@ -83,17 +85,10 @@ const CameraOverlay = ({
         ))}
         <SettingsModal
           isVisible={settingsModalExpanded}
-          animatedPosition={animatedPosition}
           iconParameters={iconParameters}
-          height={height}
-          width={width}
         />
       </CameraTopContainer>
-      <CameraBottomContainer
-        appHeight={height}
-        position={animatedPosition}
-        scale={containersScale}
-      >
+      <CameraBottomContainer scale={containersScale}>
         {bottomContainerButtons.current.map((button, index) => (
           <button.item
             {...iconParameters}

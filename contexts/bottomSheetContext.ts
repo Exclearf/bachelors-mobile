@@ -1,9 +1,11 @@
-import { AppBottomSheetRef } from "@/components/bottomSheet/bottomSheet";
+import { BottomSheetWrapperRef } from "@/components/wrappers/BottomSheetWrapper";
 import { createContext } from "react";
 
-type BottomSheetType = AppBottomSheetRef | null;
+type BottomSheetContextType = {
+  bottomSheet: BottomSheetWrapperRef | undefined;
+  registerBottomSheet: (ref: BottomSheetWrapperRef) => void;
+};
 
-const defaultContextValue = null;
-
-export const BottomSheetContext =
-  createContext<BottomSheetType>(defaultContextValue);
+export const BottomSheetContext = createContext<
+  BottomSheetContextType | undefined
+>(undefined);
