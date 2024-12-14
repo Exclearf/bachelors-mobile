@@ -50,13 +50,13 @@ const iconParameters: IconParameters = {
 
 const CameraOverlay = ({ setFlashOn, setIsBack }: CameraOverlayProps) => {
   const { height } = useContext(AppDimensionsContext);
+  const { bottomSheet } = useBottomSheet();
 
   const containersScale = useDerivedValue(() => {
-    return (bottomSheet?.animatedPosition?.get() ?? 0) / height;
+    return (bottomSheet?.animatedPosition.get() ?? 0) / height;
   });
 
   const [settingsModalExpanded, setSettingsModalExpanded] = useState(false);
-  const { bottomSheet } = useBottomSheet();
 
   const topContainerButtons = useRef([
     {
