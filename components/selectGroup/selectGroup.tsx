@@ -54,9 +54,10 @@ export default SelectGroup;
 const styles = StyleSheet.create({
   container: {
     display: "flex",
-    justifyContent: "space-around",
+    justifyContent: "space-evenly",
     alignItems: "center",
     flexDirection: "row",
+    width: "100%",
   },
   item: {
     backgroundColor: "transparent",

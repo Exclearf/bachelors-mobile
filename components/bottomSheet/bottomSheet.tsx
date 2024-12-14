@@ -15,7 +15,6 @@ const AppBottomSheet = forwardRef<AppBottomSheetRef, Props>(
   ({ snapPoints, children }, ref) => {
     const bottomSheetRef = useRef<BottomSheet>(null);
     const animatedPosition = useSharedValue(0);
-
     useImperativeHandle(ref, () => ({
       animatedPosition,
     }));
