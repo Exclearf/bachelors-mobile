@@ -1,4 +1,4 @@
-import { Dimensions } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
@@ -37,13 +37,7 @@ export default function RootLayout() {
             style={"dark"}
             backgroundColor="#1e1e1e"
           />
-          <SafeAreaView
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
+          <SafeAreaView style={styles.container}>
             <AppRoundedPath
               zIndex={2}
               style={{ top: 10 }}
@@ -52,11 +46,7 @@ export default function RootLayout() {
               pathCreator={useTopPath()}
             />
             <CameraView
-              style={{
-                top: -30,
-                width: "100%",
-                height: "100%",
-              }}
+              style={styles.cameraViewStyle}
               mode="video"
               enableTorch={flashOn}
               facing={isBack ? "back" : "front"}
@@ -71,3 +61,17 @@ export default function RootLayout() {
     </GestureHandlerRootView>
   );
 }
+
+const styles = StyleSheet.create({
+  cameraViewStyle: {
+    top: -30,
+    width: "100%",
+    height: "100%",
+  },
+  container: {
+    flex: 1,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});

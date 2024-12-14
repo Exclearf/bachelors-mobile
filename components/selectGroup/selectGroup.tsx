@@ -20,7 +20,7 @@ const SelectGroup = ({ items }: Props) => {
   const [chosen, setChosen] = useState(items?.[0]?.id);
 
   return (
-    <Animated.View style={[styles.container, { height: height * 0.11 - 40 }]}>
+    <Animated.View style={[styles.container, { height: height * 0.11 - 36 }]}>
       {items?.map((item) => (
         <SelectionGroupItem
           key={item.id}
