@@ -2,11 +2,11 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
 type AppearanceSettingsState = {
-  areBarsEnabled: any;
+  areBarsEnabled: boolean;
 };
 
 type AppearanceSettingsActions = {
-  changeBarsEnabledState: any;
+  changeBarsEnabledState: (newState: boolean) => void;
 };
 
 export const useAppAppearanceSettings = create<

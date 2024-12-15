@@ -3,9 +3,11 @@ import React, { useContext, useState } from "react";
 import SelectionGroupItem from "./selectionGroupItem";
 import { AppDimensionsContext } from "@/contexts/appDimensions";
 import Animated from "react-native-reanimated";
+import { useTranslationStore } from "@/stores/translationStore";
+import { useShallow } from "zustand/react/shallow";
 
 export type SelectionGroupItemConfig = {
-  id: string;
+  id: "signToText" | "textToSign";
   title: string;
   onClick: () => void;
   icon: (props: any) => React.ReactNode;
@@ -17,32 +19,32 @@ type Props = {
 
 const SelectGroup = ({ items }: Props) => {
   const { height } = useContext(AppDimensionsContext);
-  const [chosen, setChosen] = useState(items?.[0]?.id);
+  const [mode, setMode] = useTranslationStore(
+    useShallow((state) => [state.mode, state.setMode]),
+  );
 
   return (
-    <Animated.View style={[styles.container, { height: height * 0.11 - 36 }]}>
+    <Animated.View style={[styles.container, { height: height * 0.1 - 30 }]}>
       {items?.map((item) => (
         <SelectionGroupItem
           key={item.id}
           onClick={() => {
             item.onClick();
-            setChosen(item.id);
+            setMode(item.id);
           }}
           title={item.title}
           Icon={
             <item.icon
-              color={item.id === chosen ? "#5289e3" : "white"}
+              color={item.id === mode ? "#5289e3" : "white"}
               size={17}
             />
           }
           itemStyle={
-            item.id === chosen
+            item.id === mode
               ? (itemChosen as StyleProp<ViewStyle>)
               : styles.item
           }
-          textStyle={
-            item.id === chosen ? styles.itemTextChosen : styles.itemText
-          }
+          textStyle={item.id === mode ? styles.itemTextChosen : styles.itemText}
         />
       ))}
     </Animated.View>

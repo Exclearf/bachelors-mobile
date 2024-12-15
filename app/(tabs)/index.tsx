@@ -3,14 +3,13 @@ import React from "react";
 import SelectGroup, {
   SelectionGroupItemConfig,
 } from "@/components/selectGroup/selectGroup";
-import { randomUUID } from "expo-crypto";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
-import ExpandableModal from "@/components/modals/expandableModal";
+import IndexPage from "@/pages/indexPage";
 
 const availableFunctions: SelectionGroupItemConfig[] = [
   {
-    id: randomUUID(),
+    id: "signToText",
     title: "Sign",
     onClick: () => {},
     icon: (props: any) => (
@@ -18,7 +17,7 @@ const availableFunctions: SelectionGroupItemConfig[] = [
     ),
   },
   {
-    id: randomUUID(),
+    id: "textToSign",
     title: "Text",
     onClick: () => {},
     icon: (props: any) => <Ionicons name="text" {...props} />,
@@ -29,13 +28,7 @@ const IndexTab = () => {
   return (
     <View style={styles.container}>
       <SelectGroup items={availableFunctions} />
-      <View style={styles.innerContainer}>
-        <ExpandableModal
-          initialHeight={200}
-          initialWidth={200}
-          containerStyle={styles.expandableModal}
-        ></ExpandableModal>
-      </View>
+      <IndexPage />
     </View>
   );
 };
@@ -48,14 +41,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-  },
-  innerContainer: {
-    width: "100%",
-    flex: 1,
-    backgroundColor: "yellow",
-  },
-  expandableModal: {
-    backgroundColor: "red",
-    width: "100%",
   },
 });
