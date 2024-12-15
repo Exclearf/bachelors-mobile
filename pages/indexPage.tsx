@@ -5,6 +5,7 @@ import { useTranslationStore } from "@/stores/translationStore";
 import TextTranslation from "@/components/translation/textTranslation";
 import SignTranslation from "@/components/translation/signTranslation";
 import { AppDimensionsContext } from "@/contexts/appDimensions";
+import History from "@/components/translation/history";
 
 type Props = {};
 
@@ -17,10 +18,14 @@ const IndexPage = (props: Props) => {
       <ExpandableModal
         initialHeight={height * 0.55 - height * 0.11 - 36}
         padding={20}
-        containerStyle={styles.expandableModal}
+        containerStyle={[styles.indexSection, styles.translationSection]}
       >
         {mode === "signToText" ? <SignTranslation /> : <TextTranslation />}
       </ExpandableModal>
+      <History
+        padding={20}
+        containerStyle={[styles.indexSection, styles.historySection]}
+      />
     </View>
   );
 };
@@ -32,12 +37,16 @@ const styles = StyleSheet.create({
     position: "relative",
     width: "100%",
     flex: 1,
+    display: "flex",
     justifyContent: "space-evenly",
     alignItems: "center",
   },
-  expandableModal: {
+  indexSection: {
     borderRadius: 10,
-    backgroundColor: "rgba(100, 100, 100, 0.35)",
     boxShadow: "0px 0px 10px 1px rgba(15,15,15,0.5)",
   },
+  translationSection: {
+    backgroundColor: "rgba(75, 75, 75, 1)",
+  },
+  historySection: { backgroundColor: "rgba(75, 75, 75, 0.5)" },
 });

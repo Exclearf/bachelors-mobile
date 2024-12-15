@@ -11,11 +11,13 @@ import { AppDimensionsContext } from "@/contexts/appDimensions";
 import { useBottomSheet } from "@/hooks/useBottomSheet";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import CollapseAnimated from "../utils/CollapseAnimated";
+import { useTranslationStore } from "@/stores/translationStore";
+import TextToVoiceButton from "../translation/buttons/textToVoiceButton";
 
 type Props = PropsWithChildren<{
   initialHeight: number;
   padding: number;
-  containerStyle: StyleProp<ViewStyle>;
+  containerStyle: StyleProp<ViewStyle>[];
 }>;
 
 const ExpandableModal = ({
@@ -25,10 +27,11 @@ const ExpandableModal = ({
   children,
 }: Props) => {
   const expansionFactor = useSharedValue(0);
+  const iconSize = 24;
   const isExpanding = useRef(false);
   const { height, width } = useContext(AppDimensionsContext);
   const { bottomSheet } = useBottomSheet();
-  const iconPadding = 10;
+  const mode = useTranslationStore((state) => state.mode);
 
   const animateStyle = useAnimatedStyle(() => {
     return {
@@ -58,29 +61,37 @@ const ExpandableModal = ({
   });
 
   return (
-    <Animated.View style={[containerStyle, animateStyle]}>
+    <Animated.View style={[...containerStyle, animateStyle]}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Translation</Text>
-        <TouchableWithoutFeedback
-          onPress={() => {
-            expansionFactor.set(withTiming(isExpanding.current ? 0 : 1));
-            isExpanding.current = !isExpanding.current;
-          }}
+        <View
           style={{
-            position: "absolute",
-            right: -10,
-            top: -15,
-            padding: 20,
+            width: iconSize * 4,
+            height: iconSize * 2,
           }}
         >
-          <CollapseAnimated
-            value={expansionFactor}
-            // Adjust for visual simetry
-            canvasStyle={{ top: -5, right: -5 }}
-            color="white"
-            size={24}
-          />
-        </TouchableWithoutFeedback>
+          {mode === "signToText" && (
+            <TextToVoiceButton size={24} color="white" />
+          )}
+          <TouchableWithoutFeedback
+            onPress={() => {
+              expansionFactor.set(withTiming(isExpanding.current ? 0 : 1));
+              isExpanding.current = !isExpanding.current;
+            }}
+            style={{
+              position: "absolute",
+              right: 0,
+              top: 0,
+              height: iconSize * 2,
+              width: iconSize * 2,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CollapseAnimated value={expansionFactor} color="white" size={24} />
+          </TouchableWithoutFeedback>
+        </View>
       </View>
       {children}
     </Animated.View>
@@ -91,17 +102,17 @@ export default ExpandableModal;
 
 const styles = StyleSheet.create({
   header: {
-    paddingVertical: 15,
-    paddingHorizontal: 10,
     width: "100%",
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
   },
   headerText: {
-    paddingLeft: 10,
+    marginVertical: 10,
+    marginHorizontal: 15,
     color: "white",
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 400,
   },
 });

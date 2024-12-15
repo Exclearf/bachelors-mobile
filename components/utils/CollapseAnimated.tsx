@@ -5,13 +5,13 @@ import {
   useDerivedValue,
 } from "react-native-reanimated";
 import { Canvas, Path } from "@shopify/react-native-skia";
-import { ViewStyle } from "react-native";
+import { StyleProp, ViewStyle } from "react-native";
 
 type Props = {
   size: number;
   color: string;
   value: SharedValue<number>;
-  canvasStyle: StyleProp<ViewStyle>;
+  canvasStyle?: StyleProp<ViewStyle>;
 };
 
 const CollapseAnimated = ({ value, size, color, canvasStyle }: Props) => {
