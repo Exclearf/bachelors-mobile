@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, Modal, StyleSheet, Text, TextBase } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
@@ -11,6 +11,8 @@ import { Slot } from "expo-router";
 import AppBottomSheet from "@/components/bottomSheet/bottomSheet";
 import CameraOverlay from "@/components/camera/cameraOverlay";
 import BottomSheetProvider from "@/components/providers/bottomSheetProvider";
+import { useTranslationStore } from "@/stores/translationStore";
+import CameraAccessRequest from "@/components/camera/containers/cameraAccessRequest";
 
 const windowDimensions = Dimensions.get("window");
 
@@ -23,6 +25,7 @@ export default function RootLayout() {
   const [cameraPermission, requestPermission] = useCameraPermissions();
   const [flashOn, setFlashOn] = useState(false);
   const [isBack, setIsBack] = useState(true);
+  const mode = useTranslationStore((state) => state.mode);
 
   useEffect(() => {
     if (!cameraPermission?.granted) requestPermission();
@@ -47,10 +50,13 @@ export default function RootLayout() {
             />
             <CameraView
               style={styles.cameraViewStyle}
-              mode="video"
+              mode={mode === "signToText" ? "video" : "picture"}
               enableTorch={flashOn}
               facing={isBack ? "back" : "front"}
             />
+            <Modal visible={false} transparent={true}>
+              <CameraAccessRequest />
+            </Modal>
             <CameraOverlay setFlashOn={setFlashOn} setIsBack={setIsBack} />
             <AppBottomSheet snapPoints={["11", "55", "100%"]}>
               <Slot />

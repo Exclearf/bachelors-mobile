@@ -16,6 +16,8 @@ import FlashlightButton from "./buttons/flashlightButton";
 import SettingsModal from "../modals/settingsModal";
 import { useBottomSheet } from "@/hooks/useBottomSheet";
 import { AppDimensionsContext } from "@/contexts/appDimensions";
+import { Text } from "react-native";
+import SettingsPanel from "./containers/settingsPanel";
 
 type CameraOverlayProps = {
   setFlashOn: Dispatch<SetStateAction<boolean>>;
@@ -85,7 +87,9 @@ const CameraOverlay = ({ setFlashOn, setIsBack }: CameraOverlayProps) => {
         <SettingsModal
           isVisible={settingsModalExpanded}
           iconParameters={iconParameters}
-        />
+        >
+          <SettingsPanel />
+        </SettingsModal>
       </CameraTopContainer>
       <CameraBottomContainer scale={containersScale}>
         {bottomContainerButtons.current.map((button, index) => (

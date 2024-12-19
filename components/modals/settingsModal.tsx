@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { PropsWithChildren, useContext, useEffect } from "react";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -9,12 +9,12 @@ import { IconParameters } from "../camera/cameraOverlay";
 import { useBottomSheet } from "@/hooks/useBottomSheet";
 import { AppDimensionsContext } from "@/contexts/appDimensions";
 
-type Props = {
+type Props = PropsWithChildren<{
   iconParameters: IconParameters;
   isVisible: boolean;
-};
+}>;
 
-const CameraModal = ({ isVisible, iconParameters }: Props) => {
+const CameraModal = ({ isVisible, iconParameters, children }: Props) => {
   const { width, height } = useContext(AppDimensionsContext);
   const openState = useSharedValue(0);
   const { bottomSheet } = useBottomSheet();
@@ -48,7 +48,9 @@ const CameraModal = ({ isVisible, iconParameters }: Props) => {
   return (
     withSpring(openState.get()) && (
       //@ts-expect-error TODO: We know that the style is correct
-      <Animated.View style={[animatedStyle, staticStyle]} />
+      <Animated.View style={[animatedStyle, staticStyle]}>
+        {children}
+      </Animated.View>
     )
   );
 };

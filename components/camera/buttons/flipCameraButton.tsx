@@ -8,8 +8,6 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-const AnimatedIcon = Animated.createAnimatedComponent(MaterialIcons);
-
 const FlipCameraButton = ({
   color,
   size,
@@ -32,20 +30,17 @@ const FlipCameraButton = ({
   };
 
   return (
-    <TouchableOpacity
-      onPress={() => {
-        onClick!();
-        isRotated.current = switchRotation(isRotated.current);
-      }}
-      activeOpacity={1}
-    >
-      <AnimatedIcon
-        style={style}
-        name="flip-camera-android"
-        size={size}
-        color={color}
-      />
-    </TouchableOpacity>
+    <Animated.View style={style}>
+      <TouchableOpacity
+        onPress={() => {
+          onClick!();
+          isRotated.current = switchRotation(isRotated.current);
+        }}
+        activeOpacity={1}
+      >
+        <MaterialIcons name="flip-camera-android" size={size} color={color} />
+      </TouchableOpacity>
+    </Animated.View>
   );
 };
 

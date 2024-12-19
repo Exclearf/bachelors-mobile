@@ -8,7 +8,7 @@ import {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { Canvas, Path } from "@shopify/react-native-skia";
+import { Canvas, Path, StrokeCap } from "@shopify/react-native-skia";
 
 const FlashlightButton = ({
   color,
@@ -17,7 +17,7 @@ const FlashlightButton = ({
 }: CameraOverlayButtonProps) => {
   const flashState = useSharedValue(1);
 
-  const xLeft = +5;
+  const xLeft = 5;
   const xRight = size - 5;
 
   const yTop = size - 5;
@@ -28,6 +28,10 @@ const FlashlightButton = ({
     const x = interpolate(flashState.get(), [0, 1], [xLeft, xRight]);
     const y = interpolate(flashState.get(), [0, 1], [yBottom, yTop]);
     return `M ${xLeft} ${yBottom} L ${x} ${y}`;
+  });
+
+  const derivedStrokeCap = useDerivedValue(() => {
+    return flashState.get() === 0 ? "butt" : "round";
   });
 
   return (
@@ -51,6 +55,7 @@ const FlashlightButton = ({
           path={derivedPath}
           color={"white"}
           strokeWidth={3}
+          strokeCap={derivedStrokeCap}
           style={"stroke"}
         />
       </Canvas>
