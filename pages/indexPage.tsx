@@ -22,10 +22,7 @@ const IndexPage = (props: Props) => {
       >
         {mode === "signToText" ? <SignTranslation /> : <TextTranslation />}
       </ExpandableModal>
-      <History
-        padding={20}
-        containerStyle={[styles.indexSection, styles.historySection]}
-      />
+      <History padding={20} containerStyle={[styles.indexSection]} />
     </View>
   );
 };
@@ -48,5 +45,4 @@ const styles = StyleSheet.create({
   translationSection: {
     backgroundColor: "rgba(75, 75, 75, 1)",
   },
-  historySection: { backgroundColor: "rgba(75, 75, 75, 0.5)" },
 });

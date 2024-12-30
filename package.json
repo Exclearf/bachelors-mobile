@@ -24,6 +24,7 @@
     "babel-plugin-react-compiler": "^19.0.0-beta-df7b47d-20241124",
     "eslint-plugin-react-compiler": "^19.0.0-beta-df7b47d-20241124",
     "expo": "~52.0.17",
+    "expo-av": "~15.0.1",
     "expo-blur": "~14.0.1",
     "expo-camera": "~16.0.9",
     "expo-constants": "~17.0.3",
@@ -52,7 +53,7 @@
     "react-native-webview": "13.12.5",
     "tamagui": "^1.120.1",
     "zustand": "^5.0.2",
-    "expo-av": "~15.0.1"
+    "expo-linear-gradient": "~14.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

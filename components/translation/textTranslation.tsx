@@ -1,18 +1,12 @@
-import { StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
-import React, { Suspense, useEffect, useRef, useState } from "react";
-import {
-  Video,
-  ResizeMode,
-  AVPlaybackStatus,
-  AVPlaybackStatusSuccess,
-} from "expo-av";
+import { StyleSheet, TouchableWithoutFeedback, View } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { Video, ResizeMode, AVPlaybackStatusSuccess } from "expo-av";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { useAnimationPlayer } from "@/hooks/useAnimationPlayer";
 import Spinner from "../utils/Spinner";
 
-const videoSource = require("@/assets/signs/you-anim.mp4");
-const controlsColor = "rgba(50, 50, 50, 0.95)";
+const controlsColor = "rgba(75, 75, 75, 0.95)";
 const controlsSize = 56;
 
 type Props = {};
@@ -40,7 +34,9 @@ const TextTranslation = (props: Props) => {
         ref={video}
         source={currentSources[index]}
         style={styles.video}
-        onPlaybackStatusUpdate={(status) => setStatus(status)}
+        onPlaybackStatusUpdate={(status) =>
+          setStatus(status as AVPlaybackStatusSuccess)
+        }
         useNativeControls={false}
         resizeMode={ResizeMode.COVER}
       />

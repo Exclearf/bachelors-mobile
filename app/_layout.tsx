@@ -13,6 +13,7 @@ import CameraOverlay from "@/components/camera/cameraOverlay";
 import BottomSheetProvider from "@/components/providers/bottomSheetProvider";
 import { useTranslationStore } from "@/stores/translationStore";
 import CameraAccessRequest from "@/components/camera/containers/cameraAccessRequest";
+import PictureBbox from "@/components/camera/containers/pictureBbox";
 
 const windowDimensions = Dimensions.get("window");
 
@@ -48,6 +49,7 @@ export default function RootLayout() {
               handlePadColor="transparent"
               pathCreator={useTopPath()}
             />
+            {mode === "textToSign" && <PictureBbox />}
             <CameraView
               style={styles.cameraViewStyle}
               mode={mode === "signToText" ? "video" : "picture"}
