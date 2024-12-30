@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
     top: -30,
     width: "100%",
     height: "100%",
+    zIndex: -1,
   },
   container: {
     flex: 1,
