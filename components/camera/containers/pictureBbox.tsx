@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 import { Canvas, Group, Rect } from "@shopify/react-native-skia";
 import { AppDimensionsContext } from "@/contexts/appDimensions";
 import Animated, {
+  clamp,
   SharedValue,
   useAnimatedStyle,
   useDerivedValue,
@@ -11,7 +12,6 @@ import Animated, {
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 
 type Props = {};
-
 type CornerCordinates = {
   x: SharedValue<number>;
   y: SharedValue<number>;
@@ -21,7 +21,8 @@ const PictureBbox = (props: Props) => {
   const { width, height } = useContext(AppDimensionsContext);
   const handleSize = 40;
   const handleHalfSize = handleSize / 2;
-
+  const doubleHandleSize = handleSize * 2;
+  const maxHeight = height * 0.11;
   const topLeft = {
     x: useSharedValue(width * 0.1),
     y: useSharedValue(height * 0.2),
@@ -39,16 +40,6 @@ const PictureBbox = (props: Props) => {
     y: useSharedValue(height * 0.7),
   };
 
-  const isValidSquare = useDerivedValue(() => {
-    const handlePadding = handleSize * 2;
-    console.log(`Bottom left y: ${bottomLeft.y.value}`);
-    console.log(`Top left y: ${topLeft.y.value}`);
-    return (
-      topLeft.x.value + handlePadding < topRight.x.value &&
-      topLeft.y.value + handlePadding < bottomLeft.y.value
-    );
-  });
-
   const cropPath = useDerivedValue(() => {
     return `
     M ${topLeft.x.value} ${topLeft.y.value}
@@ -59,33 +50,17 @@ const PictureBbox = (props: Props) => {
   `;
   });
 
-  const topLeftAnimatedStyle = useAnimatedStyle(() => {
-    return {
-      top: topLeft.y.value,
-      left: topLeft.x.value,
-    };
-  });
-
-  const bottomLeftAnimatedStyle = useAnimatedStyle(() => {
-    return {
-      top: bottomLeft.y.value - handleSize,
-      left: bottomLeft.x.value,
-    };
-  });
-
-  const topRightAnimatedStyle = useAnimatedStyle(() => {
-    return {
-      top: topRight.y.value,
-      left: topRight.x.value - handleSize,
-    };
-  });
-
-  const bottomRightAnimatedStyle = useAnimatedStyle(() => {
-    return {
-      top: bottomRight.y.value - handleSize,
-      left: bottomRight.x.value - handleSize,
-    };
-  });
+  const cornerAnimatedStyleCreator = (
+    corner: CornerCordinates,
+    topOffset: number,
+    leftOffset: number,
+  ) =>
+    useAnimatedStyle(() => {
+      return {
+        top: corner.y.value - topOffset,
+        left: corner.x.value - leftOffset,
+      };
+    });
 
   const pressed = useSharedValue<boolean>(false);
 
@@ -93,35 +68,43 @@ const PictureBbox = (props: Props) => {
     primaryCorner: CornerCordinates,
     secondaryHorizontalCorner: CornerCordinates,
     secondaryVerticalCorner: CornerCordinates,
+    clampingFunc: ([valueX, valueY]: [number, number]) => [number, number],
+    xOffset: number,
+    yOffset: number,
   ) =>
     Gesture.Pan()
       .onBegin(() => {
         pressed.value = true;
       })
       .onChange((event) => {
-        const verticalDistance =
-          event.absoluteY - secondaryHorizontalCorner.y.value;
-        const horizontalDistance =
-          event.absoluteX - secondaryVerticalCorner.x.value;
-        if (
-          !isValidSquare.get() &&
-          verticalDistance * event.translationY > 0 &&
-          horizontalDistance * event.translationX > 0
-        ) {
-          return;
-        }
-        console.log(``);
-        console.log("valid square");
-        primaryCorner.x.value = event.absoluteX - handleHalfSize;
-        primaryCorner.y.value = event.absoluteY - handleHalfSize;
+        const [clampedX, clampedY] = clampingFunc([
+          event.absoluteX - handleHalfSize - xOffset,
+          event.absoluteY - handleHalfSize - yOffset,
+        ]);
+        primaryCorner.x.value = clampedX;
+        primaryCorner.y.value = clampedY;
 
-        secondaryHorizontalCorner.x.value = event.absoluteX - handleHalfSize;
-        secondaryVerticalCorner.y.value = event.absoluteY - handleHalfSize;
+        secondaryHorizontalCorner.x.value = clampedX;
+        secondaryVerticalCorner.y.value = clampedY;
       })
       .onFinalize(() => {
         pressed.value = false;
       });
 
+  const normalizationFactory = (
+    valueX: number,
+    valueY: number,
+    minX: number,
+    minY: number,
+    maxX: number,
+    maxY: number,
+  ) => {
+    "worklet";
+    return [clamp(valueX, minX, maxX), clamp(valueY, minY, maxY)] as [
+      number,
+      number,
+    ];
+  };
   return (
     <View style={styles.container}>
       <Canvas style={styles.container}>
@@ -131,17 +114,87 @@ const PictureBbox = (props: Props) => {
             y={0}
             width={width}
             height={height}
-            color="rgba(75,75,75,0.85)"
+            color="rgba(75,75,75,0.5)"
           />
         </Group>
       </Canvas>
 
       {(
         [
-          [topLeft, bottomLeft, topRight, topLeftAnimatedStyle],
-          [bottomLeft, topLeft, bottomRight, bottomLeftAnimatedStyle],
-          [topRight, bottomRight, topLeft, topRightAnimatedStyle],
-          [bottomRight, topRight, bottomLeft, bottomRightAnimatedStyle],
+          [
+            topLeft,
+            bottomLeft,
+            topRight,
+            cornerAnimatedStyleCreator(topLeft, 0, 0),
+            ([valueX, valueY]: [number, number]) => {
+              "worklet";
+              return normalizationFactory(
+                valueX,
+                valueY,
+                0,
+                0,
+                topRight.x.value - doubleHandleSize,
+                bottomLeft.y.value - doubleHandleSize,
+              );
+            },
+          ],
+          [
+            bottomLeft,
+            topLeft,
+            bottomRight,
+            cornerAnimatedStyleCreator(bottomLeft, handleSize, 0),
+            ([valueX, valueY]: [number, number]) => {
+              "worklet";
+              return normalizationFactory(
+                valueX,
+                valueY,
+                0,
+                topLeft.y.value + doubleHandleSize,
+                bottomRight.x.value - doubleHandleSize,
+                height - maxHeight,
+              );
+            },
+            0,
+            -handleSize,
+          ],
+          [
+            topRight,
+            bottomRight,
+            topLeft,
+            cornerAnimatedStyleCreator(topRight, 0, handleSize),
+            ([valueX, valueY]: [number, number]) => {
+              "worklet";
+              return normalizationFactory(
+                valueX,
+                valueY,
+                topLeft.x.value + doubleHandleSize,
+                0,
+                width,
+                bottomRight.y.value - doubleHandleSize,
+              );
+            },
+            -handleSize,
+            0,
+          ],
+          [
+            bottomRight,
+            topRight,
+            bottomLeft,
+            cornerAnimatedStyleCreator(bottomRight, handleSize, handleSize),
+            ([valueX, valueY]: [number, number]) => {
+              "worklet";
+              return normalizationFactory(
+                valueX,
+                valueY,
+                bottomLeft.x.value + doubleHandleSize,
+                topRight.y.value + doubleHandleSize,
+                width,
+                height - maxHeight,
+              );
+            },
+            -handleSize,
+            -handleSize,
+          ],
         ] as const
       ).map(
         (
@@ -150,6 +203,9 @@ const PictureBbox = (props: Props) => {
             secondaryHorizontalCorner,
             secondaryVerticalCorner,
             cornerStyle,
+            clampingFunc,
+            xOffset = 0,
+            yOffset = 0,
           ],
           index,
         ) => (
@@ -159,6 +215,9 @@ const PictureBbox = (props: Props) => {
               primaryCorner,
               secondaryHorizontalCorner,
               secondaryVerticalCorner,
+              clampingFunc,
+              xOffset,
+              yOffset,
             )}
           >
             <Animated.View
