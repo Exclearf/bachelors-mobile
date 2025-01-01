@@ -17,7 +17,7 @@ const TextTranslation = (props: Props) => {
   const video = useRef<Video>(null);
 
   const [currentSources, index, hasFinished, resetPlayback] =
-    useAnimationPlayer(status!, "you", "you");
+    useAnimationPlayer(status!, "you", "you", "you");
 
   useEffect(() => {
     console.log("Current Source change");

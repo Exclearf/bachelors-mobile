@@ -1,6 +1,6 @@
-import { PanResponder, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React, { useContext } from "react";
-import { Canvas, Group, Rect } from "@shopify/react-native-skia";
+import { Canvas, Group, Path, Rect } from "@shopify/react-native-skia";
 import { AppDimensionsContext } from "@/contexts/appDimensions";
 import Animated, {
   clamp,
@@ -18,11 +18,16 @@ type CornerCordinates = {
 };
 
 const PictureBbox = (props: Props) => {
+  // Cache for reuse
   const { width, height } = useContext(AppDimensionsContext);
-  const handleSize = 40;
+  const handleSize = 60;
   const handleHalfSize = handleSize / 2;
+  const handleThirdSize = handleSize / 3;
+  const handleTwoThirdSize = (handleSize * 2) / 3;
   const doubleHandleSize = handleSize * 2;
+  const cornerRadius = 3;
   const maxHeight = height * 0.11;
+
   const topLeft = {
     x: useSharedValue(width * 0.1),
     y: useSharedValue(height * 0.2),
@@ -33,19 +38,24 @@ const PictureBbox = (props: Props) => {
   };
   const bottomRight = {
     x: useSharedValue(width * 0.9),
-    y: useSharedValue(height * 0.7),
+    y: useSharedValue(height * 0.3),
   };
   const bottomLeft = {
     x: useSharedValue(width * 0.1),
-    y: useSharedValue(height * 0.7),
+    y: useSharedValue(height * 0.3),
   };
 
   const cropPath = useDerivedValue(() => {
     return `
-    M ${topLeft.x.value} ${topLeft.y.value}
-    L ${topRight.x.value} ${topRight.y.value}
-    L ${bottomRight.x.value} ${bottomRight.y.value}
-    L ${bottomLeft.x.value} ${bottomLeft.y.value}
+    M ${topLeft.x.value + cornerRadius} ${topLeft.y.value}
+    L ${topRight.x.value - cornerRadius} ${topRight.y.value}
+    A ${cornerRadius} ${cornerRadius} 0 0 1 ${topRight.x.value} ${topRight.y.value + cornerRadius}
+    L ${bottomRight.x.value} ${bottomRight.y.value - cornerRadius}
+    A ${cornerRadius} ${cornerRadius} 0 0 1 ${bottomRight.x.value - cornerRadius} ${bottomRight.y.value}
+    L ${bottomLeft.x.value + cornerRadius} ${bottomLeft.y.value}
+    A ${cornerRadius} ${cornerRadius} 0 0 1 ${bottomLeft.x.value} ${bottomLeft.y.value - cornerRadius}
+    L ${topLeft.x.value} ${topLeft.y.value + cornerRadius}
+    A ${cornerRadius} ${cornerRadius} 0 0 1 ${topLeft.x.value + cornerRadius} ${topLeft.y.value}
     Z
   `;
   });
@@ -91,6 +101,45 @@ const PictureBbox = (props: Props) => {
         pressed.value = false;
       });
 
+  const moveCropPathPan = Gesture.Pan()
+    .onBegin(() => {})
+    .onChange((event) => {
+      if (
+        topLeft.x.value + event.changeX < 0 ||
+        topRight.x.value + event.changeX > width ||
+        topLeft.y.value + event.changeY < 0 ||
+        bottomLeft.y.value + event.changeY > height - maxHeight
+      ) {
+        return;
+      }
+
+      [topLeft, topRight, bottomRight, bottomLeft].forEach((corner) => {
+        corner.x.value += event.changeX;
+        corner.y.value += event.changeY;
+      });
+    })
+    .onFinalize(() => {});
+
+  const cornerCreator = (
+    corner: CornerCordinates,
+    width: number,
+    height: number,
+    offsetX: number,
+    offsetY: number,
+    verticalCornerRadius: 1 | -1,
+    horizontalCornerRadius: 1 | -1,
+    sweepFlag: number,
+  ) =>
+    useDerivedValue(() => {
+      const cornerRadiusInner = cornerRadius + Math.abs(offsetX);
+      return `
+    M ${corner.x.value + offsetX} ${corner.y.value + offsetY + height}
+    L ${corner.x.value + offsetX} ${corner.y.value + offsetY + cornerRadiusInner * verticalCornerRadius}
+    A ${cornerRadiusInner} ${cornerRadiusInner} 0 0 ${sweepFlag} ${corner.x.value + offsetX + cornerRadiusInner * horizontalCornerRadius} ${corner.y.value + offsetY}
+    L ${corner.x.value + width + offsetX} ${corner.y.value + offsetY}
+    `;
+    });
+
   const normalizationFactory = (
     valueX: number,
     valueY: number,
@@ -107,17 +156,59 @@ const PictureBbox = (props: Props) => {
   };
   return (
     <View style={styles.container}>
-      <Canvas style={styles.container}>
-        <Group clip={cropPath} invertClip>
-          <Rect
-            x={0}
-            y={0}
-            width={width}
-            height={height}
-            color="rgba(75,75,75,0.5)"
-          />
-        </Group>
-      </Canvas>
+      <GestureDetector gesture={moveCropPathPan}>
+        <Canvas style={styles.container}>
+          <Group clip={cropPath} invertClip>
+            <Rect
+              x={0}
+              y={0}
+              width={width}
+              height={height}
+              color="rgba(0,0,0,0.45)"
+            />
+          </Group>
+          {(
+            [
+              [topLeft, 23, 23, -7, -7, 1, 1, 1],
+              [topRight, -23, 23, 7, -7, 1, -1, 0],
+              [bottomRight, -23, -23, 7, 7, -1, -1, 1],
+              [bottomLeft, 23, -23, -7, 7, -1, 1, 0],
+            ] as const
+          ).map(
+            (
+              [
+                corner,
+                width,
+                height,
+                offsetX,
+                offsetY,
+                verticalCornerRadius,
+                horizontalCornerRadius,
+                sweepFlag,
+              ],
+              index,
+            ) => (
+              <Path
+                key={index}
+                style={"stroke"}
+                strokeWidth={2}
+                strokeCap={"round"}
+                color={"white"}
+                path={cornerCreator(
+                  corner,
+                  width,
+                  height,
+                  offsetX,
+                  offsetY,
+                  verticalCornerRadius,
+                  horizontalCornerRadius,
+                  sweepFlag,
+                )}
+              />
+            ),
+          )}
+        </Canvas>
+      </GestureDetector>
 
       {(
         [
@@ -125,7 +216,11 @@ const PictureBbox = (props: Props) => {
             topLeft,
             bottomLeft,
             topRight,
-            cornerAnimatedStyleCreator(topLeft, 0, 0),
+            cornerAnimatedStyleCreator(
+              topLeft,
+              handleThirdSize,
+              handleThirdSize,
+            ),
             ([valueX, valueY]: [number, number]) => {
               "worklet";
               return normalizationFactory(
@@ -142,7 +237,11 @@ const PictureBbox = (props: Props) => {
             bottomLeft,
             topLeft,
             bottomRight,
-            cornerAnimatedStyleCreator(bottomLeft, handleSize, 0),
+            cornerAnimatedStyleCreator(
+              bottomLeft,
+              handleTwoThirdSize,
+              handleThirdSize,
+            ),
             ([valueX, valueY]: [number, number]) => {
               "worklet";
               return normalizationFactory(
@@ -161,7 +260,11 @@ const PictureBbox = (props: Props) => {
             topRight,
             bottomRight,
             topLeft,
-            cornerAnimatedStyleCreator(topRight, 0, handleSize),
+            cornerAnimatedStyleCreator(
+              topRight,
+              handleThirdSize,
+              handleTwoThirdSize,
+            ),
             ([valueX, valueY]: [number, number]) => {
               "worklet";
               return normalizationFactory(
@@ -180,7 +283,11 @@ const PictureBbox = (props: Props) => {
             bottomRight,
             topRight,
             bottomLeft,
-            cornerAnimatedStyleCreator(bottomRight, handleSize, handleSize),
+            cornerAnimatedStyleCreator(
+              bottomRight,
+              handleTwoThirdSize,
+              handleTwoThirdSize,
+            ),
             ([valueX, valueY]: [number, number]) => {
               "worklet";
               return normalizationFactory(
@@ -249,11 +356,10 @@ const styles = StyleSheet.create({
   },
   panResponder: {
     zIndex: 2,
-    backgroundColor: "red",
     position: "absolute",
   },
   panResponderCorner: {
-    width: 40,
-    height: 40,
+    width: 60,
+    height: 60,
   },
 });

@@ -1,7 +1,4 @@
-import { useEvent, useEventListener } from "expo";
-import { AVPlaybackStatus, AVPlaybackStatusSuccess } from "expo-av";
-import { createVideoPlayer } from "expo-video";
-import { current } from "immer";
+import { AVPlaybackStatusSuccess } from "expo-av";
 import { useEffect, useState } from "react";
 
 const you = require("@/assets/signs/you-anim.mp4");
@@ -9,8 +6,6 @@ const you = require("@/assets/signs/you-anim.mp4");
 const animations = {
   you,
 };
-
-const animationNames = Object.keys(animations) as (keyof typeof animations)[];
 
 export const useAnimationPlayer = (
   status: AVPlaybackStatusSuccess,
