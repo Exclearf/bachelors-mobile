@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React, { useEffect } from "react";
 import Animated, {
   useAnimatedStyle,
@@ -40,9 +40,9 @@ export default Spinner;
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    top: 5,
+    top: 0,
     bottom: 0,
-    left: 5,
+    left: 0,
     right: 0,
     alignItems: "center",
     justifyContent: "center",

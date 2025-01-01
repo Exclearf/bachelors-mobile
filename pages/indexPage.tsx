@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React, { useContext } from "react";
 import ExpandableModal from "@/components/modals/expandableModal";
 import { useTranslationStore } from "@/stores/translationStore";
@@ -7,9 +7,7 @@ import SignTranslation from "@/components/translation/signTranslation";
 import { AppDimensionsContext } from "@/contexts/appDimensions";
 import History from "@/components/translation/history";
 
-type Props = {};
-
-const IndexPage = (props: Props) => {
+const IndexPage = () => {
   const mode = useTranslationStore((state) => state.mode);
   const { height } = useContext(AppDimensionsContext);
 

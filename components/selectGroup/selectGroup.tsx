@@ -1,10 +1,11 @@
 import { StyleProp, StyleSheet, ViewStyle } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import SelectionGroupItem from "./selectionGroupItem";
 import { AppDimensionsContext } from "@/contexts/appDimensions";
 import Animated from "react-native-reanimated";
 import { useTranslationStore } from "@/stores/translationStore";
 import { useShallow } from "zustand/react/shallow";
+import { useCameraOptions } from "@/stores/cameraOptions";
 
 export type SelectionGroupItemConfig = {
   id: "signToText" | "textToSign";
@@ -22,6 +23,7 @@ const SelectGroup = ({ items }: Props) => {
   const [mode, setMode] = useTranslationStore(
     useShallow((state) => [state.mode, state.setMode]),
   );
+  const setIsAvailable = useCameraOptions((state) => state.setIsAvailable);
 
   return (
     <Animated.View style={[styles.container, { height: height * 0.1 - 30 }]}>
@@ -30,7 +32,9 @@ const SelectGroup = ({ items }: Props) => {
           key={item.id}
           onClick={() => {
             item.onClick();
+            setIsAvailable(false);
             setMode(item.id);
+            setTimeout(() => setIsAvailable(true), 500);
           }}
           title={item.title}
           Icon={

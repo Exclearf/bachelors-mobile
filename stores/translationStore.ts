@@ -16,9 +16,10 @@ export const useTranslationStore = create<
 >()(
   immer((set) => ({
     mode: "signToText",
-    setMode: (newMode: Modes) =>
+    setMode: (newMode: Modes) => {
       set((state) => {
         state.mode = newMode;
-      }),
+      });
+    },
   })),
 );

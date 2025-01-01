@@ -1,6 +1,6 @@
-import { Dimensions, Modal, StyleSheet, Text, TextBase } from "react-native";
+import { Dimensions, Modal, StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -14,6 +14,7 @@ import BottomSheetProvider from "@/components/providers/bottomSheetProvider";
 import { useTranslationStore } from "@/stores/translationStore";
 import CameraAccessRequest from "@/components/camera/containers/cameraAccessRequest";
 import PictureBbox from "@/components/camera/containers/pictureBbox";
+import { useCameraOptions } from "@/stores/cameraOptions";
 
 const windowDimensions = Dimensions.get("window");
 
@@ -26,8 +27,9 @@ export default function RootLayout() {
   const [cameraPermission, requestPermission] = useCameraPermissions();
   const [flashOn, setFlashOn] = useState(false);
   const [isBack, setIsBack] = useState(true);
+  const cameraRef = useRef<CameraView>(null);
   const mode = useTranslationStore((state) => state.mode);
-
+  const setIsAvailable = useCameraOptions((state) => state.setIsAvailable);
   useEffect(() => {
     if (!cameraPermission?.granted) requestPermission();
   }, []);
@@ -51,9 +53,11 @@ export default function RootLayout() {
             />
             {mode === "textToSign" && <PictureBbox />}
             <CameraView
+              ref={cameraRef}
               style={styles.cameraViewStyle}
               mode={mode === "signToText" ? "video" : "picture"}
               enableTorch={flashOn}
+              onCameraReady={() => setIsAvailable(true)}
               facing={isBack ? "back" : "front"}
             />
             <Modal visible={false} transparent={true}>

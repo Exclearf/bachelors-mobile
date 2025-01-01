@@ -7,7 +7,10 @@ import React, {
 } from "react";
 import CameraTopContainer from "./containers/cameraTopContainer";
 import CameraBottomContainer from "./containers/cameraBottomContainer";
-import { useDerivedValue } from "react-native-reanimated";
+import Animated, {
+  useAnimatedStyle,
+  useDerivedValue,
+} from "react-native-reanimated";
 import GalleryButton from "./buttons/galleryButton";
 import RecordButton from "./buttons/recordButton";
 import FlipCameraButton from "./buttons/flipCameraButton";
@@ -17,6 +20,9 @@ import SettingsModal from "../modals/settingsModal";
 import { useBottomSheet } from "@/hooks/useBottomSheet";
 import { AppDimensionsContext } from "@/contexts/appDimensions";
 import SettingsPanel from "./containers/settingsPanel";
+import { useCameraOptions } from "@/stores/cameraOptions";
+import Spinner from "../utils/Spinner";
+import { StyleSheet } from "react-native";
 
 type CameraOverlayProps = {
   setFlashOn: Dispatch<SetStateAction<boolean>>;
@@ -55,6 +61,7 @@ const CameraOverlay = ({ setFlashOn, setIsBack }: CameraOverlayProps) => {
   const containersScale = useDerivedValue(() => {
     return (bottomSheet?.animatedPosition.get() ?? 0) / height;
   });
+  const isAvailable = useCameraOptions((state) => state.isAvailable);
 
   const [settingsModalExpanded, setSettingsModalExpanded] = useState(false);
 
@@ -71,6 +78,16 @@ const CameraOverlay = ({ setFlashOn, setIsBack }: CameraOverlayProps) => {
     { item: RecordButton },
     { item: FlipCameraButton, onClick: () => setIsBack((prev) => !prev) },
   ]);
+
+  const spinnerContainerStyle = useAnimatedStyle(() => {
+    "worklet";
+    return {
+      top: Math.max(
+        height * 0.24 - 50,
+        (bottomSheet?.animatedPosition.get() ?? 0) * 0.5 - 50,
+      ),
+    };
+  });
 
   return (
     <>
@@ -90,6 +107,23 @@ const CameraOverlay = ({ setFlashOn, setIsBack }: CameraOverlayProps) => {
           <SettingsPanel />
         </SettingsModal>
       </CameraTopContainer>
+      {!isAvailable && (
+        <Animated.View
+          style={[
+            styles.spinnerContainer,
+            spinnerContainerStyle,
+            {
+              // TODO: A dirty hack to make the spinner appear in the middle of the screen on initial load
+              top: Math.max(
+                height * 0.24 - 50,
+                (bottomSheet?.animatedPosition.get() ?? 0) * 0.5 - 50,
+              ),
+            },
+          ]}
+        >
+          <Spinner size={64} color="white" />
+        </Animated.View>
+      )}
       <CameraBottomContainer scale={containersScale}>
         {bottomContainerButtons.current.map((button, index) => (
           <button.item
@@ -104,3 +138,12 @@ const CameraOverlay = ({ setFlashOn, setIsBack }: CameraOverlayProps) => {
 };
 
 export default CameraOverlay;
+
+const styles = StyleSheet.create({
+  spinnerContainer: {
+    width: 64,
+    height: 64,
+    position: "absolute",
+    zIndex: 2,
+  },
+});

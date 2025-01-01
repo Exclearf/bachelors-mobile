@@ -11,38 +11,39 @@ import Animated, {
 } from "react-native-reanimated";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 
-type Props = {};
 type CornerCordinates = {
   x: SharedValue<number>;
   y: SharedValue<number>;
 };
 
-const PictureBbox = (props: Props) => {
+const PictureBbox = () => {
   // Cache for reuse
   const { width, height } = useContext(AppDimensionsContext);
   const handleSize = 60;
   const handleHalfSize = handleSize / 2;
   const handleThirdSize = handleSize / 3;
   const handleTwoThirdSize = (handleSize * 2) / 3;
-  const doubleHandleSize = handleSize * 2;
   const cornerRadius = 3;
   const maxHeight = height * 0.11;
 
+  const initialHeight = height * 0.1;
+  const initialY = (height * 0.45 - 10) / 2 - initialHeight / 2;
+
   const topLeft = {
     x: useSharedValue(width * 0.1),
-    y: useSharedValue(height * 0.2),
+    y: useSharedValue(initialY),
   };
   const topRight = {
     x: useSharedValue(width * 0.9),
-    y: useSharedValue(height * 0.2),
+    y: useSharedValue(initialY),
   };
   const bottomRight = {
     x: useSharedValue(width * 0.9),
-    y: useSharedValue(height * 0.3),
+    y: useSharedValue(initialY + initialHeight),
   };
   const bottomLeft = {
     x: useSharedValue(width * 0.1),
-    y: useSharedValue(height * 0.3),
+    y: useSharedValue(initialY + initialHeight),
   };
 
   const cropPath = useDerivedValue(() => {
@@ -105,10 +106,10 @@ const PictureBbox = (props: Props) => {
     .onBegin(() => {})
     .onChange((event) => {
       if (
-        topLeft.x.value + event.changeX < 0 ||
-        topRight.x.value + event.changeX > width ||
-        topLeft.y.value + event.changeY < 0 ||
-        bottomLeft.y.value + event.changeY > height - maxHeight
+        topLeft.x.value + event.changeX < 8 ||
+        topRight.x.value + event.changeX > width - 8 ||
+        topLeft.y.value + event.changeY < maxHeight + 8 ||
+        bottomLeft.y.value + event.changeY > height - maxHeight - 8
       ) {
         return;
       }
@@ -226,12 +227,14 @@ const PictureBbox = (props: Props) => {
               return normalizationFactory(
                 valueX,
                 valueY,
-                0,
-                0,
-                topRight.x.value - doubleHandleSize,
-                bottomLeft.y.value - doubleHandleSize,
+                8,
+                maxHeight + 8,
+                topRight.x.value - handleSize,
+                bottomLeft.y.value - handleSize,
               );
             },
+            -handleThirdSize,
+            -handleThirdSize,
           ],
           [
             bottomLeft,
@@ -247,14 +250,14 @@ const PictureBbox = (props: Props) => {
               return normalizationFactory(
                 valueX,
                 valueY,
-                0,
-                topLeft.y.value + doubleHandleSize,
-                bottomRight.x.value - doubleHandleSize,
-                height - maxHeight,
+                8,
+                topLeft.y.value + handleSize,
+                bottomRight.x.value - handleSize,
+                height - maxHeight - 8,
               );
             },
-            0,
-            -handleSize,
+            -handleThirdSize,
+            -handleTwoThirdSize,
           ],
           [
             topRight,
@@ -270,14 +273,14 @@ const PictureBbox = (props: Props) => {
               return normalizationFactory(
                 valueX,
                 valueY,
-                topLeft.x.value + doubleHandleSize,
-                0,
-                width,
-                bottomRight.y.value - doubleHandleSize,
+                topLeft.x.value + handleSize,
+                maxHeight + 8,
+                width - 8,
+                bottomRight.y.value - handleSize,
               );
             },
-            -handleSize,
-            0,
+            -handleTwoThirdSize,
+            -handleThirdSize,
           ],
           [
             bottomRight,
@@ -293,14 +296,14 @@ const PictureBbox = (props: Props) => {
               return normalizationFactory(
                 valueX,
                 valueY,
-                bottomLeft.x.value + doubleHandleSize,
-                topRight.y.value + doubleHandleSize,
-                width,
+                bottomLeft.x.value + handleSize,
+                topRight.y.value + handleSize,
+                width - 8,
                 height - maxHeight,
               );
             },
-            -handleSize,
-            -handleSize,
+            -handleTwoThirdSize,
+            -handleTwoThirdSize,
           ],
         ] as const
       ).map(
