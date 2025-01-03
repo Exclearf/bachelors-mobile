@@ -3,9 +3,9 @@ import React from "react";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { CameraOverlayButtonProps } from "../cameraOverlay";
 
-const RecordButton = ({ size, color }: CameraOverlayButtonProps) => {
+const RecordButton = ({ size, color, onClick }: CameraOverlayButtonProps) => {
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={onClick}>
       <MaterialIcons
         name="fiber-manual-record"
         size={size * 2.5}

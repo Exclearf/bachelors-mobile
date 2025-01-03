@@ -13,6 +13,10 @@ const LoginPage = () => {
   const { signInWithGoogle } = useAuthFlow();
   const { bottomSheet } = useBottomSheet();
 
+  useEffect(() => {
+    bottomSheet?.snapToIndex(1);
+  }, [bottomSheet]);
+
   const containerStyle = useAnimatedStyle(() => {
     "worklet";
     const minHeight = height * 0.55;
@@ -59,7 +63,7 @@ const LoginPage = () => {
             width={250}
             height={70}
             backgroundColor="transparent"
-            onPress={signInWithGoogle}
+            onPress={() => signInWithGoogle()}
           >
             <View style={styles.buttonContainer}>
               <Image source={google_logo} style={styles.googleLogo}></Image>

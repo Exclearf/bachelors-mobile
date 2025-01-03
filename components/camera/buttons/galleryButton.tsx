@@ -3,9 +3,9 @@ import React from "react";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { CameraOverlayButtonProps } from "../cameraOverlay";
 
-const GalleryButton = ({ color, size }: CameraOverlayButtonProps) => {
+const GalleryButton = ({ color, size, onClick }: CameraOverlayButtonProps) => {
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={onClick}>
       <MaterialIcons name="photo-library" size={size} color={color} />
     </TouchableOpacity>
   );

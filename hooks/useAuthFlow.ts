@@ -3,6 +3,7 @@ import * as Linking from "expo-linking";
 import { router } from "expo-router";
 import { supabase, useAuthStore } from "@/stores/authStore";
 import { useShallow } from "zustand/react/shallow";
+import { useBottomSheet } from "./useBottomSheet";
 
 export const useAuthFlow = () => {
   const [setUser, setAccessToken, setRefreshToken, setIsLoggedIn] =
@@ -14,6 +15,7 @@ export const useAuthFlow = () => {
         state.setIsLoggedIn,
       ]),
     );
+  const { bottomSheet } = useBottomSheet();
 
   const signInWithGoogle = async () => {
     try {
@@ -62,6 +64,7 @@ export const useAuthFlow = () => {
           setRefreshToken(refresh_token);
           setIsLoggedIn(true);
           router.replace("/");
+          bottomSheet?.snapToIndex(0);
         } else {
           console.error("User metadata is missing in the decoded token");
         }

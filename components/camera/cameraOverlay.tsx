@@ -1,6 +1,7 @@
 import React, {
   Dispatch,
   SetStateAction,
+  useCallback,
   useContext,
   useRef,
   useState,
@@ -67,6 +68,8 @@ const CameraOverlay = ({ setFlashOn, setIsBack }: CameraOverlayProps) => {
   const [settingsModalExpanded, setSettingsModalExpanded] = useState(false);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
+  const notLoggedInOnClick = () => console.log("Not logged in");
+
   const topContainerButtons = useRef([
     {
       item: SettingsButton,
@@ -74,15 +77,16 @@ const CameraOverlay = ({ setFlashOn, setIsBack }: CameraOverlayProps) => {
     },
     {
       item: FlashlightButton,
-      onClick: isLoggedIn
-        ? () => setFlashOn((prev) => !prev)
-        : () => bottomSheet?.snapToPosition(1),
+      onClick: () => setFlashOn((prev) => !prev),
     },
   ]);
 
   const bottomContainerButtons = useRef([
-    { item: GalleryButton },
-    { item: RecordButton },
+    { item: GalleryButton, notLoggedInOnClick },
+    {
+      item: RecordButton,
+      notLoggedInOnClick,
+    },
     { item: FlipCameraButton, onClick: () => setIsBack((prev) => !prev) },
   ]);
 
@@ -136,7 +140,11 @@ const CameraOverlay = ({ setFlashOn, setIsBack }: CameraOverlayProps) => {
           <button.item
             {...iconParameters}
             key={index}
-            onClick={button.onClick}
+            onClick={
+              !isLoggedIn && button?.notLoggedInOnClick
+                ? button.notLoggedInOnClick
+                : button.onClick
+            }
           />
         ))}
       </CameraBottomContainer>
