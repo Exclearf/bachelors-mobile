@@ -1,8 +1,10 @@
 {
   "expo": {
-    "name": "app",
-    "slug": "app",
+    "name": "Mimika",
+    "slug": "mimika",
+    "owner": "nboholii",
     "version": "1.0.0",
+    "originalFullName": "@your_username/your_app_name",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",

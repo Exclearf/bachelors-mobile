@@ -1,26 +1,42 @@
-import { Button, StyleSheet, Text, TextBase, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useContext } from "react";
 import { AppDimensionsContext } from "@/contexts/appDimensions";
+import Button from "@/components/utils/Button";
 
-type Props = {};
+type Props = {
+  handler: () => void;
+};
 
 const PADDING_OF_TOP_PANEL = 53;
 
-const CameraAccessRequest = (props: Props) => {
-  const { width } = useContext(AppDimensionsContext);
+const BUTTON_HEIGHT = 45;
+const BUTTON_WIDTH = 90;
+
+const CameraAccessRequest = ({ handler }: Props) => {
+  const { width, height } = useContext(AppDimensionsContext);
   return (
-    <View style={styles.centeredView}>
+    <View
+      style={[
+        styles.centeredView,
+        { width, height, backgroundColor: "rgba(0,0,0,0.45)" },
+      ]}
+    >
       <View
         style={[
           styles.modalView,
           { width: width - PADDING_OF_TOP_PANEL, marginBottom: width * 0.11 },
         ]}
       >
-        <Text style={styles.accessHeader}>Allow access to the camera!</Text>
-        <View style={styles.buttonContainer}>
-          <Button title="Cancel" />
-          <Button title="Accept" />
-        </View>
+        <Text style={styles.accessHeader}>Allow access to the camera</Text>
+        <Pressable style={styles.buttonContainer} onPress={handler}>
+          <Button
+            width={BUTTON_WIDTH}
+            height={BUTTON_HEIGHT}
+            backgroundColor={"rgba(75,75,75,0.9)"}
+          >
+            <Text style={{ textAlign: "center", color: "white" }}>Allow</Text>
+          </Button>
+        </Pressable>
       </View>
     </View>
   );
@@ -30,15 +46,14 @@ export default CameraAccessRequest;
 
 const styles = StyleSheet.create({
   centeredView: {
-    flex: 1,
-    backgroundColor: "none",
+    display: "flex",
     justifyContent: "center",
     alignItems: "center",
   },
   modalView: {
     height: 200,
-    backgroundColor: "rgba(25, 25, 25, 0.9)",
-    justifyContent: "space-between",
+    backgroundColor: "rgba(50, 50, 50, 0.95)",
+    justifyContent: "space-around",
     alignItems: "center",
     borderRadius: 10,
   },
@@ -46,7 +61,11 @@ const styles = StyleSheet.create({
     color: "white",
     textAlign: "center",
     paddingTop: 20,
-    fontSize: 18,
+    fontSize: 20,
   },
-  buttonContainer: {},
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    width: "100%",
+  },
 });
