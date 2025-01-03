@@ -9,10 +9,12 @@ const BottomSheetProvider = ({ children }: Props) => {
   const [isRegistered, setIsRegistered] = useState(false);
 
   const registerBottomSheet = (ref: BottomSheetWrapperRef) => {
-    if (isRegistered) return;
+    if (isRegistered) {
+      return;
+    }
 
     bottomSheetRef.current = ref;
-    setIsRegistered(true);
+    setIsRegistered(ref.snapToPosition != null);
   };
 
   return (

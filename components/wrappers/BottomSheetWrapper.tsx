@@ -1,10 +1,10 @@
 import React, {
   forwardRef,
-  useImperativeHandle,
   useRef,
   useState,
   PropsWithChildren,
   useEffect,
+  useImperativeHandle,
 } from "react";
 import BottomSheet, { BottomSheetProps } from "@gorhom/bottom-sheet";
 import { SharedValue, useSharedValue } from "react-native-reanimated";
@@ -15,7 +15,7 @@ export type BottomSheetWrapperProps = PropsWithChildren<BottomSheetProps>;
 export type BottomSheetWrapperRef = {
   index: number;
   animatedPosition: SharedValue<number>;
-} & typeof BottomSheet;
+} & BottomSheet;
 
 const BottomSheetWrapper = forwardRef<
   BottomSheetWrapperRef,
@@ -25,25 +25,23 @@ const BottomSheetWrapper = forwardRef<
 
   const context = useBottomSheet();
 
-  const [currentPosition, setCurrentPosition] = useState({
-    height: 0,
-    index: 0,
-  });
+  const [index, setIndex] = useState(0);
+  const [height, setHeight] = useState(0);
 
   const animatedPosition = useSharedValue(0);
 
   const bottomSheetWrapperImplementation = {
     ...bottomSheetRef.current,
-    index: currentPosition.index,
+    index,
+    height,
     animatedPosition,
   } as BottomSheetWrapperRef;
 
   useImperativeHandle(ref, () => bottomSheetWrapperImplementation);
 
-  useEffect(
-    () => context.registerBottomSheet(bottomSheetWrapperImplementation),
-    [bottomSheetWrapperImplementation],
-  );
+  useEffect(() => {
+    context.registerBottomSheet(bottomSheetWrapperImplementation);
+  }, [bottomSheetWrapperImplementation, bottomSheetRef.current]);
 
   return (
     <BottomSheet
@@ -51,7 +49,8 @@ const BottomSheetWrapper = forwardRef<
       ref={bottomSheetRef}
       animatedPosition={animatedPosition}
       onChange={(index, height, type) => {
-        setCurrentPosition({ height, index });
+        setIndex(index);
+        setHeight(height);
         props.onChange?.(index, height, type);
       }}
     >

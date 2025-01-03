@@ -23,6 +23,7 @@ import SettingsPanel from "./containers/settingsPanel";
 import { useCameraOptions } from "@/stores/cameraOptions";
 import Spinner from "../utils/Spinner";
 import { StyleSheet } from "react-native";
+import { useAuthStore } from "@/stores/authStore";
 
 type CameraOverlayProps = {
   setFlashOn: Dispatch<SetStateAction<boolean>>;
@@ -64,13 +65,19 @@ const CameraOverlay = ({ setFlashOn, setIsBack }: CameraOverlayProps) => {
   const isAvailable = useCameraOptions((state) => state.isAvailable);
 
   const [settingsModalExpanded, setSettingsModalExpanded] = useState(false);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   const topContainerButtons = useRef([
     {
       item: SettingsButton,
       onClick: () => setSettingsModalExpanded((prev) => !prev),
     },
-    { item: FlashlightButton, onClick: () => setFlashOn((prev) => !prev) },
+    {
+      item: FlashlightButton,
+      onClick: isLoggedIn
+        ? () => setFlashOn((prev) => !prev)
+        : () => bottomSheet?.snapToPosition(1),
+    },
   ]);
 
   const bottomContainerButtons = useRef([

@@ -1,114 +1,73 @@
-import React, { useEffect } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
-import { createClient } from "@supabase/supabase-js";
-import { useAuth } from "@/stores/authStore";
-import { useShallow } from "zustand/react/shallow";
+import React, { useContext, useEffect } from "react";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import Button from "@/components/utils/Button";
+import { useBottomSheet } from "@/hooks/useBottomSheet";
+import Animated, { useAnimatedStyle } from "react-native-reanimated";
+import { AppDimensionsContext } from "@/contexts/appDimensions";
+import { useAuthFlow } from "@/hooks/useAuthFlow";
 
-import * as Linking from "expo-linking";
-import { router } from "expo-router";
+const google_logo = require("@/assets/images/google_logo.png");
 
-const SUPABASE_URL = process.env.EXPO_PUBLIC_SUPABASE_URL!;
-const SUPABASE_ANON_KEY =
-  process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const LoginPage = () => {
+  const { height, width } = useContext(AppDimensionsContext);
+  const { signInWithGoogle } = useAuthFlow();
+  const { bottomSheet } = useBottomSheet();
 
-type Props = {};
-
-const LoginPage = (props: Props) => {
-  const [user, setUser, setAccessToken, setLoggedIn] = useAuth(
-    useShallow((state) => [
-      state.user,
-      state.setUser,
-      state.setAccessToken,
-      state.setIsLoggedIn,
-    ]),
-  );
-  const signInWithGoogle = async () => {
-    try {
-      console.log("Signing in with Google...");
-
-      const redirectUrl = Linking.createURL("auth/callback");
-      console.log("Redirect URL:", redirectUrl);
-
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo: "yourapp://auth/callback",
-          skipBrowserRedirect: true,
-        },
-      });
-
-      if (error) {
-        console.error("Error during Google Sign-In:", error.message);
-        return;
-      }
-
-      if (data?.url) {
-        Linking.openURL(data.url);
-      }
-    } catch (error) {
-      console.error("Unexpected error:", error);
-    }
-  };
-
-  useEffect(() => {
-    const handleDeepLink = async (url: string) => {
-      console.log("Received deep link:", url);
-
-      const fragment = url.split("#")[1];
-      const queryParams = Object.fromEntries(new URLSearchParams(fragment));
-      console.log("Parsed queryParams:", queryParams);
-
-      const { access_token, refresh_token } = queryParams;
-
-      if (access_token) {
-        const decodedToken = JSON.parse(atob(access_token.split(".")[1]));
-        const userMetadata = decodedToken.user_metadata;
-
-        if (userMetadata) {
-          useAuth.getState().setUser({
-            name: userMetadata.full_name || "Unknown",
-            email: userMetadata.email || "Unknown",
-            picture: userMetadata.picture || null,
-          });
-
-          useAuth.getState().setAccessToken(access_token);
-          useAuth.getState().setIsLoggedIn(true);
-
-          console.log("User set in Zustand:", userMetadata);
-
-          router.replace("/");
-        } else {
-          console.error("User metadata is missing in the decoded token");
-        }
-      } else {
-      }
+  const containerStyle = useAnimatedStyle(() => {
+    "worklet";
+    const minHeight = height * 0.55;
+    return {
+      height: Math.max(
+        height - (bottomSheet?.animatedPosition.get() ?? 0),
+        minHeight,
+      ),
     };
-    const subscription = Linking.addEventListener("url", (event) => {
-      handleDeepLink(event.url);
-    });
+  });
 
-    Linking.getInitialURL().then((url) => {
-      if (url) {
-        handleDeepLink(url);
-      }
-    });
-
-    return () => {
-      subscription.remove();
+  const headerStyle = useAnimatedStyle(() => {
+    "worklet";
+    const bottomSheetHeight = bottomSheet?.animatedPosition.get() ?? 0;
+    return {
+      top: (0.9 - bottomSheetHeight / height) * bottomSheetHeight * 0.5,
     };
-  }, []);
+  });
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Log in</Text>
-      </View>
-      <View style={styles.content}>
-        <Pressable onPress={signInWithGoogle} style={styles.loginButton}>
-          <Text style={styles.buttonText}>Log In with Google</Text>
-        </Pressable>
-      </View>
+      <Animated.View
+        style={[
+          {
+            position: "absolute",
+            width: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+          },
+          containerStyle,
+        ]}
+      >
+        <Animated.View style={[styles.header, headerStyle]}>
+          <Pressable
+            onPress={() => {
+              bottomSheet?.snapToIndex(1);
+            }}
+          >
+            <Text style={styles.headerText}>Log in</Text>
+          </Pressable>
+        </Animated.View>
+        <View style={styles.content}>
+          <Button
+            width={250}
+            height={70}
+            backgroundColor="transparent"
+            onPress={signInWithGoogle}
+          >
+            <View style={styles.buttonContainer}>
+              <Image source={google_logo} style={styles.googleLogo}></Image>
+              <Text style={styles.buttonText}>Log In with Google</Text>
+            </View>
+          </Button>
+        </View>
+      </Animated.View>
     </View>
   );
 };
@@ -120,30 +79,34 @@ const styles = StyleSheet.create({
     backgroundColor: "#1e1e1e",
     width: "100%",
     height: "100%",
-    justifyContent: "center",
-    alignItems: "center",
   },
   header: {
-    marginBottom: 20,
+    position: "absolute",
   },
   headerText: {
     color: "#fff",
-    fontSize: 24,
+    fontSize: 34,
     fontWeight: "bold",
+    textAlign: "center",
   },
   content: {
     width: "100%",
+    paddingBottom: 35,
     alignItems: "center",
   },
-  loginButton: {
-    backgroundColor: "#4285F4",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
+  buttonContainer: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+  },
+  googleLogo: {
+    width: 35,
+    height: 35,
   },
   buttonText: {
     color: "#fff",
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
   },
 });

@@ -41,7 +41,6 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (!cameraPermission?.granted || cameraPermission?.canAskAgain) {
-      console.log("Requesting camera permission");
       requestPermission();
     }
   }, []);
