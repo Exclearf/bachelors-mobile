@@ -40,8 +40,8 @@ const BottomSheetWrapper = forwardRef<
   useImperativeHandle(ref, () => bottomSheetWrapperImplementation);
 
   useEffect(() => {
-    context.registerBottomSheet(bottomSheetWrapperImplementation);
-  }, [bottomSheetWrapperImplementation, bottomSheetRef.current]);
+    context.registerBottomSheet({ ...bottomSheetWrapperImplementation });
+  }, [bottomSheetRef.current]);
 
   return (
     <BottomSheet

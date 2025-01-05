@@ -4,10 +4,10 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
-
 import { IconParameters } from "../camera/cameraOverlay";
 import { useBottomSheet } from "@/hooks/useBottomSheet";
 import { AppDimensionsContext } from "@/contexts/appDimensions";
+import { ViewStyle } from "react-native";
 
 type Props = PropsWithChildren<{
   iconParameters: IconParameters;
@@ -43,11 +43,10 @@ const CameraModal = ({ isVisible, iconParameters, children }: Props) => {
     backgroundColor: "rgba(50,50,50,0.90)",
     position: "absolute",
     borderRadius: 10,
-  };
+  } as ViewStyle;
 
   return (
     withSpring(openState.get()) && (
-      //@ts-expect-error TODO: We know that the style is correct
       <Animated.View style={[animatedStyle, staticStyle]}>
         {children}
       </Animated.View>

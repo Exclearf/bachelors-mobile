@@ -9,9 +9,9 @@ import { useAuthFlow } from "@/hooks/useAuthFlow";
 const google_logo = require("@/assets/images/google_logo.png");
 
 const LoginPage = () => {
-  const { height, width } = useContext(AppDimensionsContext);
-  const { signInWithGoogle } = useAuthFlow();
+  const { height } = useContext(AppDimensionsContext);
   const { bottomSheet } = useBottomSheet();
+  const { signInWithGoogle } = useAuthFlow();
 
   useEffect(() => {
     bottomSheet?.snapToIndex(1);

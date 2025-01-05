@@ -10,7 +10,10 @@ const BottomSheetProvider = ({ children }: Props) => {
 
   const registerBottomSheet = (ref: BottomSheetWrapperRef) => {
     if (isRegistered) {
+      console.log("BottomSheet is registered");
       return;
+    } else {
+      console.log("BottomSheet is not registered");
     }
 
     bottomSheetRef.current = ref;

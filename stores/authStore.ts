@@ -2,10 +2,16 @@ import { createClient } from "@supabase/supabase-js";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
+type UserPicture =
+  | {
+      uri: string;
+    }
+  | number;
+
 type User = {
   name: string;
   email: string;
-  picture: string;
+  picture: UserPicture;
 };
 
 type AuthState = {
