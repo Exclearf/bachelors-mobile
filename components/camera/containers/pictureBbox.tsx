@@ -8,6 +8,7 @@ import Animated, {
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
+  withTiming,
 } from "react-native-reanimated";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 
@@ -73,7 +74,12 @@ const PictureBbox = () => {
       };
     });
 
-  const pressed = useSharedValue<boolean>(false);
+  const cornerOpacity = useSharedValue<number>(0.5);
+
+  const cornerStyle = useDerivedValue(() => {
+    "worklet";
+    return `rgba(255,255,255,${cornerOpacity.get()})`;
+  });
 
   const gestureFactory = (
     primaryCorner: CornerCordinates,
@@ -85,7 +91,7 @@ const PictureBbox = () => {
   ) =>
     Gesture.Pan()
       .onBegin(() => {
-        pressed.value = true;
+        cornerOpacity.set(withTiming(1, { duration: 100 }));
       })
       .onChange((event) => {
         const [clampedX, clampedY] = clampingFunc([
@@ -99,11 +105,11 @@ const PictureBbox = () => {
         secondaryVerticalCorner.y.value = clampedY;
       })
       .onFinalize(() => {
-        pressed.value = false;
+        cornerOpacity.set(withTiming(0.5));
       });
 
   const moveCropPathPan = Gesture.Pan()
-    .onBegin(() => {})
+    .onBegin(() => cornerOpacity.set(withTiming(1)))
     .onChange((event) => {
       if (
         topLeft.x.value + event.changeX < 8 ||
@@ -119,7 +125,7 @@ const PictureBbox = () => {
         corner.y.value += event.changeY;
       });
     })
-    .onFinalize(() => {});
+    .onFinalize(() => cornerOpacity.set(withTiming(0.5)));
 
   const cornerCreator = (
     corner: CornerCordinates,
@@ -194,7 +200,7 @@ const PictureBbox = () => {
                 style={"stroke"}
                 strokeWidth={2}
                 strokeCap={"round"}
-                color={"white"}
+                color={cornerStyle}
                 path={cornerCreator(
                   corner,
                   width,

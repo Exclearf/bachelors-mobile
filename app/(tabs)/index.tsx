@@ -2,33 +2,36 @@ import { StyleSheet, View } from "react-native";
 import React from "react";
 import SelectGroup, {
   SelectionGroupItemConfig,
-} from "@/components/selectGroup/selectGroup";
+} from "@/components/common/selectGroup/selectGroup";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
-import IndexPage from "@/pages/indexPage";
-
-const availableFunctions: SelectionGroupItemConfig[] = [
-  {
-    id: "signToText",
-    title: "Sign",
-    onClick: () => {},
-    icon: (props: any) => (
-      <FontAwesome6 name="hands-asl-interpreting" {...props} />
-    ),
-  },
-  {
-    id: "textToSign",
-    title: "Text",
-    onClick: () => {},
-    icon: (props: any) => <Ionicons name="text" {...props} />,
-  },
-];
+import IndexScreen from "@/screens/index/indexScreen";
+import { useLocalization } from "@/hooks/useLocalization";
 
 const IndexTab = () => {
+  const getTranslationKey = useLocalization("indexPage");
+
+  const availableFunctions: SelectionGroupItemConfig[] = [
+    {
+      id: "signToText",
+      translationKey: getTranslationKey("signToText"),
+      onClick: () => {},
+      icon: (props: any) => (
+        <FontAwesome6 name="hands-asl-interpreting" {...props} />
+      ),
+    },
+    {
+      id: "textToSign",
+      translationKey: getTranslationKey("textToSign"),
+      onClick: () => {},
+      icon: (props: any) => <Ionicons name="text" {...props} />,
+    },
+  ];
+
   return (
     <View style={styles.container}>
       <SelectGroup items={availableFunctions} />
-      <IndexPage />
+      <IndexScreen />
     </View>
   );
 };

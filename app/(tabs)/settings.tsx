@@ -1,8 +1,8 @@
 import React from "react";
-import SettingsPage from "@/pages/settingsPage";
+import SettingsScreen from "@/screens/settings/settingsScreen";
 
 const SettingsTab = () => {
-  return <SettingsPage />;
+  return <SettingsScreen />;
 };
 
 export default SettingsTab;

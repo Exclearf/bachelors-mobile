@@ -1,0 +1,27 @@
+{
+  "settingsPage": {
+    "greetings": {
+      "morning": "Dzień dobry{{name, optionalName}}!",
+      "afternoon": "Dobry wieczór{{name, optionalName}}!",
+      "evening": "Dobry wieczór{{name, optionalName}}!",
+      "night": "Dobranoc{{name, optionalName}}!"
+    },
+    "logOut": "Wyloguj się",
+    "languagesSettingsSection": "Preferencje językowe",
+    "appLanguage": "Aplikacja",
+    "translationLanguage": "Tłumaczenie"
+  },
+  "indexPage": {
+    "signToText": "Znak",
+    "textToSign": "Tekst",
+    "translation": "Tłumaczenie",
+    "translationHistory": "Historia tłumaczeń"
+  },
+  "learnPage": {
+    "title": "Ucz się Polskiego Języka Migowego!"
+  },
+  "loginPage": {
+    "signInTitle": "Zaloguj się",
+    "signInWithGoogle": "Zaloguj się przez Google"
+  }
+}

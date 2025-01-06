@@ -1,8 +1,8 @@
 import { PropsWithChildren } from "react";
 import { BottomSheetView } from "@gorhom/bottom-sheet";
-import AppRoundedPath from "../utils/AppRoundedPath";
 import { useBottomPath } from "@/utils/roundedPathCreators";
 import BottomSheetWrapper from "../wrappers/BottomSheetWrapper";
+import AppRoundedPath from "../common/AppRoundedPath";
 
 type Props = PropsWithChildren<{
   snapPoints: string[];

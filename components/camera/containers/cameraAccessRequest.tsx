@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useContext } from "react";
 import { AppDimensionsContext } from "@/contexts/appDimensions";
-import Button from "@/components/utils/Button";
+import Button from "@/components/common/Button";
 
 type Props = {
   handler: () => void;

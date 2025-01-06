@@ -1,0 +1,27 @@
+{
+  "settingsPage": {
+    "greetings": {
+      "morning": "Good morning{{name, optionalName}}!",
+      "afternoon": "Good afternoon{{name, optionalName}}!",
+      "evening": "Good evening{{name, optionalName}}!",
+      "night": "Good night{{name, optionalName}}!"
+    },
+    "logOut": "Log out",
+    "languagesSettingsSection": "Language Preferences",
+    "appLanguage": "Application",
+    "translationLanguage": "Translation"
+  },
+  "indexPage": {
+    "signToText": "Sign",
+    "textToSign": "Text",
+    "translation": "Translation",
+    "translationHistory": "Translation history"
+  },
+  "learnPage": {
+    "title": "Learn Polish Sign Language!"
+  },
+  "loginPage": {
+    "signInTitle": "Log in",
+    "signInWithGoogle": "Log in with Google"
+  }
+}

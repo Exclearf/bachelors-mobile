@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { ImageSourcePropType } from "react-native";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
@@ -6,7 +7,7 @@ type UserPicture =
   | {
       uri: string;
     }
-  | number;
+  | ImageSourcePropType;
 
 type User = {
   name: string;

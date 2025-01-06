@@ -3,8 +3,9 @@ import * as Linking from "expo-linking";
 import { router } from "expo-router";
 import { supabase, useAuthStore } from "@/stores/authStore";
 import { useShallow } from "zustand/react/shallow";
+import defaultPicture from "@/assets/images/default_user_avatar.png";
 
-export const defaultPicture = require("@/assets/images/default_user_avatar.png");
+export { defaultPicture };
 
 export const useAuthFlow = () => {
   const [setUser, setAccessToken, setRefreshToken, setIsLoggedIn] =
@@ -44,7 +45,7 @@ export const useAuthFlow = () => {
   };
 
   const handleDeepLink = async (url: string) => {
-    console.log("Received deep link:", url);
+    console.log("Deep link " + url);
     try {
       const { access_token, refresh_token } = Object.fromEntries(
         new URLSearchParams(url.split("#")[1]),
@@ -58,7 +59,9 @@ export const useAuthFlow = () => {
           setUser({
             name: userMetadata.full_name,
             email: userMetadata.email || "Unknown",
-            picture: { uri: userMetadata.picture } || defaultPicture,
+            picture: userMetadata.picture
+              ? { uri: userMetadata.picture }
+              : defaultPicture,
           });
           setAccessToken(access_token);
           setRefreshToken(refresh_token);

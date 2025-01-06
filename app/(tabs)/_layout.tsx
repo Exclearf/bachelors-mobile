@@ -5,13 +5,13 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Feather from "@expo/vector-icons/Feather";
 import Entypo from "@expo/vector-icons/Entypo";
 import { useAuthStore } from "@/stores/authStore";
-import LoginPage from "@/pages/loginPage";
+import LoginScreen from "@/screens/login/loginScreen";
 
 const RootLayout = () => {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   if (!isLoggedIn) {
-    return <LoginPage />;
+    return <LoginScreen />;
   }
 
   return (

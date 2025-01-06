@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React from "react";
-import ToggleGroup from "@/components/utils/ToggleGroup";
+import ToggleGroup from "@/components/common/ToggleGroup";
 
 type Props = {};
 
@@ -22,7 +22,11 @@ const items = [
 const SettingsPanel = (props: Props) => {
   return (
     <View>
-      <ToggleGroup items={items} onChange={(e) => console.log(e.id)} />
+      <ToggleGroup
+        selectedIndex={0}
+        items={items}
+        onChange={(e) => console.log(e.id)}
+      />
     </View>
   );
 };

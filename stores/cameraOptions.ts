@@ -9,7 +9,9 @@ type CameraStoreActions = {
   setIsAvailable: (newState: boolean) => void;
 };
 
-export const useCameraOptions = create<CameraStoreState & CameraStoreActions>()(
+export const useCameraOptionsStore = create<
+  CameraStoreState & CameraStoreActions
+>()(
   immer((set) => ({
     isAvailable: false,
     setIsAvailable: (newMode: boolean) => {

@@ -1,4 +1,4 @@
-import { StyleProp, StyleSheet, Text, View, ViewStyle } from "react-native";
+import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 import React, { PropsWithChildren, useContext, useRef } from "react";
 import Animated, {
   interpolate,
@@ -9,14 +9,15 @@ import Animated, {
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { AppDimensionsContext } from "@/contexts/appDimensions";
 import { useBottomSheet } from "@/hooks/useBottomSheet";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import CollapseAnimated from "../utils/CollapseAnimated";
+import CollapseAnimated from "../common/CollapseAnimated";
 import { useTranslationStore } from "@/stores/translationStore";
-import TextToVoiceButton from "../translation/buttons/textToVoiceButton";
+import TextToVoiceButton from "../../screens/index/components/buttons/textToVoiceButton";
+import TranslatedText from "../common/TranslatedText";
 
 type Props = PropsWithChildren<{
   initialHeight: number;
   padding: number;
+  titleTranslationKey: string;
   containerStyle: StyleProp<ViewStyle>[];
 }>;
 
@@ -24,6 +25,7 @@ const ExpandableModal = ({
   containerStyle,
   initialHeight,
   padding,
+  titleTranslationKey,
   children,
 }: Props) => {
   const expansionFactor = useSharedValue(0);
@@ -62,8 +64,11 @@ const ExpandableModal = ({
 
   return (
     <Animated.View style={[...containerStyle, animateStyle]}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Translation</Text>
+      <View style={expandableModalStyles.header}>
+        <TranslatedText
+          style={expandableModalStyles.headerText}
+          translationKey={titleTranslationKey}
+        />
         <View
           style={{
             width: iconSize * 4,
@@ -100,7 +105,7 @@ const ExpandableModal = ({
 
 export default ExpandableModal;
 
-const styles = StyleSheet.create({
+export const expandableModalStyles = StyleSheet.create({
   header: {
     width: "100%",
     display: "flex",

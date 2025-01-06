@@ -9,7 +9,7 @@ import {
 } from "expo-camera";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { AppDimensionsContext } from "@/contexts/appDimensions";
-import AppRoundedPath from "@/components/utils/AppRoundedPath";
+import AppRoundedPath from "@/components/common/AppRoundedPath";
 import { useTopPath } from "@/utils/roundedPathCreators";
 import { Slot } from "expo-router";
 import AppBottomSheet from "@/components/bottomSheet/bottomSheet";
@@ -18,16 +18,15 @@ import BottomSheetProvider from "@/components/providers/bottomSheetProvider";
 import { useTranslationStore } from "@/stores/translationStore";
 import CameraAccessRequest from "@/components/camera/containers/cameraAccessRequest";
 import PictureBbox from "@/components/camera/containers/pictureBbox";
-import { useCameraOptions } from "@/stores/cameraOptions";
+import { useCameraOptionsStore } from "@/stores/cameraOptions";
 import * as Linking from "expo-linking";
 import { useShallow } from "zustand/react/shallow";
 
-const windowDimensions = Dimensions.get("window");
+import initiateLocalization from "@/i18n/i18n"; // Side-effect import
 
-const appDimensions = {
-  width: windowDimensions.width,
-  height: windowDimensions.height,
-};
+initiateLocalization();
+
+const windowDimensions = Dimensions.get("window");
 
 export default function RootLayout() {
   const [cameraPermission, requestPermission] = useCameraPermissions();
@@ -35,7 +34,7 @@ export default function RootLayout() {
   const [isBack, setIsBack] = useState(true);
   const cameraRef = useRef<CameraView>(null);
   const mode = useTranslationStore((state) => state.mode);
-  const [isAvailable, setIsAvailable] = useCameraOptions(
+  const [isAvailable, setIsAvailable] = useCameraOptionsStore(
     useShallow((state) => [state.isAvailable, state.setIsAvailable]),
   );
 
@@ -54,7 +53,7 @@ export default function RootLayout() {
           height: windowDimensions.height,
         }}
       >
-        <AppDimensionsContext.Provider value={appDimensions}>
+        <AppDimensionsContext.Provider value={windowDimensions}>
           <BottomSheetProvider>
             <StatusBar
               translucent={false}

@@ -1,7 +1,6 @@
 import React, {
   Dispatch,
   SetStateAction,
-  useCallback,
   useContext,
   useRef,
   useState,
@@ -21,8 +20,8 @@ import SettingsModal from "../modals/settingsModal";
 import { useBottomSheet } from "@/hooks/useBottomSheet";
 import { AppDimensionsContext } from "@/contexts/appDimensions";
 import SettingsPanel from "./containers/settingsPanel";
-import { useCameraOptions } from "@/stores/cameraOptions";
-import Spinner from "../utils/Spinner";
+import { useCameraOptionsStore } from "@/stores/cameraOptions";
+import Spinner from "../common/Spinner";
 import { StyleSheet } from "react-native";
 import { useAuthStore } from "@/stores/authStore";
 
@@ -63,7 +62,7 @@ const CameraOverlay = ({ setFlashOn, setIsBack }: CameraOverlayProps) => {
   const containersScale = useDerivedValue(() => {
     return (bottomSheet?.animatedPosition.get() ?? 0) / height;
   });
-  const isAvailable = useCameraOptions((state) => state.isAvailable);
+  const isAvailable = useCameraOptionsStore((state) => state.isAvailable);
 
   const [settingsModalExpanded, setSettingsModalExpanded] = useState(false);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
