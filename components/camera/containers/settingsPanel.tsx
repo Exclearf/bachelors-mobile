@@ -2,8 +2,6 @@ import { StyleSheet, View } from "react-native";
 import React from "react";
 import ToggleGroup from "@/components/common/ToggleGroup";
 
-type Props = {};
-
 const items = [
   {
     id: "1",
@@ -19,7 +17,7 @@ const items = [
   },
 ];
 
-const SettingsPanel = (props: Props) => {
+const SettingsPanel = () => {
   return (
     <View>
       <ToggleGroup

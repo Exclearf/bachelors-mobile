@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import React, { useEffect } from "react";
+import React from "react";
 import Animated, {
   DerivedValue,
   useAnimatedStyle,
@@ -10,12 +10,7 @@ type Props = React.PropsWithChildren<{
 }>;
 
 const CameraTopContainer = ({ children, scale }: Props) => {
-  useEffect(() => {
-    console.log("Do I work? " + scale.get());
-  }, []);
-
   const animStyle = useAnimatedStyle(() => {
-    "worklet";
     return {
       opacity: scale.get() * 2.31,
       top: 40 - scale.get() * 30,

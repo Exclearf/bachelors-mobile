@@ -59,13 +59,9 @@ const iconParameters: IconParameters = {
 const CameraOverlay = ({ setFlashOn, setIsBack }: CameraOverlayProps) => {
   const { height } = useContext(AppDimensionsContext);
   const { bottomSheet } = useBottomSheet();
-  const containersScale = useDerivedValue(() => {
-    return (bottomSheet?.animatedPosition.get() ?? 0) / height;
-  });
-  const isAvailable = useCameraOptionsStore((state) => state.isAvailable);
-
   const [settingsModalExpanded, setSettingsModalExpanded] = useState(false);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const isAvailable = useCameraOptionsStore((state) => state.isAvailable);
 
   const notLoggedInOnClick = () => console.log("Not logged in");
 
@@ -89,13 +85,17 @@ const CameraOverlay = ({ setFlashOn, setIsBack }: CameraOverlayProps) => {
     { item: FlipCameraButton, onClick: () => setIsBack((prev) => !prev) },
   ]);
 
+  const containersScale = useDerivedValue(() => {
+    return (bottomSheet?.animatedPosition.get() ?? 0) / height;
+  });
+
+  const spinnerBottomSheetRelativeHeight = useDerivedValue(() => {
+    return (bottomSheet?.animatedPosition.get() ?? 0) * 0.5 - 50;
+  });
+
   const spinnerContainerStyle = useAnimatedStyle(() => {
-    "worklet";
     return {
-      top: Math.max(
-        height * 0.24 - 50,
-        (bottomSheet?.animatedPosition.get() ?? 0) * 0.5 - 50,
-      ),
+      top: Math.max(height * 0.24 - 50, spinnerBottomSheetRelativeHeight.get()),
     };
   });
 
@@ -118,19 +118,7 @@ const CameraOverlay = ({ setFlashOn, setIsBack }: CameraOverlayProps) => {
         </SettingsModal>
       </CameraTopContainer>
       {!isAvailable && (
-        <Animated.View
-          style={[
-            styles.spinnerContainer,
-            spinnerContainerStyle,
-            {
-              // TODO: A dirty hack to make the spinner appear in the middle of the screen on initial load
-              top: Math.max(
-                height * 0.24 - 50,
-                (bottomSheet?.animatedPosition.get() ?? 0) * 0.5 - 50,
-              ),
-            },
-          ]}
-        >
+        <Animated.View style={[styles.spinnerContainer, spinnerContainerStyle]}>
           <Spinner size={64} color="white" />
         </Animated.View>
       )}

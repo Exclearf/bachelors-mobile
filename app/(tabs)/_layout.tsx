@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
@@ -22,11 +22,9 @@ const RootLayout = () => {
         tabBarItemStyle: styles.centerItems,
         tabBarShowLabel: false,
         tabBarButton: (props) => (
-          //@ts-expect-error TODO: Fix the tabBarButton prop
-          <TouchableOpacity
+          <Pressable
             {...props}
             style={[styles.centerItems, styles.tabBarButton]}
-            activeOpacity={1}
           />
         ),
         tabBarActiveTintColor: "white",

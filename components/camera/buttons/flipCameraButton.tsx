@@ -1,4 +1,4 @@
-import { TouchableOpacity } from "react-native";
+import { Pressable } from "react-native";
 import React, { useRef } from "react";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { CameraOverlayButtonProps } from "../cameraOverlay";
@@ -31,15 +31,14 @@ const FlipCameraButton = ({
 
   return (
     <Animated.View style={style}>
-      <TouchableOpacity
+      <Pressable
         onPress={() => {
           onClick!();
           isRotated.current = switchRotation(isRotated.current);
         }}
-        activeOpacity={1}
       >
         <MaterialIcons name="flip-camera-android" size={size} color={color} />
-      </TouchableOpacity>
+      </Pressable>
     </Animated.View>
   );
 };
