@@ -33,6 +33,7 @@ const CameraModal = ({ isVisible, iconParameters, children }: Props) => {
       opacity: withSpring(openState.get(), {
         duration: 150,
       }),
+      display: openState.value === 0 ? "none" : "flex",
     };
   });
 
@@ -46,11 +47,9 @@ const CameraModal = ({ isVisible, iconParameters, children }: Props) => {
   } as ViewStyle;
 
   return (
-    withSpring(openState.get()) && (
-      <Animated.View style={[animatedStyle, staticStyle]}>
-        {children}
-      </Animated.View>
-    )
+    <Animated.View style={[animatedStyle, staticStyle]}>
+      {children}
+    </Animated.View>
   );
 };
 

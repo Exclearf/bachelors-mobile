@@ -21,7 +21,6 @@ import PictureBbox from "@/components/camera/containers/pictureBbox";
 import { useCameraOptionsStore } from "@/stores/cameraOptions";
 import * as Linking from "expo-linking";
 import { useShallow } from "zustand/react/shallow";
-
 import initiateLocalization from "@/i18n/i18n"; // Side-effect import
 
 initiateLocalization();

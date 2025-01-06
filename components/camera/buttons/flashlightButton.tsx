@@ -8,7 +8,7 @@ import {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { Canvas, Path, StrokeCap } from "@shopify/react-native-skia";
+import { Canvas, Path } from "@shopify/react-native-skia";
 
 const FlashlightButton = ({
   color,
@@ -24,7 +24,6 @@ const FlashlightButton = ({
   const yBottom = 5;
 
   const derivedPath = useDerivedValue(() => {
-    "worklet";
     const x = interpolate(flashState.get(), [0, 1], [xLeft, xRight]);
     const y = interpolate(flashState.get(), [0, 1], [yBottom, yTop]);
     return `M ${xLeft} ${yBottom} L ${x} ${y}`;

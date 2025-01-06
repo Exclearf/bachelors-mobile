@@ -77,7 +77,6 @@ const PictureBbox = () => {
   const cornerOpacity = useSharedValue<number>(0.5);
 
   const cornerStyle = useDerivedValue(() => {
-    "worklet";
     return `rgba(255,255,255,${cornerOpacity.get()})`;
   });
 
