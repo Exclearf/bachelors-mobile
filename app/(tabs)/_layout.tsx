@@ -4,8 +4,8 @@ import { Tabs } from "expo-router";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Feather from "@expo/vector-icons/Feather";
 import Entypo from "@expo/vector-icons/Entypo";
-import { useAuthStore } from "@/stores/authStore";
-import LoginScreen from "@/screens/login/LoginScreen";
+import LoginScreen from "@/features/auth/LoginScreen";
+import { useAuthStore } from "@/features/auth/stores/authStore";
 
 const RootLayout = () => {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
