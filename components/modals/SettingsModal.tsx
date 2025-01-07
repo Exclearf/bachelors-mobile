@@ -4,7 +4,7 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
-import { IconParameters } from "../camera/cameraOverlay";
+import { IconParameters } from "../camera/CameraOverlay";
 import { useBottomSheet } from "@/hooks/useBottomSheet";
 import { AppDimensionsContext } from "@/contexts/appDimensions";
 import { ViewStyle } from "react-native";

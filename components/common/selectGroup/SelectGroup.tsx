@@ -1,6 +1,6 @@
 import { StyleSheet, ViewStyle } from "react-native";
 import React, { useContext } from "react";
-import SelectionGroupItem from "./selectionGroupItem";
+import SelectionGroupItem from "./SelectionGroupItem";
 import { AppDimensionsContext } from "@/contexts/appDimensions";
 import Animated from "react-native-reanimated";
 import { useTranslationStore } from "@/stores/translationStore";

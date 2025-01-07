@@ -11,7 +11,7 @@ import { AppDimensionsContext } from "@/contexts/appDimensions";
 import { useBottomSheet } from "@/hooks/useBottomSheet";
 import CollapseAnimated from "../common/CollapseAnimated";
 import { useTranslationStore } from "@/stores/translationStore";
-import TextToVoiceButton from "../../screens/index/components/buttons/textToVoiceButton";
+import TextToVoiceButton from "../../screens/index/components/buttons/TextToVoiceButton";
 import TranslatedText from "../common/TranslatedText";
 
 type Props = PropsWithChildren<{

@@ -1,5 +1,5 @@
 import React from "react";
-import SettingsScreen from "@/screens/settings/settingsScreen";
+import SettingsScreen from "@/screens/settings/SettingsScreen";
 
 const SettingsTab = () => {
   return <SettingsScreen />;

@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, TextStyle, View, ViewStyle } from "react-native";
 import React, { useState } from "react";
 import { locales } from "@/i18n/i18n";
 import ToggleGroup, { ToggleItemType } from "@/components/common/ToggleGroup";
@@ -10,9 +10,16 @@ import TranslatedText from "@/components/common/TranslatedText";
 type Props = {
   getTranslationKey: (key: string) => string;
   width: number;
+  style: ViewStyle;
+  textStyle: TextStyle;
 };
 
-const LanguageTogglesSection = ({ getTranslationKey, width }: Props) => {
+const LanguageTogglesSection = ({
+  getTranslationKey,
+  width,
+  style,
+  textStyle,
+}: Props) => {
   const { i18n } = useTranslation();
   const [selectedLanguageCode, setSelectedLanguageCode] = useState(
     i18n.language,
@@ -67,16 +74,13 @@ const LanguageTogglesSection = ({ getTranslationKey, width }: Props) => {
           ],
         ] as const
       ).map(([languages, translationKey, onChange], index) => (
-        <View key={index} style={styles.languageToggleContainer}>
-          <TranslatedText
-            translationKey={translationKey}
-            style={styles.languageToggleText}
-          />
+        <View key={index} style={style}>
+          <TranslatedText translationKey={translationKey} style={textStyle} />
           <ToggleGroup
             selectedIndex={currentAppLanguageIndex}
             items={languages}
             onChange={onChange}
-            width={width * 0.6}
+            width={width * 0.55}
           />
         </View>
       ))}
@@ -86,12 +90,4 @@ const LanguageTogglesSection = ({ getTranslationKey, width }: Props) => {
 
 export default LanguageTogglesSection;
 
-const styles = StyleSheet.create({
-  languageToggleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingVertical: 5,
-  },
-  languageToggleText: { color: "white", fontSize: 16, width: "30%" },
-});
+const styles = StyleSheet.create({});

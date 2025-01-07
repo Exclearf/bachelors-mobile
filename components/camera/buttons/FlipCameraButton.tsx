@@ -1,7 +1,7 @@
 import { Pressable } from "react-native";
 import React, { useRef } from "react";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { CameraOverlayButtonProps } from "../cameraOverlay";
+import { CameraOverlayButtonProps } from "../CameraOverlay";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,

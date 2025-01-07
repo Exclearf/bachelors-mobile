@@ -5,7 +5,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Feather from "@expo/vector-icons/Feather";
 import Entypo from "@expo/vector-icons/Entypo";
 import { useAuthStore } from "@/stores/authStore";
-import LoginScreen from "@/screens/login/loginScreen";
+import LoginScreen from "@/screens/login/LoginScreen";
 
 const RootLayout = () => {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);

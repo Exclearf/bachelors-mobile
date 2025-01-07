@@ -5,21 +5,21 @@ import React, {
   useRef,
   useState,
 } from "react";
-import CameraTopContainer from "./containers/cameraTopContainer";
-import CameraBottomContainer from "./containers/cameraBottomContainer";
+import CameraTopContainer from "./containers/CameraTopContainer";
+import CameraBottomContainer from "./containers/CameraBottomContainer";
 import Animated, {
   useAnimatedStyle,
   useDerivedValue,
 } from "react-native-reanimated";
-import GalleryButton from "./buttons/galleryButton";
-import RecordButton from "./buttons/recordButton";
-import FlipCameraButton from "./buttons/flipCameraButton";
-import SettingsButton from "./buttons/settingsButton";
-import FlashlightButton from "./buttons/flashlightButton";
-import SettingsModal from "../modals/settingsModal";
+import GalleryButton from "./buttons/GalleryButton";
+import RecordButton from "./buttons/RecordButton";
+import FlipCameraButton from "./buttons/FlipCameraButton";
+import SettingsButton from "./buttons/SettingsButton";
+import FlashlightButton from "./buttons/FlashlightButton";
+import SettingsModal from "../modals/SettingsModal";
 import { useBottomSheet } from "@/hooks/useBottomSheet";
 import { AppDimensionsContext } from "@/contexts/appDimensions";
-import SettingsPanel from "./containers/settingsPanel";
+import SettingsPanel from "./containers/SettingsPanel";
 import { useCameraOptionsStore } from "@/stores/cameraOptions";
 import Spinner from "../common/Spinner";
 import { StyleSheet } from "react-native";

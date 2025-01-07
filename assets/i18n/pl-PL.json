@@ -9,7 +9,12 @@
     "logOut": "Wyloguj się",
     "languagesSettingsSection": "Preferencje językowe",
     "appLanguage": "Aplikacja",
-    "translationLanguage": "Tłumaczenie"
+    "translationLanguage": "Tłumaczenie",
+    "personalizationHeader": "Personalizacja",
+    "lightTheme": "Tryb jasny",
+    "darkTheme": "Tryb ciemny",
+    "appTheme": "Motyw",
+    "highContrast": "Kontrast"
   },
   "indexPage": {
     "signToText": "Znak",
@@ -17,8 +22,8 @@
     "translation": "Tłumaczenie",
     "translationHistory": "Historia tłumaczeń"
   },
-  "learnPage": {
-    "title": "Ucz się Polskiego Języka Migowego!"
+  "studyPage": {
+    "headerText": "Ucz się Polskiego Języka Migowego!"
   },
   "loginPage": {
     "signInTitle": "Zaloguj się",

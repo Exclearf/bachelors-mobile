@@ -6,7 +6,7 @@ import { useTranslationStore } from "@/stores/translationStore";
 import { LinearGradient } from "expo-linear-gradient";
 import TranslatedText from "../../../components/common/TranslatedText";
 import { useLocalization } from "@/hooks/useLocalization";
-import { expandableModalStyles } from "../../../components/modals/expandableModal";
+import { expandableModalStyles } from "../../../components/modals/ExpandableModal";
 
 type Props = {
   padding: number;

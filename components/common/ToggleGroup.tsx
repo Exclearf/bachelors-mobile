@@ -5,6 +5,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+import TranslatedText from "./TranslatedText";
 
 type Props = {
   items: ToggleItemType[];
@@ -79,7 +80,10 @@ const ToggleGroup = ({
               key={item.id}
               onPress={() => changeActiveIndex(item, index)}
             >
-              <Text style={styles.itemText}>{item.title}</Text>
+              <TranslatedText
+                style={styles.itemText}
+                translationKey={item.title}
+              />
             </Pressable>
           );
         })}
