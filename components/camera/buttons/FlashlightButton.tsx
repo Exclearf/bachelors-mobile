@@ -1,7 +1,7 @@
 import { TouchableOpacity } from "react-native";
 import React from "react";
 import Entypo from "@expo/vector-icons/Entypo";
-import { CameraOverlayButtonProps } from "../cameraOverlay";
+import { CameraOverlayButtonProps } from "../CameraOverlay";
 import {
   interpolate,
   useDerivedValue,

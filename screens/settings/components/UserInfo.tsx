@@ -32,7 +32,7 @@ const UserInfo = ({ getTranslationKey, height }: Props) => {
   );
 
   return (
-    <>
+    <View style={styles.container}>
       <View style={[styles.greetingsContainer, { height: height * 0.07 }]}>
         <TranslatedText
           style={styles.greetingsText}
@@ -62,13 +62,14 @@ const UserInfo = ({ getTranslationKey, height }: Props) => {
           style={styles.logOutText}
         />
       </Button>
-    </>
+    </View>
   );
 };
 
 export default UserInfo;
 
 const styles = StyleSheet.create({
+  container: { paddingBottom: 5 },
   logOutText: {
     color: "#fff",
     fontSize: 16,
@@ -84,8 +85,8 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   greetinsImage: {
-    width: 50,
-    height: 50,
+    width: 45,
+    height: 45,
     borderRadius: 25,
   },
 });

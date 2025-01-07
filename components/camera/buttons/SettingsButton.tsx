@@ -1,6 +1,6 @@
 import { Pressable } from "react-native";
 import React from "react";
-import { CameraOverlayButtonProps } from "../cameraOverlay";
+import { CameraOverlayButtonProps } from "../CameraOverlay";
 import {
   interpolate,
   useDerivedValue,

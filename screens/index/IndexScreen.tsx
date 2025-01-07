@@ -1,12 +1,12 @@
 import { StyleSheet, View } from "react-native";
 import React, { useContext } from "react";
-import ExpandableModal from "@/components/modals/expandableModal";
 import { useTranslationStore } from "@/stores/translationStore";
-import TextTranslation from "@/screens/index/components/textTranslation";
-import SignTranslation from "@/screens/index/components/signTranslation";
 import { AppDimensionsContext } from "@/contexts/appDimensions";
-import History from "@/screens/index/components/history";
+import History from "@/screens/index/components/History";
 import { useLocalization } from "@/hooks/useLocalization";
+import ExpandableModal from "@/components/modals/ExpandableModal";
+import SignTranslation from "./components/SignTranslation";
+import TextTranslation from "./components/TextTranslation";
 
 const IndexScreen = () => {
   const mode = useTranslationStore((state) => state.mode);

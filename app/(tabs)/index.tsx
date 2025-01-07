@@ -2,10 +2,10 @@ import { StyleSheet, View } from "react-native";
 import React from "react";
 import SelectGroup, {
   SelectionGroupItemConfig,
-} from "@/components/common/selectGroup/selectGroup";
+} from "@/components/common/selectGroup/SelectGroup";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
-import IndexScreen from "@/screens/index/indexScreen";
+import IndexScreen from "@/screens/index/IndexScreen";
 import { useLocalization } from "@/hooks/useLocalization";
 
 const IndexTab = () => {

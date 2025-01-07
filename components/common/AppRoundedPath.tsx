@@ -4,7 +4,6 @@ import { useSharedValue } from "react-native-reanimated";
 import { Canvas, Path, RoundedRect } from "@shopify/react-native-skia";
 import { AppDimensionsContext } from "@/contexts/appDimensions";
 import { useSkiaPath } from "@/utils/roundedPathCreators";
-import { useAppAppearanceSettings } from "@/stores/appAppearanceSettings";
 import { useBottomSheet } from "@/hooks/useBottomSheet";
 
 type Props = {
@@ -24,10 +23,6 @@ const AppRoundedPath = ({
   handleColor = "#1E1E1E",
   handlePadColor = "rgba(255,255,255,0.5)",
 }: Props) => {
-  const areBarsEnabled = useAppAppearanceSettings(
-    (state) => state.areBarsEnabled,
-  );
-
   const [parentWidth, setParentWidth] = useState(0);
   const { bottomSheet } = useBottomSheet();
 
@@ -62,7 +57,6 @@ const AppRoundedPath = ({
     }),
     [width, barHeight, zIndex],
   );
-  if (!areBarsEnabled) return null;
   return (
     <View style={[containerStyle, style]} onLayout={onLayout}>
       <Canvas
