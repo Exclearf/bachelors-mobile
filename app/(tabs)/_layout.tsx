@@ -1,45 +1,77 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-import { Platform } from 'react-native';
+import { Pressable, StyleSheet } from "react-native";
+import React from "react";
+import { Tabs } from "expo-router";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import Feather from "@expo/vector-icons/Feather";
+import Entypo from "@expo/vector-icons/Entypo";
+import { useAuthStore } from "@/stores/authStore";
+import LoginScreen from "@/screens/login/LoginScreen";
 
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+const RootLayout = () => {
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  if (!isLoggedIn) {
+    return <LoginScreen />;
+  }
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
-      }}>
+        tabBarStyle: styles.tabBarStyle,
+        tabBarItemStyle: styles.centerItems,
+        tabBarShowLabel: false,
+        tabBarButton: (props) => (
+          <Pressable
+            {...props}
+            style={[styles.centerItems, styles.tabBarButton]}
+          />
+        ),
+        tabBarActiveTintColor: "white",
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome name="sign-language" size={size} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="study"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="book-open" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Entypo name="dots-three-horizontal" size={size} color={color} />
+          ),
         }}
       />
     </Tabs>
   );
-}
+};
+
+export default RootLayout;
+
+const styles = StyleSheet.create({
+  tabBarStyle: {
+    backgroundColor: "#1e1e1e",
+    borderColor: "#5e5e5e",
+    borderTopWidth: 2,
+    borderWidth: 0,
+    height: 60,
+  },
+  centerItems: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  tabBarButton: { flex: 1, width: "100%" },
+});
