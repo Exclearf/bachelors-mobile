@@ -17,7 +17,9 @@ const items = [
   },
 ];
 
-const SettingsContainer = () => {
+const CameraSettingsContainer = () => {
+  const [switchChecked, setSwitchChecked] = React.useState(false);
+
   return (
     <View>
       <ToggleGroup
@@ -29,6 +31,6 @@ const SettingsContainer = () => {
   );
 };
 
-export default SettingsContainer;
+export default CameraSettingsContainer;
 
 const styles = StyleSheet.create({});

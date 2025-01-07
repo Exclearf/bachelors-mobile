@@ -1,4 +1,4 @@
-import { StyleSheet, Switch, TextStyle, View, ViewStyle } from "react-native";
+import { StyleSheet, TextStyle, View, ViewStyle } from "react-native";
 import React from "react";
 import {
   AvailableThemes,
@@ -9,6 +9,7 @@ import ToggleGroup, {
   ToggleItemType,
 } from "@/features/shared/components/input/ToggleGroup";
 import TranslatedText from "@/features/shared/components/text/TranslatedText";
+import Switch from "@/features/shared/components/input/Switch";
 
 type Props = {
   getTranslationKey: (key: string) => string;
@@ -77,15 +78,9 @@ const PersonalizationSection = ({
             // TODO: Remake as a custom component
           }
           <Switch
-            trackColor={{
-              false: "rgba(75,75,75,0.5)",
-              true: "rgba(75,75,75,1)",
-            }}
-            thumbColor={
-              isHighContrast ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.5)"
-            }
-            onValueChange={setIsHighContrast}
-            value={isHighContrast}
+            checked={isHighContrast}
+            setChecked={setIsHighContrast}
+            diameter={30}
           />
         </View>
       </View>

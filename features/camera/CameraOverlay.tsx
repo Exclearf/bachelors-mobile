@@ -18,7 +18,7 @@ import SettingsButton from "./components/buttons/SettingsButton";
 import FlashlightButton from "./components/buttons/FlashlightButton";
 import SettingsModal from "./components/modals/SettingsModal";
 import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
-import SettingsPanel from "./components/containers/SettingsContainer";
+import CameraSettingsContainer from "./components/containers/CameraSettingsContainer";
 import { useCameraOptionsStore } from "@/features/camera/stores/cameraOptions";
 import { StyleSheet } from "react-native";
 import { useAuthStore } from "@/features/auth/stores/authStore";
@@ -114,7 +114,7 @@ const CameraOverlay = ({ setFlashOn, setIsBack }: CameraOverlayProps) => {
           isVisible={settingsModalExpanded}
           iconParameters={iconParameters}
         >
-          <SettingsPanel />
+          <CameraSettingsContainer />
         </SettingsModal>
       </CameraTopContainer>
       {!isAvailable && (
