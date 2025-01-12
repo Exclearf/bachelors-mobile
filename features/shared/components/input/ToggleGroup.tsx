@@ -6,6 +6,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import TranslatedText from "../text/TranslatedText";
+import { useTheme } from "../../hooks/useTheme";
 
 type Props = {
   items: ToggleItemType[];
@@ -44,6 +45,12 @@ const ToggleGroup = ({
     activeIndex.set(withTiming(index));
     onChange(item);
   };
+  const theme = useTheme();
+
+  styles.activeBackground = {
+    ...styles.activeBackground,
+    backgroundColor: theme?.secondary!,
+  };
 
   return (
     <View
@@ -52,7 +59,7 @@ const ToggleGroup = ({
           borderRadius: 5,
           width,
           height,
-          backgroundColor: "rgba(75,75,75,0.5)",
+          backgroundColor: theme?.muted,
         },
       ]}
     >
@@ -107,8 +114,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: "rgba(255,255,255,0.2)",
-    backgroundColor: "rgba(255,255,255,0.1)",
     height: "100%",
+    backgroundColor: "grey",
   },
   toggleGroupItem: {
     display: "flex",

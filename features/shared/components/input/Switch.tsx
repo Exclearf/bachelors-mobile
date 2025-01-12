@@ -67,7 +67,7 @@ const Switch = ({
     track: "rgba(125,125,125,0.15)",
   },
 }: Props) => {
-  const isChecked = useSharedValue(checked ? 0 : 1);
+  const isChecked = useSharedValue(checked ? 1 : 0);
 
   const thumbAnimatedStyle = useAnimatedStyle(() => {
     return {

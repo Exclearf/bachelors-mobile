@@ -5,6 +5,7 @@ import PersonalizationSection from "./components/sections/personalization/Person
 import TranslatedText from "@/features/shared/components/text/TranslatedText";
 import AccessibilitySection from "./components/sections/accessibility/AccessibilitySection";
 import { useLocalization } from "../shared/hooks/useLocalization";
+import { useTheme } from "../shared/hooks/useTheme";
 
 type Props = {
   getTranslationKey: (key: string) => string;
@@ -26,7 +27,7 @@ export type SettingsSectionSubItemType = {
 
 const SettingsSections = ({ getTranslationKey, width }: Props) => {
   getTranslationKey = useLocalization(getTranslationKey("sections"));
-
+  const theme = useTheme();
   return (
     <>
       {(
@@ -47,12 +48,15 @@ const SettingsSections = ({ getTranslationKey, width }: Props) => {
       ).map(([translationKey, Component]) => (
         <View style={styles.sectionContainer} key={translationKey}>
           <TranslatedText
-            style={styles.sectionHeader}
+            style={{ ...styles.sectionHeader, color: theme?.primaryForeground }}
             translationKey={translationKey}
           />
           <Component
             style={styles.sectionContent}
-            textStyle={styles.sectionContentText}
+            textStyle={{
+              ...styles.sectionContentText,
+              color: theme?.secondaryForeground,
+            }}
             getTranslationKey={getTranslationKey}
             width={width}
           />
@@ -79,7 +83,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     paddingBottom: 15,
     paddingTop: 10,
-    color: "#fff",
   },
   sectionContent: {
     flexDirection: "row",
@@ -87,5 +90,5 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingVertical: 5,
   },
-  sectionContentText: { color: "white", fontSize: 16, width: "30%" },
+  sectionContentText: { fontSize: 16, width: "30%" },
 });

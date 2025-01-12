@@ -8,15 +8,16 @@ import { useAuthFlow } from "@/features/auth/hooks/useAuthFlow";
 import { useLocalization } from "@/features/shared/hooks/useLocalization";
 import { AppDimensionsContext } from "../shared/contexts/appDimensions";
 import { useBottomSheet } from "../shared/hooks/useBottomSheet";
+import { useTheme } from "../shared/hooks/useTheme";
 
 const LoginScreen = () => {
   const { height } = useContext(AppDimensionsContext);
   const { bottomSheet } = useBottomSheet();
   const { signInWithGoogle } = useAuthFlow();
   const getTranslationKey = useLocalization("loginPage");
-
+  const theme = useTheme();
   useEffect(() => {
-    bottomSheet?.snapToIndex(1);
+    bottomSheet?.expand?.();
   }, [bottomSheet]);
 
   const containerStyle = useAnimatedStyle(() => {
@@ -49,6 +50,9 @@ const LoginScreen = () => {
             alignItems: "center",
           },
           containerStyle,
+          {
+            backgroundColor: theme?.background,
+          },
         ]}
       >
         <Animated.View style={[styles.header, headerStyle]}>
@@ -58,7 +62,7 @@ const LoginScreen = () => {
             }}
           >
             <TranslatedText
-              style={styles.headerText}
+              style={[styles.headerText, { color: theme?.primaryForeground }]}
               translationKey={getTranslationKey("signInTitle")}
             />
           </Pressable>
@@ -73,7 +77,7 @@ const LoginScreen = () => {
             <View style={styles.buttonContainer}>
               <Image source={google_logo} style={styles.googleLogo}></Image>
               <TranslatedText
-                style={styles.buttonText}
+                style={[styles.buttonText, { color: theme?.primaryForeground }]}
                 translationKey={getTranslationKey("signInWithGoogle")}
               />
             </View>
@@ -88,7 +92,6 @@ export default LoginScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#1e1e1e",
     width: "100%",
     height: "100%",
   },
@@ -96,7 +99,6 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   headerText: {
-    color: "#fff",
     fontSize: 34,
     fontWeight: "bold",
     textAlign: "center",
@@ -117,7 +119,6 @@ const styles = StyleSheet.create({
     height: 35,
   },
   buttonText: {
-    color: "#fff",
     fontSize: 18,
     fontWeight: "bold",
   },

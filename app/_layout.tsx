@@ -54,7 +54,7 @@ export default function RootLayout() {
               <StatusBar
                 translucent={false}
                 style={"dark"}
-                backgroundColor={theme.primary}
+                backgroundColor={theme?.background}
               />
               <SafeAreaView style={[styles.container]}>
                 <AppRoundedPath

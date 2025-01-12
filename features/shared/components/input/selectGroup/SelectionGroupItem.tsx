@@ -1,4 +1,5 @@
 import {
+  StyleProp,
   StyleSheet,
   TextStyle,
   TouchableWithoutFeedback,
@@ -11,7 +12,7 @@ import TranslatedText from "../../text/TranslatedText";
 export type SelectionGroupItemProps = {
   translationKey: string;
   onClick: () => void;
-  textStyle: TextStyle;
+  textStyle: StyleProp<TextStyle>;
   itemStyle: ViewStyle;
   Icon: React.ReactNode;
 };
@@ -27,7 +28,10 @@ const SelectionGroupItem = ({
     <TouchableWithoutFeedback onPress={onClick}>
       <View style={[styles.container, itemStyle]}>
         {Icon}
-        <TranslatedText style={textStyle} translationKey={translationKey} />
+        <TranslatedText
+          style={textStyle as TextStyle}
+          translationKey={translationKey}
+        />
       </View>
     </TouchableWithoutFeedback>
   );

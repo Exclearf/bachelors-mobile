@@ -12,17 +12,18 @@ type ReplaceNumbersWithStrings<T> = {
       : T[K];
 };
 
-type Theme = ReturnType<typeof generateTheme>;
+type ThemeGeneratorFunction = ReturnType<typeof generateTheme>;
+export type Theme = ReplaceNumbersWithStrings<ThemeGeneratorFunction>;
 
 type PersonalizationState = {
-  theme: ReplaceNumbersWithStrings<Theme> | {};
+  theme: Theme | null;
   themeType: ColorSchemeName;
   isHighContrast: boolean;
   accentColor: string;
 };
 
 type PersonalizationActions = {
-  setTheme: (newTheme: Theme) => void;
+  setTheme: (newTheme: ThemeGeneratorFunction) => void;
   setThemeType: (newTheme: ColorSchemeName) => void;
   setIsHighContrast: (newState: boolean) => void;
   setAccentColor: (newColor: string) => void;
@@ -32,20 +33,17 @@ export const usePersonalizationStore = create<
   PersonalizationState & PersonalizationActions
 >()(
   immer((set) => ({
-    theme: {},
+    theme: null,
     themeType: "dark",
     accentColor: "#00ffff",
     isHighContrast: false,
     setTheme: (newTheme) =>
       set((state) => {
-        state.theme = {};
+        state.theme = {} as Theme;
         for (const [key, value] of Object.entries(newTheme)) {
-          // TODO: Fix this
-          //@ts-expect-error It's really late and I'm tired
           state.theme[key as keyof typeof newTheme] = hexFromArgb(
             Number(value),
           );
-          console.log(state.theme.primary);
         }
       }),
     setThemeType: (newTheme) =>

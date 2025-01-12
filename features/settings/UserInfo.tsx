@@ -12,6 +12,7 @@ import {
   useLocalization,
   UseLocalizationFunction,
 } from "../shared/hooks/useLocalization";
+import { useTheme } from "../shared/hooks/useTheme";
 
 type Props = {
   getTranslationKey: UseLocalizationFunction;
@@ -25,6 +26,7 @@ const UserInfo = ({ getTranslationKey, height }: Props) => {
   const setMode = useTranslationStore((state) => state.setMode);
   getTranslationKey = useLocalization(getTranslationKey("userInfo"));
   const [picture, setPicture] = useState(user?.picture);
+  const theme = useTheme();
   const translationKey = useTimeTranslationKey(
     [
       "greetings.morning",
@@ -38,7 +40,7 @@ const UserInfo = ({ getTranslationKey, height }: Props) => {
     <View style={styles.container}>
       <View style={[styles.greetingsContainer, { height: height * 0.07 }]}>
         <TranslatedText
-          style={styles.greetingsText}
+          style={{ ...styles.greetingsText, color: theme?.primaryForeground }}
           translationKey={translationKey}
           translationParameters={{ name: user?.name }}
         />
@@ -79,7 +81,6 @@ export default UserInfo;
 const styles = StyleSheet.create({
   container: { paddingBottom: 5 },
   logOutText: {
-    color: "#fff",
     fontSize: 16,
   },
   greetingsContainer: {
@@ -90,7 +91,6 @@ const styles = StyleSheet.create({
   },
   greetingsText: {
     fontSize: 22,
-    color: "#fff",
   },
   greetinsImage: {
     width: 45,

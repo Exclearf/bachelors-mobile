@@ -21,7 +21,10 @@ const RootLayout = () => {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarStyle: [styles.tabBarStyle, { backgroundColor: theme.primary }],
+        tabBarStyle: [
+          styles.tabBarStyle,
+          { backgroundColor: theme?.background },
+        ],
         tabBarItemStyle: styles.centerItems,
         tabBarShowLabel: false,
         tabBarButton: (props) => (

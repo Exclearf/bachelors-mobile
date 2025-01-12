@@ -12,12 +12,13 @@ import SignTranslation from "@/features/translation/SignTranslation";
 import TextTranslation from "@/features/translation/TextTranslation";
 import { useLocalization } from "@/features/shared/hooks/useLocalization";
 import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
+import { useTheme } from "@/features/shared/hooks/useTheme";
 
 const IndexTab = () => {
   const getTranslationKey = useLocalization("indexPage");
   const mode = useTranslationStore((state) => state.mode);
   const { height } = useContext(AppDimensionsContext);
-
+  const theme = useTheme();
   const availableFunctions: SelectionGroupItemConfig[] = [
     {
       id: "signToText",
@@ -36,18 +37,27 @@ const IndexTab = () => {
   ];
 
   return (
-    <View style={styles.container}>
+    <View style={{ ...styles.container, backgroundColor: theme?.background }}>
       <SelectGroup items={availableFunctions} />
       <View style={styles.innerContainer}>
         <ExpandableModal
           initialHeight={height * 0.55 - height * 0.11 - 36}
           padding={20}
-          containerStyle={[styles.indexSection, styles.translationSection]}
+          containerStyle={[
+            styles.indexSection,
+            { backgroundColor: theme?.card },
+          ]}
           titleTranslationKey={getTranslationKey("translation")}
         >
           {mode === "signToText" ? <SignTranslation /> : <TextTranslation />}
         </ExpandableModal>
-        <History padding={20} containerStyle={[styles.indexSection]} />
+        <History
+          padding={20}
+          containerStyle={[
+            styles.indexSection,
+            { backgroundColor: theme?.card },
+          ]}
+        />
       </View>
     </View>
   );
@@ -57,7 +67,6 @@ export default IndexTab;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#1e1e1e",
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
@@ -73,8 +82,5 @@ const styles = StyleSheet.create({
   indexSection: {
     borderRadius: 10,
     boxShadow: "0px 0px 10px 1px rgba(15,15,15,0.5)",
-  },
-  translationSection: {
-    backgroundColor: "rgba(75, 75, 75, 1)",
   },
 });

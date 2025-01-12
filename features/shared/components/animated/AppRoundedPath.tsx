@@ -69,7 +69,11 @@ const AppRoundedPath = ({
           backgroundColor: "rgba(0,0,0,0)",
         }}
       >
-        <Path transform={[{ scaleX }]} path={skiaPath} color={theme.primary} />
+        <Path
+          transform={[{ scaleX }]}
+          path={skiaPath}
+          color={theme?.background}
+        />
         <RoundedRect
           transform={[{ scaleX }]}
           x={43}

@@ -2,7 +2,7 @@ import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
 import SettingsSections from "@/features/settings/SettingsSections";
 import UserInfo from "@/features/settings/UserInfo";
 import { useLocalization } from "@/features/shared/hooks/useLocalization";
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { StyleSheet, View } from "react-native";
 import { usePersonalizationStore } from "@/features/shared/stores/personalizationStore";
 
@@ -11,10 +11,8 @@ const SettingsTab = () => {
   const getTranslationKey = useLocalization("settingsPage");
   const theme = usePersonalizationStore((state) => state.theme);
 
-  useEffect(() => console.log(theme), [theme.primary]);
-
   return (
-    <View style={[styles.container, { backgroundColor: theme?.primary }]}>
+    <View style={[styles.container, { backgroundColor: theme?.background }]}>
       <UserInfo getTranslationKey={getTranslationKey} height={height} />
       <SettingsSections getTranslationKey={getTranslationKey} width={width} />
     </View>

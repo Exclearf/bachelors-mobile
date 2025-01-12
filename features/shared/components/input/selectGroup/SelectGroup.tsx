@@ -6,6 +6,7 @@ import { useTranslationStore } from "@/features/settings/stores/translationStore
 import { useShallow } from "zustand/react/shallow";
 import { useCameraOptionsStore } from "@/features/camera/stores/cameraOptions";
 import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
+import { useTheme } from "@/features/shared/hooks/useTheme";
 
 export type SelectionGroupItemConfig = {
   id: "signToText" | "textToSign";
@@ -24,6 +25,14 @@ const SelectGroup = ({ items }: Props) => {
     useShallow((state) => [state.mode, state.setMode]),
   );
   const setIsAvailable = useCameraOptionsStore((state) => state.setIsAvailable);
+  const theme = useTheme();
+
+  // TODO: Workaround
+  //@ts-expect-error
+  styles.item = StyleSheet.compose(styles.item, {
+    borderColor: theme?.mutedForeground,
+    backgroundColor: theme?.muted,
+  });
 
   return (
     <Animated.View style={[styles.container, { height: height * 0.1 - 30 }]}>
@@ -39,12 +48,31 @@ const SelectGroup = ({ items }: Props) => {
           translationKey={item.translationKey}
           Icon={
             <item.icon
-              color={item.id === mode ? "#5289e3" : "white"}
+              color={
+                item.id === mode
+                  ? theme?.cardForeground
+                  : theme?.mutedForeground
+              }
               size={17}
             />
           }
-          itemStyle={item.id === mode ? (itemChosen as ViewStyle) : styles.item}
-          textStyle={item.id === mode ? styles.itemTextChosen : styles.itemText}
+          itemStyle={
+            item.id === mode
+              ? (StyleSheet.compose(itemChosen as ViewStyle, {
+                  backgroundColor: theme?.card,
+                  borderColor: theme?.cardForeground,
+                }) as ViewStyle)
+              : styles.item
+          }
+          textStyle={
+            item.id === mode
+              ? StyleSheet.compose(styles.itemChosen, {
+                  color: theme?.cardForeground,
+                })
+              : StyleSheet.compose(styles.itemText, {
+                  color: theme?.mutedForeground,
+                })
+          }
         />
       ))}
     </Animated.View>
@@ -75,17 +103,13 @@ const styles = StyleSheet.create({
   },
   itemChosen: {
     borderColor: "rgba(100, 146, 222, 0.3)",
-    color: "#5289e3",
-    backgroundColor: "rgba(100, 146, 222, 0.3)",
   },
   itemText: {
     fontSize: 15,
-    color: "white",
   },
   itemTextChosen: {
     fontSize: 15,
     fontWeight: "bold",
-    color: "#5c97f7",
   },
 });
 

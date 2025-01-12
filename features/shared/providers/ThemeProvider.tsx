@@ -4,7 +4,6 @@ import { usePersonalizationStore } from "../stores/personalizationStore";
 import { useColorScheme } from "react-native";
 import {
   argbFromHex,
-  hexFromArgb,
   themeFromSourceColor,
 } from "@material/material-color-utilities";
 import { generateTheme } from "../utils/generateTheme";
@@ -22,18 +21,16 @@ const ThemeProvider = ({ children }: Props) => {
       ]),
     );
 
-  const theme = useColorScheme();
+  const colorScheme = useColorScheme();
 
   useEffect(() => {
-    setThemeType(theme);
+    setThemeType(colorScheme);
   }, []);
 
   useEffect(() => {
-    console.log(`Generating theme with ${accentColor}`);
     const theme = themeFromSourceColor(argbFromHex(accentColor));
     const newTheme = generateTheme(theme, themeType, isHighContrast);
     setTheme(newTheme);
-    console.log(hexFromArgb(newTheme.primary));
   }, [themeType, isHighContrast, accentColor]);
 
   return <>{children}</>;

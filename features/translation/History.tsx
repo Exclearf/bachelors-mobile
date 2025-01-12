@@ -7,6 +7,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useLocalization } from "@/features/shared/hooks/useLocalization";
 import TranslatedText from "../shared/components/text/TranslatedText";
 import { expandableModalStyles } from "../camera/components/modals/ExpandableModal";
+import { useTheme } from "../shared/hooks/useTheme";
 
 type Props = {
   padding: number;
@@ -26,11 +27,12 @@ const History = ({ padding, containerStyle }: Props) => {
       width: width - padding * 2,
     };
   });
+  const theme = useTheme();
 
   return (
     <Animated.View style={[...containerStyle, style, styles.container]}>
       <LinearGradient
-        colors={["rgba(75,75,75,1)", "rgba(75,75,75,0.1)"]}
+        colors={[theme?.card!, theme?.background!]}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
         style={styles.gradient}
