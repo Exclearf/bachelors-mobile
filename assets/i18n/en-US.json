@@ -1,20 +1,34 @@
 {
   "settingsPage": {
-    "greetings": {
-      "morning": "Good morning{{name, optionalName}}!",
-      "afternoon": "Good afternoon{{name, optionalName}}!",
-      "evening": "Good evening{{name, optionalName}}!",
-      "night": "Good night{{name, optionalName}}!"
+    "userInfo": {
+      "logOut": "Log out",
+      "greetings": {
+        "morning": "Good morning{{name, optionalName}}!",
+        "afternoon": "Good afternoon{{name, optionalName}}!",
+        "evening": "Good evening{{name, optionalName}}!",
+        "night": "Good night{{name, optionalName}}!"
+      }
     },
-    "logOut": "Log out",
-    "languagesSettingsSection": "Language Preferences",
-    "appLanguage": "Application",
-    "translationLanguage": "Translation",
-    "personalizationHeader": "Personalization",
-    "lightTheme": "Light mode",
-    "darkTheme": "Dark mode",
-    "appTheme": "App Theme",
-    "highContrast": "High Contrast"
+    "sections": {
+      "languagePreferencesSectionHeader": "Language Preferences",
+      "personalizationSectionHeader": "Personalization",
+      "accessibilitySectionHeader": "Accessibility",
+      "languagePreferencesSection": {
+        "appLanguage": "Application",
+        "translationLanguage": "Translation"
+      },
+      "personalizationSection": {
+        "lightTheme": "Light mode",
+        "darkTheme": "Dark mode",
+        "appTheme": "App Theme",
+        "accentColor": "Accent Color",
+        "animationSpeed": "Animation Speed"
+      },
+      "accessibilitySection": {
+        "highContrast": "High Contrast",
+        "fontSize": "Font Size"
+      }
+    }
   },
   "indexPage": {
     "signToText": "Sign",

@@ -1,4 +1,4 @@
-import { Dimensions, Modal, StyleSheet } from "react-native";
+import { Modal, StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useEffect, useRef, useState } from "react";
 import { StatusBar } from "expo-status-bar";
@@ -14,19 +14,18 @@ import { useCameraOptionsStore } from "@/features/camera/stores/cameraOptions";
 import * as Linking from "expo-linking";
 import { useShallow } from "zustand/react/shallow";
 import initiateLocalization from "@/features/translation/i18n/i18n"; // Side-effect import
-import { PersonalizationProvider } from "@/features/shared/providers/PersonalizationProvider";
 import AppRoundedPath from "@/features/shared/components/animated/AppRoundedPath";
 import PictureBbox from "@/features/camera/PictureBbox";
 import CameraOverlay from "@/features/camera/CameraOverlay";
 import AppBottomSheet from "@/features/shared/components/layout/AppBottomSheet";
 import CameraAccessRequest from "@/features/camera/components/modals/CameraAccessRequest";
 import BottomSheetProvider from "@/features/shared/providers/BottomSheetProvider";
-import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
 import { useTopPath } from "@/features/shared/utils/roundedPathCreators";
+import AppDimensionsProvider from "@/features/shared/providers/AppDimensionsProvider";
+import ThemeProvider from "@/features/shared/providers/ThemeProvider";
+import { usePersonalizationStore } from "@/features/shared/stores/personalizationStore";
 
 initiateLocalization();
-
-const windowDimensions = Dimensions.get("window");
 
 export default function RootLayout() {
   const [cameraPermission, requestPermission] = useCameraPermissions();
@@ -44,22 +43,18 @@ export default function RootLayout() {
     }
   }, []);
 
+  const theme = usePersonalizationStore((state) => state.theme);
+
   return (
     <GestureHandlerRootView>
-      <PersonalizationProvider>
-        <SafeAreaProvider
-          style={{
-            backgroundColor: "#1e1e1e",
-            width: windowDimensions.width,
-            height: windowDimensions.height,
-          }}
-        >
-          <AppDimensionsContext.Provider value={windowDimensions}>
+      <AppDimensionsProvider>
+        <ThemeProvider>
+          <SafeAreaProvider>
             <BottomSheetProvider>
               <StatusBar
                 translucent={false}
                 style={"dark"}
-                backgroundColor="#1e1e1e"
+                backgroundColor={theme.primary}
               />
               <SafeAreaView style={[styles.container]}>
                 <AppRoundedPath
@@ -111,9 +106,9 @@ export default function RootLayout() {
                 />
               </Modal>
             </BottomSheetProvider>
-          </AppDimensionsContext.Provider>
-        </SafeAreaProvider>
-      </PersonalizationProvider>
+          </SafeAreaProvider>
+        </ThemeProvider>
+      </AppDimensionsProvider>
     </GestureHandlerRootView>
   );
 }

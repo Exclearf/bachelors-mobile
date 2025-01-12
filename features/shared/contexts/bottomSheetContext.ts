@@ -1,5 +1,5 @@
-import { BottomSheetWrapperRef } from "@/components/wrappers/BottomSheetWrapper";
 import { createContext } from "react";
+import { BottomSheetWrapperRef } from "../components/layout/BottomSheetWrapper";
 
 type BottomSheetContextType = {
   bottomSheet: BottomSheetWrapperRef | undefined;

@@ -6,6 +6,7 @@ import Feather from "@expo/vector-icons/Feather";
 import Entypo from "@expo/vector-icons/Entypo";
 import LoginScreen from "@/features/auth/LoginScreen";
 import { useAuthStore } from "@/features/auth/stores/authStore";
+import { usePersonalizationStore } from "@/features/shared/stores/personalizationStore";
 
 const RootLayout = () => {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -14,11 +15,13 @@ const RootLayout = () => {
     return <LoginScreen />;
   }
 
+  const theme = usePersonalizationStore((state) => state.theme);
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarStyle: styles.tabBarStyle,
+        tabBarStyle: [styles.tabBarStyle, { backgroundColor: theme.primary }],
         tabBarItemStyle: styles.centerItems,
         tabBarShowLabel: false,
         tabBarButton: (props) => (
@@ -62,7 +65,6 @@ export default RootLayout;
 
 const styles = StyleSheet.create({
   tabBarStyle: {
-    backgroundColor: "#1e1e1e",
     borderColor: "#5e5e5e",
     borderTopWidth: 2,
     borderWidth: 0,

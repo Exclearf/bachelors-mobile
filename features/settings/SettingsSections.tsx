@@ -1,24 +1,48 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, TextStyle, View, ViewStyle } from "react-native";
 import React from "react";
-import LanguageTogglesSection from "./LanguageTogglesSection";
-import PersonalizationSection from "./PersonalizationSection";
+import LanguageTogglesSection from "./components/sections/languages/LanguagePreferencesSection";
+import PersonalizationSection from "./components/sections/personalization/PersonalizationSection";
 import TranslatedText from "@/features/shared/components/text/TranslatedText";
+import AccessibilitySection from "./components/sections/accessibility/AccessibilitySection";
+import { useLocalization } from "../shared/hooks/useLocalization";
 
 type Props = {
   getTranslationKey: (key: string) => string;
   width: number;
 };
 
+export type SettingsSectionsItemType = {
+  getTranslationKey: (key: string) => string;
+  width: number;
+  style: ViewStyle;
+  textStyle: TextStyle;
+};
+
+export type SettingsSectionSubItemType = {
+  getTranslationKey: (key: string) => string;
+  textStyle: TextStyle;
+  width: number;
+};
+
 const SettingsSections = ({ getTranslationKey, width }: Props) => {
+  getTranslationKey = useLocalization(getTranslationKey("sections"));
+
   return (
     <>
       {(
         [
           [
-            getTranslationKey("languagesSettingsSection"),
+            getTranslationKey("languagePreferencesSectionHeader"),
             LanguageTogglesSection,
           ],
-          [getTranslationKey("personalizationHeader"), PersonalizationSection],
+          [
+            getTranslationKey("personalizationSectionHeader"),
+            PersonalizationSection,
+          ],
+          [
+            getTranslationKey("accessibilitySectionHeader"),
+            AccessibilitySection,
+          ],
         ] as const
       ).map(([translationKey, Component]) => (
         <View style={styles.sectionContainer} key={translationKey}>

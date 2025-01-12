@@ -8,9 +8,13 @@ import TranslatedText from "../shared/components/text/TranslatedText";
 import { defaultPicture } from "@/features/auth/hooks/useAuthFlow";
 import Button from "../shared/components/input/Button";
 import { useAuthStore } from "../auth/stores/authStore";
+import {
+  useLocalization,
+  UseLocalizationFunction,
+} from "../shared/hooks/useLocalization";
 
 type Props = {
-  getTranslationKey: (key: string) => string;
+  getTranslationKey: UseLocalizationFunction;
   height: number;
 };
 
@@ -19,9 +23,8 @@ const UserInfo = ({ getTranslationKey, height }: Props) => {
     useShallow((state) => [state.setIsLoggedIn, state.user]),
   );
   const setMode = useTranslationStore((state) => state.setMode);
-
+  getTranslationKey = useLocalization(getTranslationKey("userInfo"));
   const [picture, setPicture] = useState(user?.picture);
-
   const translationKey = useTimeTranslationKey(
     [
       "greetings.morning",
@@ -47,21 +50,26 @@ const UserInfo = ({ getTranslationKey, height }: Props) => {
           />
         )}
       </View>
-      <Button
-        width={128}
-        height={48}
-        backgroundColor="#551616"
-        onPress={() => {
-          setMode("signToText");
-          router.replace("/");
-          setIsSignedIn(false);
-        }}
-      >
-        <TranslatedText
-          translationKey="settingsPage.logOut"
-          style={styles.logOutText}
-        />
-      </Button>
+      {
+        // TODO: Make as a pop-up on the user profile image
+      }
+      {false && (
+        <Button
+          width={128}
+          height={48}
+          backgroundColor="#551616"
+          onPress={() => {
+            setMode("signToText");
+            router.replace("/");
+            setIsSignedIn(false);
+          }}
+        >
+          <TranslatedText
+            translationKey={getTranslationKey("logOut")}
+            style={styles.logOutText}
+          />
+        </Button>
+      )}
     </View>
   );
 };

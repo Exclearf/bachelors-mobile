@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, useRef, useState } from "react";
-import { BottomSheetWrapperRef } from "../wrappers/BottomSheetWrapper";
 import { BottomSheetContext } from "../contexts/bottomSheetContext";
+import { BottomSheetWrapperRef } from "../components/layout/BottomSheetWrapper";
 
 type Props = PropsWithChildren<{}>;
 

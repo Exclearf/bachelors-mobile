@@ -5,6 +5,7 @@ import { Canvas, Path, RoundedRect } from "@shopify/react-native-skia";
 import { useBottomSheet } from "@/features/shared/hooks/useBottomSheet";
 import { useSkiaPath } from "../../utils/roundedPathCreators";
 import { AppDimensionsContext } from "../../contexts/appDimensions";
+import { usePersonalizationStore } from "../../stores/personalizationStore";
 
 type Props = {
   barHeight: number;
@@ -20,7 +21,6 @@ const AppRoundedPath = ({
   barHeight,
   zIndex,
   style,
-  handleColor = "#1E1E1E",
   handlePadColor = "rgba(255,255,255,0.5)",
 }: Props) => {
   const [parentWidth, setParentWidth] = useState(0);
@@ -38,6 +38,8 @@ const AppRoundedPath = ({
     },
     [parentWidth],
   );
+
+  const theme = usePersonalizationStore((state) => state.theme);
 
   const { height, width } = useContext(AppDimensionsContext);
   const skiaPath = useSkiaPath({
@@ -67,7 +69,7 @@ const AppRoundedPath = ({
           backgroundColor: "rgba(0,0,0,0)",
         }}
       >
-        <Path transform={[{ scaleX }]} path={skiaPath} color={handleColor} />
+        <Path transform={[{ scaleX }]} path={skiaPath} color={theme.primary} />
         <RoundedRect
           transform={[{ scaleX }]}
           x={43}

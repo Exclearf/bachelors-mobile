@@ -1,4 +1,4 @@
-import { TextStyle, View, ViewStyle } from "react-native";
+import { View } from "react-native";
 import React, { useState } from "react";
 import { useTranslationStore } from "@/features/settings/stores/translationStore";
 import { useShallow } from "zustand/react/shallow";
@@ -8,13 +8,10 @@ import ToggleGroup, {
 } from "@/features/shared/components/input/ToggleGroup";
 import { locales } from "@/features/translation/i18n/i18n";
 import TranslatedText from "@/features/shared/components/text/TranslatedText";
+import { SettingsSectionsItemType } from "../../../SettingsSections";
+import { useLocalization } from "@/features/shared/hooks/useLocalization";
 
-type Props = {
-  getTranslationKey: (key: string) => string;
-  width: number;
-  style: ViewStyle;
-  textStyle: TextStyle;
-};
+type Props = {} & SettingsSectionsItemType;
 
 const LanguageTogglesSection = ({
   getTranslationKey,
@@ -25,6 +22,9 @@ const LanguageTogglesSection = ({
   const { i18n } = useTranslation();
   const [selectedLanguageCode, setSelectedLanguageCode] = useState(
     i18n.language,
+  );
+  getTranslationKey = useLocalization(
+    getTranslationKey("languagePreferencesSection"),
   );
 
   const appLanguages: ToggleItemType[] = locales.map((item) => ({
@@ -82,6 +82,7 @@ const LanguageTogglesSection = ({
             selectedIndex={currentAppLanguageIndex}
             items={languages}
             onChange={onChange}
+            height={30}
             width={width * 0.55}
           />
         </View>

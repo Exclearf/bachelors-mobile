@@ -21,9 +21,8 @@ type SwitchDisabledColor = {
 
 type CustomSwitchThumbProps = {
   size: number;
-
   style: StyleProp<AnimatedStyle<StyleProp<TextStyle>>>;
-};
+} & { [key: string]: any };
 
 type CustomSwitchThumb = ({
   size,
@@ -48,9 +47,6 @@ const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 const padding = 2;
 
-// TODO: Make the component and replace the switch in the settings
-// Required features:
-// 11) Custom thumb
 const Switch = ({
   checked,
   setChecked,
@@ -75,7 +71,7 @@ const Switch = ({
 
   const thumbAnimatedStyle = useAnimatedStyle(() => {
     return {
-      transform: [{ translateX: isChecked.value * (diameter - padding * 2) }],
+      transform: [{ translateX: isChecked.value * diameter }],
       backgroundColor: interpolateColor(
         isChecked.get(),
         [0, 1],
@@ -134,7 +130,7 @@ const Switch = ({
           : trackAnimatedStyle,
         styles.trackContainer,
         {
-          width: diameter * 2,
+          width: diameter * 2 + padding * 2,
           height: diameter + 4,
           borderRadius: diameter / 2 + padding * 2,
         },
@@ -143,13 +139,13 @@ const Switch = ({
     >
       {CustomTrueThumb && (
         <CustomTrueThumb
-          size={diameter - diameter / 3}
+          size={diameter - diameter / 2.5}
           style={[
             customTrueThumbStyle,
             styles.customThumb,
             {
-              left: diameter / 6,
-              top: diameter / 5,
+              left: diameter / 4,
+              top: diameter / 4,
             },
           ]}
         />
@@ -169,13 +165,13 @@ const Switch = ({
       />
       {CustomFalseThumb && (
         <CustomFalseThumb
-          size={diameter - diameter / 3}
+          size={diameter - diameter / 2.5}
           style={[
             customFalseThumbStyle,
             styles.customThumb,
             {
-              right: diameter / 6,
-              top: diameter / 5,
+              right: diameter / 4,
+              top: diameter / 4,
             },
           ]}
         />
