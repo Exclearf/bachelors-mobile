@@ -9,8 +9,15 @@ import React, {
 import BottomSheet, { BottomSheetProps } from "@gorhom/bottom-sheet";
 import { SharedValue, useSharedValue } from "react-native-reanimated";
 import { useBottomSheet } from "@/features/shared/hooks/useBottomSheet";
+import { useIsFullScreenRoute } from "../../hooks/useIsFullScreenRoute";
 
-export type BottomSheetWrapperProps = PropsWithChildren<BottomSheetProps>;
+type Props = {
+  areGesturesEnabled?: boolean;
+};
+
+export type BottomSheetWrapperProps = PropsWithChildren<
+  BottomSheetProps & Props
+>;
 
 export type BottomSheetWrapperRef = {
   index: number;
@@ -22,13 +29,11 @@ const BottomSheetWrapper = forwardRef<
   BottomSheetWrapperProps
 >((props, ref) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
-
   const context = useBottomSheet();
-
   const [index, setIndex] = useState(0);
   const [height, setHeight] = useState(0);
-
   const animatedPosition = useSharedValue(0);
+  const isFullScrenRoute = useIsFullScreenRoute();
 
   const bottomSheetWrapperImplementation = {
     ...bottomSheetRef.current,
@@ -53,6 +58,8 @@ const BottomSheetWrapper = forwardRef<
         setHeight(height);
         props.onChange?.(index, height, type);
       }}
+      enableHandlePanningGesture={!isFullScrenRoute}
+      enableContentPanningGesture={!isFullScrenRoute}
     >
       {props.children}
     </BottomSheet>

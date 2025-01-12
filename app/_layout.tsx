@@ -56,7 +56,12 @@ export default function RootLayout() {
                 style={"dark"}
                 backgroundColor={theme?.background}
               />
-              <SafeAreaView style={[styles.container]}>
+              <SafeAreaView
+                style={[
+                  styles.container,
+                  { backgroundColor: theme?.background },
+                ]}
+              >
                 <AppRoundedPath
                   zIndex={2}
                   style={{ top: 10 }}
@@ -78,7 +83,7 @@ export default function RootLayout() {
 
                 <CameraOverlay setFlashOn={setFlashOn} setIsBack={setIsBack} />
 
-                <AppBottomSheet snapPoints={["11", "55", "100%"]}>
+                <AppBottomSheet snapPoints={["11", "55", "110%"]}>
                   <Slot />
                 </AppBottomSheet>
               </SafeAreaView>

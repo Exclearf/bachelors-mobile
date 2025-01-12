@@ -1,17 +1,28 @@
-import { StyleSheet, Text, View } from "react-native";
+import { View } from "react-native";
 import React from "react";
-import { SettingsSectionSubItemType } from "@/features/settings/SettingsSections";
+import Slider from "@/features/shared/components/input/Slider";
+import TranslatedText from "@/features/shared/components/text/TranslatedText";
+import { AccessibilityItemProps } from "../AccessibilitySection";
 
-type Props = {} & SettingsSectionSubItemType;
+type Props = {} & AccessibilityItemProps;
 
-const FontSizeSlider = (props: Props) => {
+const FontSizeSlider = ({
+  getTranslationKey,
+  textStyle,
+  containerStyle,
+  width,
+}: Props) => {
   return (
-    <View>
-      <Text>FontSizeSlider</Text>
-    </View>
+    <>
+      <TranslatedText
+        style={textStyle}
+        translationKey={getTranslationKey("fontSize")}
+      />
+      <View style={[{ width: width * 0.55 }, containerStyle]}>
+        <Slider />
+      </View>
+    </>
   );
 };
 
 export default FontSizeSlider;
-
-const styles = StyleSheet.create({});

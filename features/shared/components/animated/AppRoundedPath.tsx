@@ -6,6 +6,7 @@ import { useBottomSheet } from "@/features/shared/hooks/useBottomSheet";
 import { useSkiaPath } from "../../utils/roundedPathCreators";
 import { AppDimensionsContext } from "../../contexts/appDimensions";
 import { usePersonalizationStore } from "../../stores/personalizationStore";
+import { useIsFullScreenRoute } from "../../hooks/useIsFullScreenRoute";
 
 type Props = {
   barHeight: number;
@@ -25,6 +26,7 @@ const AppRoundedPath = ({
 }: Props) => {
   const [parentWidth, setParentWidth] = useState(0);
   const { bottomSheet } = useBottomSheet();
+  const isFullScrenRoute = useIsFullScreenRoute();
 
   //TODO: Workaround
   const sharedValue = useSharedValue(0);
@@ -74,15 +76,17 @@ const AppRoundedPath = ({
           path={skiaPath}
           color={theme?.background}
         />
-        <RoundedRect
-          transform={[{ scaleX }]}
-          x={43}
-          y={4}
-          width={14}
-          height={4}
-          r={1}
-          color={handlePadColor}
-        />
+        {!isFullScrenRoute && (
+          <RoundedRect
+            transform={[{ scaleX }]}
+            x={43}
+            y={4}
+            width={14}
+            height={4}
+            r={1}
+            color={handlePadColor}
+          />
+        )}
       </Canvas>
     </View>
   );

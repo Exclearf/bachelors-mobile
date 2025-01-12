@@ -1,9 +1,16 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ViewStyle } from "react-native";
 import React from "react";
-import { SettingsSectionsItemType } from "../../../SettingsSections";
+import {
+  SettingsSectionsItemType,
+  SettingsSectionSubItemType,
+} from "../../../SettingsSections";
 import { useLocalization } from "@/features/shared/hooks/useLocalization";
 import HighContrastSwitch from "./items/HighContrastSwitch";
 import FontSizeSlider from "./items/FontSizeSlider";
+
+export type AccessibilityItemProps = {
+  containerStyle: ViewStyle;
+} & SettingsSectionSubItemType;
 
 type Props = {} & SettingsSectionsItemType;
 
@@ -25,6 +32,7 @@ const AccessibilitySection = ({
           <Item
             getTranslationKey={getTranslationKey}
             textStyle={textStyle}
+            containerStyle={styles.accessibilityItemStyle}
             width={width}
           />
         </View>
@@ -38,5 +46,9 @@ export default AccessibilitySection;
 const styles = StyleSheet.create({
   containerItem: {
     paddingVertical: 5,
+  },
+  accessibilityItemStyle: {
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
