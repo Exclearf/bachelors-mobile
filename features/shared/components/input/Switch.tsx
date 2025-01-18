@@ -8,6 +8,7 @@ import Animated, {
   Easing,
   AnimatedStyle,
 } from "react-native-reanimated";
+import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
 
 type SwitchColor = {
   false: string;
@@ -45,7 +46,8 @@ type Props = {
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-const padding = 2;
+const padding = 3;
+const borderWidth = 1;
 
 const Switch = ({
   checked,
@@ -54,21 +56,27 @@ const Switch = ({
   isDisabled = false,
   CustomFalseThumb,
   CustomTrueThumb,
+  thumbColor,
+  trackColor,
+  disabledColor,
+}: Props) => {
+  const theme = usePersonalizationStore((theme) => theme.theme);
   thumbColor = {
-    false: "rgba(145,145,145,1)",
-    true: "rgba(230,230,230,1)",
-  },
+    false: theme?.secondaryForeground!,
+    true: theme?.primaryForeground!,
+  };
   trackColor = {
-    false: "rgba(70,70,70,1)",
-    true: "rgba(115,115,115,1)",
-  },
+    false: theme?.primaryBackground!,
+    true: theme?.mutedForeground!,
+  };
+
+  //TODO: Customize disabled colors
   disabledColor = {
     thumb: "rgba(255,255,255,0.3)",
     track: "rgba(125,125,125,0.15)",
-  },
-}: Props) => {
-  const isChecked = useSharedValue(checked ? 1 : 0);
+  };
 
+  const isChecked = useSharedValue(checked ? 1 : 0);
   const thumbAnimatedStyle = useAnimatedStyle(() => {
     return {
       transform: [{ translateX: isChecked.value * diameter }],
@@ -131,8 +139,10 @@ const Switch = ({
         styles.trackContainer,
         {
           width: diameter * 2 + padding * 2,
-          height: diameter + 4,
+          height: diameter + padding * 2 + borderWidth * 2,
           borderRadius: diameter / 2 + padding * 2,
+          borderColor: theme?.mutedForeground,
+          borderWidth,
         },
       ]}
       onPress={handleToggle}
@@ -145,7 +155,7 @@ const Switch = ({
             styles.customThumb,
             {
               left: diameter / 4,
-              top: diameter / 4,
+              top: diameter / 4 + padding / 2,
             },
           ]}
         />
@@ -171,7 +181,7 @@ const Switch = ({
             styles.customThumb,
             {
               right: diameter / 4,
-              top: diameter / 4,
+              top: diameter / 4 + padding / 2,
             },
           ]}
         />

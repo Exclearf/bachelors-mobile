@@ -2,7 +2,7 @@ import { StyleProp, StyleSheet, Text, View, ViewStyle } from "react-native";
 import React, { useContext } from "react";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
-import { useTranslationStore } from "@/features/settings/stores/translationStore";
+import { useTranslationStore } from "@/features/translation/stores/translationStore";
 import { LinearGradient } from "expo-linear-gradient";
 import { useLocalization } from "@/features/shared/hooks/useLocalization";
 import TranslatedText from "../shared/components/text/TranslatedText";
@@ -32,7 +32,7 @@ const History = ({ padding, containerStyle }: Props) => {
   return (
     <Animated.View style={[...containerStyle, style, styles.container]}>
       <LinearGradient
-        colors={[theme?.card!, theme?.background!]}
+        colors={[theme?.primaryBackground!, theme?.background!]}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
         style={styles.gradient}

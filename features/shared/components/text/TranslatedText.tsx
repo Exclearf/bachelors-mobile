@@ -35,7 +35,7 @@ const TranslatedText = ({
       fallback={
         <Skeleton
           style={{
-            backgroundColor: "rgba(75,75,75,1)",
+            backgroundColor: theme?.mutedBackground,
             height: userStyle.find((item) => item?.fontSize)?.fontSize ?? 16,
             width: "100%",
           }}

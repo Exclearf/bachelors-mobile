@@ -6,21 +6,23 @@ import Animated, {
   withRepeat,
   withTiming,
 } from "react-native-reanimated";
+import { current } from "immer";
 
 type Props = {
   style: ViewStyle;
 };
 
 const Skeleton = ({ style }: Props) => {
-  const opacity = useSharedValue(0.3);
+  const opacity = useSharedValue(0.75);
 
   useEffect(() => {
     opacity.set(withRepeat(withTiming(1, { duration: 1000 }), -1, true));
   }, []);
 
   const animatedStyle = useAnimatedStyle(() => {
+    const currentVal = 75 * opacity.get();
     return {
-      opacity: opacity.get(),
+      backgroundColor: `rgba(${currentVal},${currentVal},${currentVal},1)`,
     };
   });
 

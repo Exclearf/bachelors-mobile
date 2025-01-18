@@ -2,7 +2,7 @@ import { Image, StyleSheet, View } from "react-native";
 import React, { useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { router } from "expo-router";
-import { useTranslationStore } from "@/features/settings/stores/translationStore";
+import { useTranslationStore } from "@/features/translation/stores/translationStore";
 import { useTimeTranslationKey } from "@/features/shared/hooks/useTimeTranslationKey";
 import TranslatedText from "../shared/components/text/TranslatedText";
 import { defaultPicture } from "@/features/auth/hooks/useAuthFlow";

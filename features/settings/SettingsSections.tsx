@@ -1,4 +1,10 @@
-import { StyleSheet, TextStyle, View, ViewStyle } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  TextStyle,
+  View,
+  ViewStyle,
+} from "react-native";
 import React from "react";
 import LanguageTogglesSection from "./components/sections/languages/LanguagePreferencesSection";
 import PersonalizationSection from "./components/sections/personalization/PersonalizationSection";
@@ -28,8 +34,9 @@ export type SettingsSectionSubItemType = {
 const SettingsSections = ({ getTranslationKey, width }: Props) => {
   getTranslationKey = useLocalization(getTranslationKey("sections"));
   const theme = useTheme();
+
   return (
-    <>
+    <ScrollView>
       {(
         [
           [
@@ -46,7 +53,13 @@ const SettingsSections = ({ getTranslationKey, width }: Props) => {
           ],
         ] as const
       ).map(([translationKey, Component]) => (
-        <View style={styles.sectionContainer} key={translationKey}>
+        <View
+          style={[
+            styles.sectionContainer,
+            { borderColor: theme?.secondaryBackground, borderWidth: 1.35 },
+          ]}
+          key={translationKey}
+        >
           <TranslatedText
             style={{ ...styles.sectionHeader, color: theme?.primaryForeground }}
             translationKey={translationKey}
@@ -62,7 +75,7 @@ const SettingsSections = ({ getTranslationKey, width }: Props) => {
           />
         </View>
       ))}
-    </>
+    </ScrollView>
   );
 };
 
@@ -74,7 +87,6 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     textAlign: "justify",
     padding: 10,
-    borderColor: "rgba(255,255,255,0.2)",
     borderWidth: 1,
     borderRadius: 10,
     paddingHorizontal: 20,

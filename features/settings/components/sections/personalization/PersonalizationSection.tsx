@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import React from "react";
 import AppThemeSwitch from "./items/AppThemeSwitch";
-import ThemeColorSlider from "./items/ThemeColorSlider";
+import ThemeColorSlider from "./items/ThemeColorPanel";
 import { useAppDimensions } from "@/features/shared/hooks/useAppDimensions";
 import { SettingsSectionsItemType } from "../../../SettingsSections";
 import { useLocalization } from "@/features/shared/hooks/useLocalization";
@@ -38,6 +38,6 @@ export default PersonalizationSection;
 
 const styles = StyleSheet.create({
   containerItem: {
-    paddingVertical: 5,
+    paddingVertical: 10,
   },
 });

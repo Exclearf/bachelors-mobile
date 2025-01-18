@@ -45,7 +45,7 @@ export const useAuthFlow = () => {
   };
 
   const handleDeepLink = async (url: string) => {
-    console.log("Deep link received");
+    console.log("Deep link received: " + url);
     try {
       const { access_token, refresh_token } = Object.fromEntries(
         new URLSearchParams(url.split("#")[1]),

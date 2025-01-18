@@ -19,7 +19,7 @@ const FontSizeSlider = ({
         translationKey={getTranslationKey("fontSize")}
       />
       <View style={[{ width: width * 0.55 }, containerStyle]}>
-        <Slider />
+        <Slider width={width * 0.55} initialValue={0.5} totalSteps={2} />
       </View>
     </>
   );

@@ -1,15 +1,9 @@
 import { View } from "react-native";
-import React, { useState } from "react";
-import { useTranslationStore } from "@/features/settings/stores/translationStore";
-import { useShallow } from "zustand/react/shallow";
-import { useTranslation } from "react-i18next";
-import ToggleGroup, {
-  ToggleItemType,
-} from "@/features/shared/components/input/ToggleGroup";
-import { locales } from "@/features/translation/i18n/i18n";
-import TranslatedText from "@/features/shared/components/text/TranslatedText";
+import React from "react";
 import { SettingsSectionsItemType } from "../../../SettingsSections";
 import { useLocalization } from "@/features/shared/hooks/useLocalization";
+import AppLanguageToggle from "./items/appLanguageToggle";
+import TranslationLanguageToggle from "./items/translationLanguageToggle";
 
 type Props = {} & SettingsSectionsItemType;
 
@@ -19,74 +13,23 @@ const LanguageTogglesSection = ({
   style,
   textStyle,
 }: Props) => {
-  const { i18n } = useTranslation();
-  const [selectedLanguageCode, setSelectedLanguageCode] = useState(
-    i18n.language,
-  );
   getTranslationKey = useLocalization(
     getTranslationKey("languagePreferencesSection"),
   );
 
-  const appLanguages: ToggleItemType[] = locales.map((item) => ({
-    id: item.code,
-    title: item.displayName,
-  }));
-  const [availableLanguages, currentLanguage, setCurrentLanguage] =
-    useTranslationStore(
-      useShallow((state) => [
-        state.availableLanguages,
-        state.currentLanguage,
-        state.setCurrentLanguage,
-      ]),
-    );
-
-  const currentTranslationLanguageIndex = availableLanguages.findIndex(
-    (item) => item.id === currentLanguage.id,
-  );
-  const currentAppLanguageIndex = appLanguages.findIndex(
-    (lang) => lang.id === selectedLanguageCode,
-  );
-
-  const changeTranslationLanguage = (language: ToggleItemType) => {
-    setCurrentLanguage(language);
-    console.log("Changing translation language to:", language.id);
-  };
-
-  const changeAppLanguage = (language: ToggleItemType) => {
-    setSelectedLanguageCode(language.id);
-    i18n.changeLanguage(language.id);
-    console.log("Changing app language to:", language.id);
-  };
-
   return (
     <>
-      {(
-        [
-          [
-            appLanguages,
-            getTranslationKey("appLanguage"),
-            changeAppLanguage,
-            currentAppLanguageIndex,
-          ],
-          [
-            availableLanguages,
-            getTranslationKey("translationLanguage"),
-            changeTranslationLanguage,
-            currentTranslationLanguageIndex,
-          ],
-        ] as const
-      ).map(([languages, translationKey, onChange], index) => (
-        <View key={index} style={style}>
-          <TranslatedText translationKey={translationKey} style={textStyle} />
-          <ToggleGroup
-            selectedIndex={currentAppLanguageIndex}
-            items={languages}
-            onChange={onChange}
-            height={30}
-            width={width * 0.55}
-          />
-        </View>
-      ))}
+      {([AppLanguageToggle, TranslationLanguageToggle] as const).map(
+        (LanguageToggle, index) => (
+          <View key={index} style={style}>
+            <LanguageToggle
+              getTranslationKey={getTranslationKey}
+              width={width}
+              textStyle={textStyle}
+            />
+          </View>
+        ),
+      )}
     </>
   );
 };

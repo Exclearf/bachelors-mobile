@@ -5,7 +5,7 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import SelectGroup, {
   SelectionGroupItemConfig,
 } from "@/features/shared/components/input/selectGroup/SelectGroup";
-import { useTranslationStore } from "@/features/settings/stores/translationStore";
+import { useTranslationStore } from "@/features/translation/stores/translationStore";
 import ExpandableModal from "@/features/camera/components/modals/ExpandableModal";
 import History from "@/features/translation/History";
 import SignTranslation from "@/features/translation/SignTranslation";
@@ -45,7 +45,7 @@ const IndexTab = () => {
           padding={20}
           containerStyle={[
             styles.indexSection,
-            { backgroundColor: theme?.card },
+            { backgroundColor: theme?.primaryBackground },
           ]}
           titleTranslationKey={getTranslationKey("translation")}
         >
@@ -55,7 +55,7 @@ const IndexTab = () => {
           padding={20}
           containerStyle={[
             styles.indexSection,
-            { backgroundColor: theme?.card },
+            { backgroundColor: theme?.primaryBackground },
           ]}
         />
       </View>

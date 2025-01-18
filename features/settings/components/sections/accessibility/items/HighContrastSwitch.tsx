@@ -1,6 +1,6 @@
 import { View } from "react-native";
 import React from "react";
-import { usePersonalizationStore } from "@/features/shared/stores/personalizationStore";
+import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
 import { useShallow } from "zustand/react/shallow";
 import Switch from "@/features/shared/components/input/Switch";
 import TranslatedText from "@/features/shared/components/text/TranslatedText";

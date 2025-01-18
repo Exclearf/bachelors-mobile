@@ -5,7 +5,7 @@ import { Canvas, Path, RoundedRect } from "@shopify/react-native-skia";
 import { useBottomSheet } from "@/features/shared/hooks/useBottomSheet";
 import { useSkiaPath } from "../../utils/roundedPathCreators";
 import { AppDimensionsContext } from "../../contexts/appDimensions";
-import { usePersonalizationStore } from "../../stores/personalizationStore";
+import { usePersonalizationStore } from "../../../settings/stores/personalizationStore";
 import { useIsFullScreenRoute } from "../../hooks/useIsFullScreenRoute";
 
 type Props = {

@@ -8,8 +8,8 @@ import {
   useCameraPermissions,
 } from "expo-camera";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { Slot } from "expo-router";
-import { useTranslationStore } from "@/features/settings/stores/translationStore";
+import { Slot, SplashScreen } from "expo-router";
+import { useTranslationStore } from "@/features/translation/stores/translationStore";
 import { useCameraOptionsStore } from "@/features/camera/stores/cameraOptions";
 import * as Linking from "expo-linking";
 import { useShallow } from "zustand/react/shallow";
@@ -19,13 +19,15 @@ import PictureBbox from "@/features/camera/PictureBbox";
 import CameraOverlay from "@/features/camera/CameraOverlay";
 import AppBottomSheet from "@/features/shared/components/layout/AppBottomSheet";
 import CameraAccessRequest from "@/features/camera/components/modals/CameraAccessRequest";
-import BottomSheetProvider from "@/features/shared/providers/BottomSheetProvider";
+import BottomSheetProvider from "@/features/shared/components/providers/BottomSheetProvider";
 import { useTopPath } from "@/features/shared/utils/roundedPathCreators";
-import AppDimensionsProvider from "@/features/shared/providers/AppDimensionsProvider";
-import ThemeProvider from "@/features/shared/providers/ThemeProvider";
-import { usePersonalizationStore } from "@/features/shared/stores/personalizationStore";
+import AppDimensionsProvider from "@/features/shared/components/providers/AppDimensionsProvider";
+import ThemeProvider from "@/features/shared/components/providers/ThemeProvider";
+import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
 
 initiateLocalization();
+
+SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [cameraPermission, requestPermission] = useCameraPermissions();

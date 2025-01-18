@@ -2,11 +2,10 @@ import { createContext } from "react";
 import { BottomSheetWrapperRef } from "../components/layout/BottomSheetWrapper";
 
 type BottomSheetContextType = {
-  bottomSheet: BottomSheetWrapperRef | undefined;
-  registerBottomSheet: (ref: BottomSheetWrapperRef) => void;
-  isRegistered: boolean;
+  bottomSheetRef: BottomSheetWrapperRef | undefined;
+  setBottomSheetRef: (ref: BottomSheetWrapperRef) => void;
 };
 
-export const BottomSheetContext = createContext<
-  BottomSheetContextType | undefined
->(undefined);
+export const BottomSheetContext = createContext<BottomSheetContextType | null>(
+  null,
+);

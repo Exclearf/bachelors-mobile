@@ -6,12 +6,19 @@ import Feather from "@expo/vector-icons/Feather";
 import Entypo from "@expo/vector-icons/Entypo";
 import LoginScreen from "@/features/auth/LoginScreen";
 import { useAuthStore } from "@/features/auth/stores/authStore";
-import { usePersonalizationStore } from "@/features/shared/stores/personalizationStore";
+import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
+import { useIsAppLoaded } from "@/features/shared/hooks/useIsAppLoaded";
+import { useSplashScreen } from "@/features/shared/hooks/useSplashScreen";
 
 const RootLayout = () => {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
-  if (!isLoggedIn) {
+  // This hook is used to prevent the splash screen from hiding before the app is fully loaded
+  // It is placed here in order not to re-render the app
+  const isAppLoaded = useIsAppLoaded();
+  useSplashScreen(isAppLoaded);
+
+  if (!isLoggedIn && false) {
     return <LoginScreen />;
   }
 

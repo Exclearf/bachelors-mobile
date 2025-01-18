@@ -5,7 +5,7 @@ import ToggleGroup, {
 } from "@/features/shared/components/input/ToggleGroup";
 import { SettingsSectionSubItemType } from "@/features/settings/SettingsSections";
 import { ColorSchemeName } from "react-native";
-import { usePersonalizationStore } from "@/features/shared/stores/personalizationStore";
+import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
 import { useShallow } from "zustand/react/shallow";
 
 type Props = {} & SettingsSectionSubItemType;
@@ -45,6 +45,7 @@ const AppThemeSwitch = ({ getTranslationKey, textStyle, width }: Props) => {
         items={themeItems}
         height={30}
         width={width * 0.55}
+        changeWhenAnimationEnds={true}
       />
     </>
   );

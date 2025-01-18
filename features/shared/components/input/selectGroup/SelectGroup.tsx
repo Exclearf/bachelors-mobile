@@ -2,7 +2,7 @@ import { StyleSheet, ViewStyle } from "react-native";
 import React, { useContext } from "react";
 import SelectionGroupItem from "./SelectionGroupItem";
 import Animated from "react-native-reanimated";
-import { useTranslationStore } from "@/features/settings/stores/translationStore";
+import { useTranslationStore } from "@/features/translation/stores/translationStore";
 import { useShallow } from "zustand/react/shallow";
 import { useCameraOptionsStore } from "@/features/camera/stores/cameraOptions";
 import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
@@ -31,7 +31,7 @@ const SelectGroup = ({ items }: Props) => {
   //@ts-expect-error
   styles.item = StyleSheet.compose(styles.item, {
     borderColor: theme?.mutedForeground,
-    backgroundColor: theme?.muted,
+    backgroundColor: theme?.mutedBackground,
   });
 
   return (
@@ -50,7 +50,7 @@ const SelectGroup = ({ items }: Props) => {
             <item.icon
               color={
                 item.id === mode
-                  ? theme?.cardForeground
+                  ? theme?.primaryForeground
                   : theme?.mutedForeground
               }
               size={17}
@@ -59,15 +59,15 @@ const SelectGroup = ({ items }: Props) => {
           itemStyle={
             item.id === mode
               ? (StyleSheet.compose(itemChosen as ViewStyle, {
-                  backgroundColor: theme?.card,
-                  borderColor: theme?.cardForeground,
+                  backgroundColor: theme?.primaryBackground,
+                  borderColor: theme?.primaryForeground,
                 }) as ViewStyle)
               : styles.item
           }
           textStyle={
             item.id === mode
               ? StyleSheet.compose(styles.itemChosen, {
-                  color: theme?.cardForeground,
+                  color: theme?.primaryForeground,
                 })
               : StyleSheet.compose(styles.itemText, {
                   color: theme?.mutedForeground,

@@ -4,7 +4,7 @@ import UserInfo from "@/features/settings/UserInfo";
 import { useLocalization } from "@/features/shared/hooks/useLocalization";
 import React, { useContext } from "react";
 import { StyleSheet, View } from "react-native";
-import { usePersonalizationStore } from "@/features/shared/stores/personalizationStore";
+import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
 
 const SettingsTab = () => {
   const { width, height } = useContext(AppDimensionsContext);

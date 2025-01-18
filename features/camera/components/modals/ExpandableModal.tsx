@@ -7,7 +7,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import { useTranslationStore } from "@/features/settings/stores/translationStore";
+import { useTranslationStore } from "@/features/translation/stores/translationStore";
 import { useBottomSheet } from "@/features/shared/hooks/useBottomSheet";
 import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
 import TranslatedText from "@/features/shared/components/text/TranslatedText";
