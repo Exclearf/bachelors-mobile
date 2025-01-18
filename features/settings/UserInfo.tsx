@@ -67,6 +67,7 @@ const UserInfo = ({ getTranslationKey, height }: Props) => {
           }}
         >
           <TranslatedText
+            isBold={true}
             translationKey={getTranslationKey("logOut")}
             style={styles.logOutText}
           />

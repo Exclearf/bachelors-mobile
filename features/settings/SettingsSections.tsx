@@ -80,6 +80,7 @@ const SettingsSections = ({ getTranslationKey, width, height }: Props) => {
                 ...styles.sectionHeader,
                 color: theme?.primaryForeground,
               }}
+              isBold={true}
               translationKey={translationKey}
             />
             <Component
@@ -121,5 +122,5 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingVertical: 5,
   },
-  sectionContentText: { fontSize: 16, width: "30%" },
+  sectionContentText: { fontSize: 15, width: "30%" },
 });

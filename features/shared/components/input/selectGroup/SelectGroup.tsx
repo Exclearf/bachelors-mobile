@@ -101,13 +101,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   itemChosen: {
+    fontSize: 14,
     borderColor: "rgba(100, 146, 222, 0.3)",
   },
   itemText: {
-    fontSize: 15,
+    fontSize: 14,
   },
   itemTextChosen: {
-    fontSize: 15,
     fontWeight: "bold",
   },
 });

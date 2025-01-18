@@ -33,7 +33,7 @@ const ToggleGroup = ({
   width,
   height,
   changeWhenAnimationEnds,
-  changeWhenAnimationEndsOffset = 35,
+  changeWhenAnimationEndsOffset = 25,
 }: Props) => {
   width = width ?? 300;
   height = height ?? 30;

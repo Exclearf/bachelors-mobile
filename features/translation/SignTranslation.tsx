@@ -4,7 +4,7 @@ import React from "react";
 const SignTranslation = () => {
   return (
     <View>
-      <Text>SignTranslation</Text>
+      <Text style={{ fontFamily: "OpenSans_400Regular" }}>SignTranslation</Text>
     </View>
   );
 };

@@ -20,7 +20,6 @@ import CameraOverlay from "@/features/camera/CameraOverlay";
 import AppBottomSheet from "@/features/shared/components/layout/AppBottomSheet";
 import CameraAccessRequest from "@/features/camera/components/modals/CameraAccessRequest";
 import BottomSheetProvider from "@/features/shared/components/providers/BottomSheetProvider";
-//import { useTopPath } from "@/features/shared/utils/roundedPathCreators";
 import AppDimensionsProvider from "@/features/shared/components/providers/AppDimensionsProvider";
 import ThemeProvider from "@/features/shared/components/providers/ThemeProvider";
 import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";

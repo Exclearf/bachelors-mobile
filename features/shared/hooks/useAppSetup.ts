@@ -1,13 +1,23 @@
 import { useCameraOptionsStore } from "@/features/camera/stores/cameraOptions";
 import { useBottomSheet } from "./useBottomSheet";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
+import { SplashScreen } from "expo-router";
 
-export const useIsAppLoaded = () => {
+import {
+  useFonts,
+  OpenSans_400Regular,
+  OpenSans_600SemiBold,
+} from "@expo-google-fonts/open-sans";
+
+export const useAppSetup = () => {
   const isCameraAvailable = useCameraOptionsStore((state) => state.isAvailable);
   const isBottomSheetRegistered = useBottomSheet().isRegistered;
   const theme = usePersonalizationStore((state) => state.theme);
-  const [isFontLoaded, setIsFontLoaded] = useState(true);
+  const [isFontLoaded] = useFonts({
+    OpenSans_400Regular,
+    OpenSans_600SemiBold,
+  });
 
   const isAppLoaded = [
     isCameraAvailable,
@@ -16,5 +26,10 @@ export const useIsAppLoaded = () => {
     isFontLoaded,
   ];
 
-  return isAppLoaded.every((item) => item);
+  useEffect(() => {
+    console.log(`useSplashScreen: isAppLoaded: ${isAppLoaded}`);
+    if (isAppLoaded) {
+      SplashScreen.hide();
+    }
+  }, [isAppLoaded]);
 };

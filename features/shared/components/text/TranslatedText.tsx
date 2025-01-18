@@ -3,6 +3,7 @@ import React, { Suspense } from "react";
 import { WithTranslation, withTranslation } from "react-i18next";
 import Skeleton from "../feedback/Skeleton";
 import { useTheme } from "../../hooks/useTheme";
+import { globalTheme } from "../../utils/themes";
 
 type TranslationParameter =
   | string
@@ -19,6 +20,7 @@ type ComponentProps = {
   translationParameters?: Readonly<TranslationParameters>;
   style?: TextStyle | TextStyle[];
   isSecondary?: boolean;
+  isBold?: boolean;
 };
 
 const TranslatedText = ({
@@ -27,6 +29,7 @@ const TranslatedText = ({
   translationParameters,
   style,
   isSecondary,
+  isBold,
 }: WithTranslation & ComponentProps) => {
   const theme = useTheme();
   const userStyle = Array.isArray(style) ? style : [style];
@@ -45,6 +48,9 @@ const TranslatedText = ({
       <Text
         style={[
           {
+            fontFamily: isBold
+              ? globalTheme.fontSemiBold
+              : globalTheme.fontRegular,
             color: isSecondary
               ? theme?.secondaryForeground
               : theme?.primaryForeground,

@@ -2,6 +2,11 @@ import { argbFromHex, Theme } from "@material/material-color-utilities";
 import { ColorSchemeName } from "react-native";
 import { colorKit } from "reanimated-color-picker";
 
+export const globalTheme = {
+  fontRegular: "OpenSans_400Regular",
+  fontSemiBold: "OpenSans_600SemiBold",
+};
+
 // TODO: While refactoring the provider into useThemeCreator.ts, extract the if else into it
 // The reason is that we will not generate the palette which is not used in that case
 export const generateTheme = (

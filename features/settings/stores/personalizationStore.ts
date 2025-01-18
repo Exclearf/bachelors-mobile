@@ -5,9 +5,9 @@ import {
   generateTheme,
   getSaturation,
   setSaturation,
-} from "../../shared/utils/generateTheme";
+} from "../../shared/utils/themes";
 import { hexFromArgb } from "@material/material-color-utilities";
-import { colorKit, returnedResults } from "reanimated-color-picker";
+import { colorKit } from "reanimated-color-picker";
 
 export type Theme = ReplaceNumbersWithStrings<ThemeGeneratorFunction>;
 

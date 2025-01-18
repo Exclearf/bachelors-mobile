@@ -6,7 +6,7 @@ import {
   argbFromHex,
   themeFromSourceColor,
 } from "@material/material-color-utilities";
-import { generateTheme } from "../../utils/generateTheme";
+import { generateTheme } from "../../utils/themes";
 import { colorKit } from "reanimated-color-picker";
 type Props = PropsWithChildren<{}>;
 

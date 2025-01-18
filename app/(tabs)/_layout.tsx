@@ -7,16 +7,14 @@ import Entypo from "@expo/vector-icons/Entypo";
 import LoginScreen from "@/features/auth/LoginScreen";
 import { useAuthStore } from "@/features/auth/stores/authStore";
 import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
-import { useIsAppLoaded } from "@/features/shared/hooks/useIsAppLoaded";
-import { useSplashScreen } from "@/features/shared/hooks/useSplashScreen";
+import { useAppSetup } from "@/features/shared/hooks/useAppSetup";
 
 const RootLayout = () => {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   // This hook is used to prevent the splash screen from hiding before the app is fully loaded
   // It is placed here in order not to re-render the app
-  const isAppLoaded = useIsAppLoaded();
-  useSplashScreen(isAppLoaded);
+  useAppSetup();
 
   if (!isLoggedIn && false) {
     return <LoginScreen />;
@@ -30,7 +28,10 @@ const RootLayout = () => {
         headerShown: false,
         tabBarStyle: [
           styles.tabBarStyle,
-          { backgroundColor: theme?.background },
+          {
+            backgroundColor: theme?.background,
+            borderColor: theme?.primaryBackground,
+          },
         ],
         tabBarItemStyle: styles.centerItems,
         tabBarShowLabel: false,
@@ -40,7 +41,8 @@ const RootLayout = () => {
             style={[styles.centerItems, styles.tabBarButton]}
           />
         ),
-        tabBarActiveTintColor: "white",
+        tabBarInactiveTintColor: theme?.mutedForeground,
+        tabBarActiveTintColor: theme?.secondaryForeground,
       }}
     >
       <Tabs.Screen
@@ -75,8 +77,7 @@ export default RootLayout;
 
 const styles = StyleSheet.create({
   tabBarStyle: {
-    borderColor: "#5e5e5e",
-    borderTopWidth: 2,
+    borderTopWidth: 1.5,
     borderWidth: 0,
     height: "7%",
   },
