@@ -61,9 +61,7 @@ const Slider = ({
   });
 
   const thumbStyle = useAnimatedStyle(() => {
-    "worklet";
     const thumbSizeValue = thumbSize.get();
-    console.log(`Thumb size: ${thumbPosition.get() / stepSize}`);
     const newValue = Math.round(thumbPosition.get() / stepSize) * stepSize;
     return {
       left: newValue,

@@ -1,11 +1,10 @@
 import { StyleSheet, ViewStyle } from "react-native";
-import React, { useContext } from "react";
+import React from "react";
 import SelectionGroupItem from "./SelectionGroupItem";
 import Animated from "react-native-reanimated";
 import { useTranslationStore } from "@/features/translation/stores/translationStore";
 import { useShallow } from "zustand/react/shallow";
 import { useCameraOptionsStore } from "@/features/camera/stores/cameraOptions";
-import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
 import { useTheme } from "@/features/shared/hooks/useTheme";
 
 export type SelectionGroupItemConfig = {
@@ -17,10 +16,10 @@ export type SelectionGroupItemConfig = {
 
 type Props = {
   items: SelectionGroupItemConfig[];
+  containerHeight: number;
 };
 
-const SelectGroup = ({ items }: Props) => {
-  const { height } = useContext(AppDimensionsContext);
+const SelectGroup = ({ items, containerHeight }: Props) => {
   const [mode, setMode] = useTranslationStore(
     useShallow((state) => [state.mode, state.setMode]),
   );
@@ -35,7 +34,7 @@ const SelectGroup = ({ items }: Props) => {
   });
 
   return (
-    <Animated.View style={[styles.container, { height: height * 0.1 - 30 }]}>
+    <Animated.View style={[styles.container, { height: containerHeight }]}>
       {items?.map((item) => (
         <SelectionGroupItem
           key={item.id}

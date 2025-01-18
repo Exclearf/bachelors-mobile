@@ -1,16 +1,17 @@
 import { LayoutChangeEvent, StyleSheet, View } from "react-native";
-import React, { useCallback, useContext, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { useSharedValue } from "react-native-reanimated";
 import { Canvas, Path, RoundedRect } from "@shopify/react-native-skia";
 import { useBottomSheet } from "@/features/shared/hooks/useBottomSheet";
-import { useSkiaPath } from "../../utils/roundedPathCreators";
-import { AppDimensionsContext } from "../../contexts/appDimensions";
+import { useSkiaPath, UseSkiaPathProps } from "../../utils/roundedPathCreators";
 import { usePersonalizationStore } from "../../../settings/stores/personalizationStore";
 import { useIsFullScreenRoute } from "../../hooks/useIsFullScreenRoute";
+import { useAppDimensions } from "../../hooks/useAppDimensions";
 
 type Props = {
   barHeight: number;
-  pathCreator: (borderRadius: number) => string;
+  minPathCreator: UseSkiaPathProps["minPathCreator"];
+  maxPathCreator: UseSkiaPathProps["maxPathCreator"];
   zIndex: number;
   style?: any;
   handleColor?: string;
@@ -18,15 +19,20 @@ type Props = {
 };
 
 const AppRoundedPath = ({
-  pathCreator,
+  minPathCreator,
+  maxPathCreator,
   barHeight,
   zIndex,
   style,
-  handlePadColor = "rgba(255,255,255,0.5)",
+  handlePadColor,
 }: Props) => {
   const [parentWidth, setParentWidth] = useState(0);
   const { bottomSheet } = useBottomSheet();
-  const isFullScrenRoute = useIsFullScreenRoute();
+  const isFullScreenRoute = useIsFullScreenRoute();
+
+  handlePadColor ??= usePersonalizationStore(
+    (state) => state.theme,
+  )?.mutedForeground!;
 
   //TODO: Workaround
   const sharedValue = useSharedValue(0);
@@ -43,11 +49,12 @@ const AppRoundedPath = ({
 
   const theme = usePersonalizationStore((state) => state.theme);
 
-  const { height, width } = useContext(AppDimensionsContext);
+  const { width } = useAppDimensions();
   const skiaPath = useSkiaPath({
     animatedPosition: bottomSheet?.animatedPosition ?? sharedValue,
-    height,
-    pathCreator,
+    height: barHeight,
+    minPathCreator,
+    maxPathCreator,
   });
   const scaleX = useMemo(
     () => (parentWidth ? parentWidth / 100 : 1),
@@ -71,12 +78,8 @@ const AppRoundedPath = ({
           backgroundColor: "rgba(0,0,0,0)",
         }}
       >
-        <Path
-          transform={[{ scaleX }]}
-          path={skiaPath}
-          color={theme?.background}
-        />
-        {!isFullScrenRoute && (
+        <Path path={skiaPath} color={theme?.background} />
+        {!isFullScreenRoute && (
           <RoundedRect
             transform={[{ scaleX }]}
             x={43}

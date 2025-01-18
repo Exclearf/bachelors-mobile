@@ -5,17 +5,26 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import React from "react";
-import LanguageTogglesSection from "./components/sections/languages/LanguagePreferencesSection";
-import PersonalizationSection from "./components/sections/personalization/PersonalizationSection";
-import TranslatedText from "@/features/shared/components/text/TranslatedText";
-import AccessibilitySection from "./components/sections/accessibility/AccessibilitySection";
+import React, { lazy, Suspense } from "react";
 import { useLocalization } from "../shared/hooks/useLocalization";
 import { useTheme } from "../shared/hooks/useTheme";
+import TranslatedText from "@/features/shared/components/text/TranslatedText";
+import Skeleton from "../shared/components/feedback/Skeleton";
+
+const LanguageTogglesSection = lazy(
+  () => import("./components/sections/languages/LanguagePreferencesSection"),
+);
+const PersonalizationSection = lazy(
+  () => import("./components/sections/personalization/PersonalizationSection"),
+);
+const AccessibilitySection = lazy(
+  () => import("./components/sections/accessibility/AccessibilitySection"),
+);
 
 type Props = {
   getTranslationKey: (key: string) => string;
   width: number;
+  height: number;
 };
 
 export type SettingsSectionsItemType = {
@@ -31,49 +40,59 @@ export type SettingsSectionSubItemType = {
   width: number;
 };
 
-const SettingsSections = ({ getTranslationKey, width }: Props) => {
+const SettingsSections = ({ getTranslationKey, width, height }: Props) => {
   getTranslationKey = useLocalization(getTranslationKey("sections"));
   const theme = useTheme();
+  const settingsSections = [
+    [
+      getTranslationKey("languagePreferencesSectionHeader"),
+      LanguageTogglesSection,
+    ],
+    [getTranslationKey("personalizationSectionHeader"), PersonalizationSection],
+    [getTranslationKey("accessibilitySectionHeader"), AccessibilitySection],
+  ] as const;
+  // 100 - UserInfo height - Tabs height - padding
+  const itemHeght = (height * 0.75) / settingsSections.length;
 
   return (
     <ScrollView>
-      {(
-        [
-          [
-            getTranslationKey("languagePreferencesSectionHeader"),
-            LanguageTogglesSection,
-          ],
-          [
-            getTranslationKey("personalizationSectionHeader"),
-            PersonalizationSection,
-          ],
-          [
-            getTranslationKey("accessibilitySectionHeader"),
-            AccessibilitySection,
-          ],
-        ] as const
-      ).map(([translationKey, Component]) => (
-        <View
-          style={[
-            styles.sectionContainer,
-            { borderColor: theme?.secondaryBackground, borderWidth: 1.35 },
-          ]}
+      {settingsSections.map(([translationKey, Component]) => (
+        <Suspense
           key={translationKey}
+          fallback={
+            <Skeleton
+              style={{
+                width: "100%",
+                height: itemHeght,
+                marginTop: 10,
+              }}
+            />
+          }
         >
-          <TranslatedText
-            style={{ ...styles.sectionHeader, color: theme?.primaryForeground }}
-            translationKey={translationKey}
-          />
-          <Component
-            style={styles.sectionContent}
-            textStyle={{
-              ...styles.sectionContentText,
-              color: theme?.secondaryForeground,
-            }}
-            getTranslationKey={getTranslationKey}
-            width={width}
-          />
-        </View>
+          <View
+            style={[
+              styles.sectionContainer,
+              { borderColor: theme?.secondaryBackground, borderWidth: 1.35 },
+            ]}
+          >
+            <TranslatedText
+              style={{
+                ...styles.sectionHeader,
+                color: theme?.primaryForeground,
+              }}
+              translationKey={translationKey}
+            />
+            <Component
+              style={styles.sectionContent}
+              textStyle={{
+                ...styles.sectionContentText,
+                color: theme?.secondaryForeground,
+              }}
+              getTranslationKey={getTranslationKey}
+              width={width}
+            />
+          </View>
+        </Suspense>
       ))}
     </ScrollView>
   );

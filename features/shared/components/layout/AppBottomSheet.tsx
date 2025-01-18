@@ -1,8 +1,9 @@
 import { PropsWithChildren } from "react";
 import { BottomSheetView } from "@gorhom/bottom-sheet";
 import AppRoundedPath from "../animated/AppRoundedPath";
-import { useBottomPath } from "../../utils/roundedPathCreators";
+//import { useBottomPath } from "../../utils/roundedPathCreators";
 import BottomSheetWrapper from "./BottomSheetWrapper";
+import { maxBottomPath, minBottomPath } from "../../utils/roundedPathCreators";
 
 type Props = PropsWithChildren<{
   snapPoints: string[];
@@ -26,7 +27,8 @@ const AppBottomSheet = ({ snapPoints, children }: Props) => {
         <AppRoundedPath
           zIndex={3}
           barHeight={30}
-          pathCreator={useBottomPath()}
+          maxPathCreator={maxBottomPath}
+          minPathCreator={minBottomPath}
         />
       )}
       overDragResistanceFactor={0}

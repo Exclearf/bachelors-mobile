@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     borderColor: "#5e5e5e",
     borderTopWidth: 2,
     borderWidth: 0,
-    height: 60,
+    height: "7%",
   },
   centerItems: {
     display: "flex",

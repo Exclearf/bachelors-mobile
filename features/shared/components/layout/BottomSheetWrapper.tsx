@@ -66,6 +66,4 @@ const BottomSheetWrapper = forwardRef<
   );
 });
 
-BottomSheetWrapper.displayName = "BottomSheetWrapper";
-
 export default BottomSheetWrapper;

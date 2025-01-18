@@ -11,19 +11,20 @@ import { useTheme } from "../shared/hooks/useTheme";
 
 type Props = {
   padding: number;
+  height: number;
   containerStyle: StyleProp<ViewStyle>[];
 };
 
-const History = ({ padding, containerStyle }: Props) => {
-  const { height, width } = useContext(AppDimensionsContext);
+const History = ({ padding, containerStyle, height }: Props) => {
+  const { width } = useContext(AppDimensionsContext);
   const mode = useTranslationStore((state) => state.mode);
   const getTranslationKey = useLocalization("indexPage");
 
   const style = useAnimatedStyle(() => {
     return {
       position: "absolute",
-      top: height * 0.55 - height * 0.11 + 3,
-      height: height * 0.55 - height * 0.2,
+      top: height + height * 0.11,
+      height: height,
       width: width - padding * 2,
     };
   });

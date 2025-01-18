@@ -36,26 +36,38 @@ const IndexTab = () => {
     },
   ];
 
+  const initialHeight = height - height * 0.11 - height * 0.11 - 19.5;
+
   return (
     <View style={{ ...styles.container, backgroundColor: theme?.background }}>
-      <SelectGroup items={availableFunctions} />
+      <SelectGroup
+        items={availableFunctions}
+        containerHeight={height * 0.11 - 39}
+      />
       <View style={styles.innerContainer}>
         <ExpandableModal
-          initialHeight={height * 0.55 - height * 0.11 - 36}
-          padding={20}
+          initialHeight={initialHeight / 2}
+          padding={height * 0.02}
           containerStyle={[
             styles.indexSection,
-            { backgroundColor: theme?.primaryBackground },
+            {
+              backgroundColor: theme?.primaryBackground,
+              borderColor: theme?.mutedForeground,
+            },
           ]}
           titleTranslationKey={getTranslationKey("translation")}
         >
           {mode === "signToText" ? <SignTranslation /> : <TextTranslation />}
         </ExpandableModal>
         <History
-          padding={20}
+          padding={height * 0.02}
+          height={initialHeight / 2}
           containerStyle={[
             styles.indexSection,
-            { backgroundColor: theme?.primaryBackground },
+            {
+              backgroundColor: theme?.primaryBackground,
+              borderColor: theme?.mutedForeground,
+            },
           ]}
         />
       </View>
@@ -81,6 +93,7 @@ const styles = StyleSheet.create({
   },
   indexSection: {
     borderRadius: 10,
+    borderWidth: 1,
     boxShadow: "0px 0px 10px 1px rgba(15,15,15,0.5)",
   },
 });

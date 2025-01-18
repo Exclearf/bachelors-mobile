@@ -20,10 +20,15 @@ import CameraOverlay from "@/features/camera/CameraOverlay";
 import AppBottomSheet from "@/features/shared/components/layout/AppBottomSheet";
 import CameraAccessRequest from "@/features/camera/components/modals/CameraAccessRequest";
 import BottomSheetProvider from "@/features/shared/components/providers/BottomSheetProvider";
-import { useTopPath } from "@/features/shared/utils/roundedPathCreators";
+//import { useTopPath } from "@/features/shared/utils/roundedPathCreators";
 import AppDimensionsProvider from "@/features/shared/components/providers/AppDimensionsProvider";
 import ThemeProvider from "@/features/shared/components/providers/ThemeProvider";
 import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
+import * as NavigationBar from "expo-navigation-bar";
+import {
+  maxTopPath,
+  minTopPath,
+} from "@/features/shared/utils/roundedPathCreators";
 
 initiateLocalization();
 
@@ -38,14 +43,20 @@ export default function RootLayout() {
   const [isAvailable, setIsAvailable] = useCameraOptionsStore(
     useShallow((state) => [state.isAvailable, state.setIsAvailable]),
   );
+  const theme = usePersonalizationStore((state) => state.theme);
 
   useEffect(() => {
     if (!cameraPermission?.granted || cameraPermission?.canAskAgain) {
       requestPermission();
     }
-  }, []);
 
-  const theme = usePersonalizationStore((state) => state.theme);
+    const hideNavBar = async () => {
+      await NavigationBar.setVisibilityAsync("hidden");
+      await NavigationBar.setBehaviorAsync("overlay-swipe");
+    };
+
+    hideNavBar();
+  }, []);
 
   return (
     <GestureHandlerRootView>
@@ -69,7 +80,8 @@ export default function RootLayout() {
                   style={{ top: 10 }}
                   barHeight={30}
                   handlePadColor="transparent"
-                  pathCreator={useTopPath()}
+                  maxPathCreator={maxTopPath}
+                  minPathCreator={minTopPath}
                 />
 
                 {mode === "textToSign" && <PictureBbox />}
@@ -85,7 +97,7 @@ export default function RootLayout() {
 
                 <CameraOverlay setFlashOn={setFlashOn} setIsBack={setIsBack} />
 
-                <AppBottomSheet snapPoints={["11", "55", "110%"]}>
+                <AppBottomSheet snapPoints={["11", "55", "100%"]}>
                   <Slot />
                 </AppBottomSheet>
               </SafeAreaView>
