@@ -8,7 +8,7 @@ import Animated, {
   Easing,
   AnimatedStyle,
 } from "react-native-reanimated";
-import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
+import { useTheme } from "../../hooks/useTheme";
 
 type SwitchColor = {
   false: string;
@@ -60,7 +60,7 @@ const Switch = ({
   trackColor,
   disabledColor,
 }: Props) => {
-  const theme = usePersonalizationStore((theme) => theme.theme);
+  const theme = useTheme();
   thumbColor = {
     false: theme?.secondaryForeground!,
     true: theme?.primaryForeground!,

@@ -4,6 +4,7 @@ import { WithTranslation, withTranslation } from "react-i18next";
 import Skeleton from "../feedback/Skeleton";
 import { useTheme } from "../../hooks/useTheme";
 import { globalTheme } from "../../utils/themes";
+import { useFontSize } from "../../hooks/useFontSize";
 
 type TranslationParameter =
   | string
@@ -18,20 +19,25 @@ type TranslationParameters = { [key: string]: TranslationParameter };
 type ComponentProps = {
   translationKey: string;
   translationParameters?: Readonly<TranslationParameters>;
+  fontSize?: "regular" | "medium" | "large";
   style?: TextStyle | TextStyle[];
   isSecondary?: boolean;
   isBold?: boolean;
+  numberOfLines?: number;
 };
 
 const TranslatedText = ({
   t,
   translationKey,
   translationParameters,
+  fontSize = "regular",
   style,
   isSecondary,
   isBold,
+  numberOfLines = 1,
 }: WithTranslation & ComponentProps) => {
   const theme = useTheme();
+  const currentFontSize = useFontSize();
   const userStyle = Array.isArray(style) ? style : [style];
   return (
     <Suspense
@@ -39,14 +45,16 @@ const TranslatedText = ({
         <Skeleton
           style={{
             backgroundColor: theme?.mutedBackground,
-            height: userStyle.find((item) => item?.fontSize)?.fontSize ?? 16,
+            height: currentFontSize[fontSize],
             width: "100%",
           }}
         />
       }
     >
       <Text
+        numberOfLines={numberOfLines}
         style={[
+          { textAlign: "center" },
           {
             fontFamily: isBold
               ? globalTheme.fontSemiBold
@@ -56,6 +64,7 @@ const TranslatedText = ({
               : theme?.primaryForeground,
           },
           ...userStyle,
+          { fontSize: currentFontSize[fontSize] },
         ]}
       >
         {t(translationKey, translationParameters)}

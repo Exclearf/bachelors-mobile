@@ -7,10 +7,11 @@ import { SettingsSectionSubItemType } from "@/features/settings/SettingsSections
 import { ColorSchemeName } from "react-native";
 import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
 import { useShallow } from "zustand/react/shallow";
+import { useSettingsItemWidth } from "@/features/settings/hooks/useSettingsItemWidth";
 
-type Props = {} & SettingsSectionSubItemType;
+type Props = SettingsSectionSubItemType;
 
-const AppThemeSwitch = ({ getTranslationKey, textStyle, width }: Props) => {
+const AppThemeSwitch = ({ getTranslationKey, textStyle }: Props) => {
   const themeItems: ToggleItemType[] = [
     {
       id: "light",
@@ -24,7 +25,7 @@ const AppThemeSwitch = ({ getTranslationKey, textStyle, width }: Props) => {
   const [themeType, setThemeType] = usePersonalizationStore(
     useShallow((state) => [state.themeType, state.setThemeType]),
   );
-
+  const { width } = useSettingsItemWidth();
   const currentIndex = themeItems.findIndex((item) => item.id === themeType);
 
   const changeTheme = (e: ToggleItemType) => {
@@ -43,8 +44,7 @@ const AppThemeSwitch = ({ getTranslationKey, textStyle, width }: Props) => {
         onChange={changeTheme}
         selectedIndex={currentIndex}
         items={themeItems}
-        height={30}
-        width={width * 0.55}
+        width={width}
         changeWhenAnimationEnds={true}
       />
     </>

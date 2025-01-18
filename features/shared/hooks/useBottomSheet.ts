@@ -14,11 +14,10 @@ export const useBottomSheet = () => {
   const isRegistered = !!bottomSheetRef?.snapToPosition;
 
   const registerBottomSheet = (ref?: BottomSheetWrapperRef) => {
-    if (!ref) return;
-    if (isRegistered) {
-      console.log(`useBottomSheet: isRegistered: ${isRegistered}`);
+    if (isRegistered || !ref) {
       return;
     }
+
     setBottomSheetRef(ref);
   };
 

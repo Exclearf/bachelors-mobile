@@ -23,6 +23,8 @@ const CameraSettingsContainer = () => {
   return (
     <View>
       <ToggleGroup
+        width={300}
+        height={30}
         selectedIndex={0}
         items={items}
         onChange={(e) => console.log(e.id)}

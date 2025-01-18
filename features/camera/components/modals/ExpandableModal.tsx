@@ -11,8 +11,8 @@ import { useTranslationStore } from "@/features/translation/stores/translationSt
 import { useBottomSheet } from "@/features/shared/hooks/useBottomSheet";
 import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
 import TranslatedText from "@/features/shared/components/text/TranslatedText";
-import TextToVoiceButton from "@/features/translation/TextToVoiceButton";
 import CollapseAnimated from "@/features/shared/components/animated/CollapseAnimated";
+import TextToVoiceButton from "@/features/translation/components/TextToVoiceButton";
 
 type Props = PropsWithChildren<{
   initialHeight: number;
@@ -66,6 +66,8 @@ const ExpandableModal = ({
     <Animated.View style={[...containerStyle, animateStyle]}>
       <View style={expandableModalStyles.header}>
         <TranslatedText
+          isBold={true}
+          fontSize="medium"
           style={expandableModalStyles.headerText}
           translationKey={titleTranslationKey}
         />
@@ -118,6 +120,5 @@ export const expandableModalStyles = StyleSheet.create({
     marginHorizontal: 15,
     color: "white",
     fontSize: 20,
-    fontWeight: 400,
   },
 });

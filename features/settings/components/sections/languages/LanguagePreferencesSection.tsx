@@ -9,7 +9,6 @@ type Props = {} & SettingsSectionsItemType;
 
 const LanguageTogglesSection = ({
   getTranslationKey,
-  width,
   style,
   textStyle,
 }: Props) => {
@@ -24,7 +23,6 @@ const LanguageTogglesSection = ({
           <View key={index} style={style}>
             <LanguageToggle
               getTranslationKey={getTranslationKey}
-              width={width}
               textStyle={textStyle}
             />
           </View>

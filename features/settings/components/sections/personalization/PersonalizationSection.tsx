@@ -2,11 +2,10 @@ import { StyleSheet, View } from "react-native";
 import React from "react";
 import AppThemeSwitch from "./items/AppThemeSwitch";
 import ThemeColorSlider from "./items/ThemeColorPanel";
-import { useAppDimensions } from "@/features/shared/hooks/useAppDimensions";
 import { SettingsSectionsItemType } from "../../../SettingsSections";
 import { useLocalization } from "@/features/shared/hooks/useLocalization";
 
-type Props = {} & SettingsSectionsItemType;
+type Props = SettingsSectionsItemType;
 
 const PersonalizationSection = ({
   getTranslationKey,
@@ -14,7 +13,6 @@ const PersonalizationSection = ({
   textStyle,
 }: Props) => {
   const items = [AppThemeSwitch, ThemeColorSlider];
-  const { width } = useAppDimensions();
   getTranslationKey = useLocalization(
     getTranslationKey("personalizationSection"),
   );
@@ -23,11 +21,7 @@ const PersonalizationSection = ({
     <>
       {items.map((Item, index) => (
         <View style={[style, styles.containerItem]} key={index}>
-          <Item
-            getTranslationKey={getTranslationKey}
-            textStyle={textStyle}
-            width={width}
-          />
+          <Item getTranslationKey={getTranslationKey} textStyle={textStyle} />
         </View>
       ))}
     </>

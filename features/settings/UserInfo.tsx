@@ -20,11 +20,11 @@ type Props = {
 };
 
 const UserInfo = ({ getTranslationKey, height }: Props) => {
+  getTranslationKey = useLocalization(getTranslationKey("userInfo"));
   const [setIsSignedIn, user] = useAuthStore(
     useShallow((state) => [state.setIsLoggedIn, state.user]),
   );
   const setMode = useTranslationStore((state) => state.setMode);
-  getTranslationKey = useLocalization(getTranslationKey("userInfo"));
   const [picture, setPicture] = useState(user?.picture);
   const theme = useTheme();
   const translationKey = useTimeTranslationKey(
@@ -40,17 +40,17 @@ const UserInfo = ({ getTranslationKey, height }: Props) => {
     <View style={styles.container}>
       <View style={[styles.greetingsContainer, { height: height * 0.07 }]}>
         <TranslatedText
-          style={{ ...styles.greetingsText, color: theme?.primaryForeground }}
+          style={{ color: theme?.primaryForeground }}
+          fontSize="large"
+          isBold={true}
           translationKey={translationKey}
           translationParameters={{ name: user?.name }}
         />
-        {user?.picture && (
-          <Image
-            style={styles.greetinsImage}
-            source={picture}
-            onError={() => setPicture(defaultPicture)}
-          />
-        )}
+        <Image
+          style={styles.greetinsImage}
+          source={picture ?? defaultPicture}
+          onError={() => setPicture(defaultPicture)}
+        />
       </View>
       {
         // TODO: Make as a pop-up on the user profile image
@@ -90,9 +90,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     padding: 5,
   },
-  greetingsText: {
-    fontSize: 22,
-  },
+  greetingsText: {},
   greetinsImage: {
     width: 45,
     height: 45,

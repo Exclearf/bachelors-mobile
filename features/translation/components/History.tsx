@@ -5,9 +5,9 @@ import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
 import { useTranslationStore } from "@/features/translation/stores/translationStore";
 import { LinearGradient } from "expo-linear-gradient";
 import { useLocalization } from "@/features/shared/hooks/useLocalization";
-import TranslatedText from "../shared/components/text/TranslatedText";
-import { expandableModalStyles } from "../camera/components/modals/ExpandableModal";
-import { useTheme } from "../shared/hooks/useTheme";
+import TranslatedText from "../../shared/components/text/TranslatedText";
+import { expandableModalStyles } from "../../camera/components/modals/ExpandableModal";
+import { useTheme } from "../../shared/hooks/useTheme";
 
 type Props = {
   padding: number;
@@ -40,6 +40,8 @@ const History = ({ padding, containerStyle, height }: Props) => {
       >
         <View style={expandableModalStyles.header}>
           <TranslatedText
+            isBold={true}
+            fontSize="medium"
             style={expandableModalStyles.headerText}
             translationKey={getTranslationKey("translationHistory")}
           />

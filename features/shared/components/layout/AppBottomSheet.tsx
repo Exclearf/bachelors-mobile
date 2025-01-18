@@ -1,7 +1,6 @@
 import { PropsWithChildren } from "react";
 import { BottomSheetView } from "@gorhom/bottom-sheet";
 import AppRoundedPath from "../animated/AppRoundedPath";
-//import { useBottomPath } from "../../utils/roundedPathCreators";
 import BottomSheetWrapper from "./BottomSheetWrapper";
 import { maxBottomPath, minBottomPath } from "../../utils/roundedPathCreators";
 

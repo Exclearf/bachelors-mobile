@@ -1,19 +1,20 @@
 import { StyleSheet, View } from "react-native";
 import React from "react";
 import Animated, {
+  runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
+import { useTheme } from "../../hooks/useTheme";
 
 type Props = {
   width: number;
   initialValue: number;
   totalSteps: number;
   height?: number;
-  onChangeHandler: (sliderValue: number, sliderStep: number) => void;
+  onChangeHandler: (sliderIndex: number) => void;
 };
 
 // TODO: Fix coordinates (they are not animated depending on the size)
@@ -27,11 +28,14 @@ const Slider = ({
   const trackWidth = width;
   const availableThumbWidth = width - height * 4;
   const stepSize = availableThumbWidth / totalSteps;
-  const thumbPosition = useSharedValue(
-    Math.round((availableThumbWidth * initialValue) / stepSize),
-  );
+  const thumbPosition = useSharedValue(Math.round(initialValue * stepSize));
   const thumbSize = useSharedValue(height * 4);
-  const theme = usePersonalizationStore((state) => state.theme);
+  const theme = useTheme();
+
+  const onGestureEnd = () => {
+    //TODO: Rewrite logic to be precise
+    onChangeHandler(Math.round((thumbPosition.get() - height * 2) / stepSize));
+  };
 
   const panGesture = Gesture.Pan()
     .onBegin(() => {
@@ -49,16 +53,23 @@ const Slider = ({
     .onEnd(() => {
       "worklet";
       thumbSize.set(withTiming(height * 4, { duration: 200 }));
+      runOnJS(onGestureEnd)();
     });
 
-  const tapGesture = Gesture.Tap().onStart((e) => {
-    "worklet";
-    if (e.x < 0 || e.x > width - height * 4) {
-      return;
-    }
+  const tapGesture = Gesture.Tap()
+    .onBegin((e) => {
+      "worklet";
+      if (e.x < 0 || e.x >= width - height) {
+        return;
+      }
 
-    thumbPosition.set(e.x);
-  });
+      thumbPosition.set(e.x);
+    })
+    .onEnd(() => {
+      "worklet";
+      thumbSize.set(withTiming(height * 4, { duration: 200 }));
+      runOnJS(onGestureEnd)();
+    });
 
   const thumbStyle = useAnimatedStyle(() => {
     const thumbSizeValue = thumbSize.get();
@@ -72,7 +83,7 @@ const Slider = ({
     };
   });
 
-  const composed = Gesture.Exclusive(panGesture, tapGesture);
+  const composed = Gesture.Race(tapGesture, panGesture);
 
   return (
     <GestureDetector gesture={composed}>

@@ -6,14 +6,11 @@ import ToggleGroup, {
 } from "@/features/shared/components/input/ToggleGroup";
 import TranslatedText from "@/features/shared/components/text/TranslatedText";
 import { SettingsSectionSubItemType } from "@/features/settings/SettingsSections";
+import { useSettingsItemWidth } from "@/features/settings/hooks/useSettingsItemWidth";
 
-type Props = {} & SettingsSectionSubItemType;
+type Props = SettingsSectionSubItemType;
 
-const TranslationLanguageToggle = ({
-  getTranslationKey,
-  width,
-  textStyle,
-}: Props) => {
+const TranslationLanguageToggle = ({ getTranslationKey, textStyle }: Props) => {
   const [availableLanguages, currentLanguage, setCurrentLanguage] =
     useTranslationStore(
       useShallow((state) => [
@@ -22,7 +19,7 @@ const TranslationLanguageToggle = ({
         state.setCurrentLanguage,
       ]),
     );
-
+  const { width } = useSettingsItemWidth();
   const currentTranslationLanguageIndex = availableLanguages.findIndex(
     (item) => item.id === currentLanguage.id,
   );
@@ -41,8 +38,7 @@ const TranslationLanguageToggle = ({
         selectedIndex={currentTranslationLanguageIndex}
         items={availableLanguages}
         onChange={changeTranslationLanguage}
-        height={30}
-        width={width * 0.55}
+        width={width}
       />
     </>
   );

@@ -22,14 +22,12 @@ export const useAppSetup = () => {
   const isAppLoaded = [
     isCameraAvailable,
     isBottomSheetRegistered,
-    theme != null,
     isFontLoaded,
   ];
 
   useEffect(() => {
-    console.log(`useSplashScreen: isAppLoaded: ${isAppLoaded}`);
-    if (isAppLoaded) {
+    if (isAppLoaded.every((loaded) => loaded) && theme != null) {
       SplashScreen.hide();
     }
-  }, [isAppLoaded]);
+  }, [...isAppLoaded, theme]);
 };

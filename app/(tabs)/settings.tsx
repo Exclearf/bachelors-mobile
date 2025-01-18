@@ -11,7 +11,7 @@ const SettingsSections = lazy(
 const UserInfo = lazy(() => import("@/features/settings/UserInfo"));
 
 const SettingsTab = () => {
-  const { width, height } = useContext(AppDimensionsContext);
+  const { height } = useContext(AppDimensionsContext);
   const getTranslationKey = useLocalization("settingsPage");
   const theme = usePersonalizationStore((state) => state.theme);
 
@@ -34,7 +34,6 @@ const SettingsTab = () => {
       >
         <SettingsSections
           getTranslationKey={getTranslationKey}
-          width={width}
           height={height}
         />
       </Suspense>

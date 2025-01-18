@@ -96,7 +96,7 @@ export default function RootLayout() {
 
                 <CameraOverlay setFlashOn={setFlashOn} setIsBack={setIsBack} />
 
-                <AppBottomSheet snapPoints={["11", "55", "100%"]}>
+                <AppBottomSheet snapPoints={["11", "53", "100%"]}>
                   <Slot />
                 </AppBottomSheet>
               </SafeAreaView>

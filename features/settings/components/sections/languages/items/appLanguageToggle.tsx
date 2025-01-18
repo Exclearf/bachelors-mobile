@@ -6,15 +6,16 @@ import ToggleGroup, {
 import TranslatedText from "@/features/shared/components/text/TranslatedText";
 import { useTranslation } from "react-i18next";
 import { locales } from "@/features/translation/i18n/i18n";
+import { useSettingsItemWidth } from "@/features/settings/hooks/useSettingsItemWidth";
 
-type Props = {} & SettingsSectionSubItemType;
+type Props = SettingsSectionSubItemType;
 
-const AppLanguageToggle = ({ getTranslationKey, textStyle, width }: Props) => {
+const AppLanguageToggle = ({ getTranslationKey, textStyle }: Props) => {
   const { i18n } = useTranslation();
   const [selectedLanguageCode, setSelectedLanguageCode] = useState(
     i18n.language,
   );
-
+  const { width } = useSettingsItemWidth();
   const appLanguages: ToggleItemType[] = locales.map((item) => ({
     id: item.code,
     title: item.displayName,
@@ -40,8 +41,7 @@ const AppLanguageToggle = ({ getTranslationKey, textStyle, width }: Props) => {
         selectedIndex={currentAppLanguageIndex}
         items={appLanguages}
         onChange={changeAppLanguage}
-        height={30}
-        width={width * 0.55}
+        width={width}
       />
     </>
   );

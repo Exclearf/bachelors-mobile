@@ -6,6 +6,7 @@ import { useTranslationStore } from "@/features/translation/stores/translationSt
 import { useShallow } from "zustand/react/shallow";
 import { useCameraOptionsStore } from "@/features/camera/stores/cameraOptions";
 import { useTheme } from "@/features/shared/hooks/useTheme";
+import { globalTheme } from "@/features/shared/utils/themes";
 
 export type SelectionGroupItemConfig = {
   id: "signToText" | "textToSign";
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     borderRadius: 20,
     paddingHorizontal: 30,
-    paddingVertical: 7,
+    paddingVertical: 4,
     borderColor: "grey",
     borderWidth: 1,
     height: 35,
@@ -101,12 +102,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   itemChosen: {
-    fontSize: 14,
+    fontFamily: globalTheme.fontSemiBold,
     borderColor: "rgba(100, 146, 222, 0.3)",
   },
-  itemText: {
-    fontSize: 14,
-  },
+  itemText: {},
   itemTextChosen: {
     fontWeight: "bold",
   },

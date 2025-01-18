@@ -9,6 +9,12 @@ import {
 import { hexFromArgb } from "@material/material-color-utilities";
 import { colorKit } from "reanimated-color-picker";
 
+export type FontSize = {
+  regular: number;
+  medium: number;
+  large: number;
+};
+
 export type Theme = ReplaceNumbersWithStrings<ThemeGeneratorFunction>;
 
 type ReplaceNumbersWithStrings<T> = {
@@ -23,6 +29,8 @@ type ThemeGeneratorFunction = ReturnType<typeof generateTheme>;
 
 type PersonalizationState = {
   theme: Theme | null;
+  fontSize: FontSize;
+  fontScale: number;
   themeType: ColorSchemeName;
   isHighContrast: boolean;
   accentColor: string;
@@ -30,9 +38,16 @@ type PersonalizationState = {
 
 type PersonalizationActions = {
   setTheme: (newTheme: ThemeGeneratorFunction) => void;
+  setFontScale: (newScale: number) => void;
   setThemeType: (newTheme: ColorSchemeName) => void;
   setIsHighContrast: (newState: boolean) => void;
   setAccentColor: (newColor: string) => void;
+};
+
+const baseFontSize = {
+  regular: 16,
+  medium: 18,
+  large: 22,
 };
 
 export const usePersonalizationStore = create<
@@ -40,6 +55,8 @@ export const usePersonalizationStore = create<
 >()(
   immer((set, get) => ({
     theme: null,
+    fontSize: baseFontSize,
+    fontScale: 1,
     themeType: "light",
     accentColor: "hsv(163, 0%, 50%)",
     isHighContrast: false,
@@ -52,9 +69,18 @@ export const usePersonalizationStore = create<
           );
         }
       }),
+    setFontScale: (newScale) => {
+      set((state) => {
+        state.fontScale = newScale;
+        state.fontSize = {
+          regular: baseFontSize.regular * newScale,
+          medium: baseFontSize.medium * newScale,
+          large: baseFontSize.large * newScale,
+        };
+      });
+    },
     setThemeType: (newTheme) => {
       let newAccentColor = get().accentColor;
-      console.log("New accent color", newAccentColor);
       if (newTheme === "dark") {
         console.log("Dark theme");
         const saturation = getSaturation(newAccentColor);

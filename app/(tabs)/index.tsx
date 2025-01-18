@@ -7,8 +7,8 @@ import SelectGroup, {
 } from "@/features/shared/components/input/selectGroup/SelectGroup";
 import { useTranslationStore } from "@/features/translation/stores/translationStore";
 import ExpandableModal from "@/features/camera/components/modals/ExpandableModal";
-import History from "@/features/translation/History";
-import SignTranslation from "@/features/translation/SignTranslation";
+import History from "@/features/translation/components/History";
+import SignTranslation from "@/features/translation/components/SignTranslation";
 import TextTranslation from "@/features/translation/TextTranslation";
 import { useLocalization } from "@/features/shared/hooks/useLocalization";
 import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
@@ -36,7 +36,7 @@ const IndexTab = () => {
     },
   ];
 
-  const initialHeight = height - height * 0.11 - height * 0.11 - 19.5;
+  const initialHeight = height - height * 0.11 - height * 0.07 - height * 0.06;
 
   return (
     <View style={{ ...styles.container, backgroundColor: theme?.background }}>

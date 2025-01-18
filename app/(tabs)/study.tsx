@@ -12,6 +12,8 @@ const StudyTab = () => {
     <View style={{ flex: 1, backgroundColor: theme?.background }}>
       <View style={styles.headerContainer}>
         <TranslatedText
+          fontSize="large"
+          isBold={true}
           style={[styles.headerText, { color: theme?.primaryForeground }]}
           translationKey={getTranslationKey("headerText")}
         />
@@ -28,7 +30,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  headerText: {
-    fontSize: 20,
-  },
+  headerText: {},
 });

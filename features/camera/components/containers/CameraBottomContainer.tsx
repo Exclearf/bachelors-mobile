@@ -19,7 +19,7 @@ const CameraBottomContainer = ({ children, scale }: Props) => {
     "worklet";
     const newHeight = Math.min(
       height - (bottomSheet?.animatedPosition?.get() ?? 0) - 10,
-      height * 0.55 - 10,
+      height * 0.53 - 10,
     );
     return {
       marginBottom: scale.get() * 24,

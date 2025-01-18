@@ -8,8 +8,13 @@ import Feather from "@expo/vector-icons/Feather";
 import Animated from "react-native-reanimated";
 import { WithForwardRef } from "@/features/shared/utils/WithForwardRef";
 import { AccessibilityItemProps } from "../AccessibilitySection";
+import { useSettingsItemWidth } from "@/features/settings/hooks/useSettingsItemWidth";
+import {
+  NonFontSizeMultiplier,
+  useFontSize,
+} from "@/features/shared/hooks/useFontSize";
 
-type Props = {} & AccessibilityItemProps;
+type Props = AccessibilityItemProps;
 
 const HighContrastOnIcon = Animated.createAnimatedComponent(
   WithForwardRef(Feather, { name: "eye" }),
@@ -23,25 +28,27 @@ const HighContrastSwitch = ({
   getTranslationKey,
   textStyle,
   containerStyle,
-  width,
 }: Props) => {
   const [isHighContrast, setIsHighContrast] = usePersonalizationStore(
     useShallow((state) => [state.isHighContrast, state.setIsHighContrast]),
   );
+  const fontSize = useFontSize();
+  const { width } = useSettingsItemWidth();
 
   return (
     <>
       <TranslatedText
+        numberOfLines={2}
         style={textStyle}
         translationKey={getTranslationKey("highContrast")}
       />
-      <View style={[{ width: width * 0.55 }, containerStyle]}>
+      <View style={[{ width }, containerStyle]}>
         <Switch
           CustomTrueThumb={HighContrastOnIcon}
           CustomFalseThumb={HighContrastOffIcon}
           checked={isHighContrast}
           setChecked={setIsHighContrast}
-          diameter={30}
+          diameter={fontSize["regular"] * NonFontSizeMultiplier}
         />
       </View>
     </>

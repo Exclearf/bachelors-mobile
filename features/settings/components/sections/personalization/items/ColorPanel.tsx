@@ -4,15 +4,14 @@ import { usePersonalizationStore } from "@/features/settings/stores/personalizat
 import Skeleton from "@/features/shared/components/feedback/Skeleton";
 import { View } from "react-native";
 import { useShallow } from "zustand/react/shallow";
+import { useTheme } from "@/features/shared/hooks/useTheme";
+import { useSettingsItemWidth } from "@/features/settings/hooks/useSettingsItemWidth";
 
-type Props = {
-  width: number;
-};
-
-const ColorPanel = ({ width }: Props) => {
+const ColorPanel = () => {
   const [isRendered, setIsRendered] = useState(true);
   const [showSkeleton, setShowSkeleton] = useState(false);
-  const theme = usePersonalizationStore((state) => state.theme);
+  const theme = useTheme();
+  const { width } = useSettingsItemWidth();
   const [accentColor, setAccentColor, themeType] = usePersonalizationStore(
     useShallow((state) => [
       state.accentColor,
@@ -39,7 +38,7 @@ const ColorPanel = ({ width }: Props) => {
       value={accentColor}
       style={[
         {
-          width: width * 0.55,
+          width: width,
           transform: [{ scaleY: 1 }],
         },
       ]}
@@ -52,7 +51,7 @@ const ColorPanel = ({ width }: Props) => {
           borderColor: theme?.mutedForeground,
           borderWidth: 1,
           borderRadius: 5,
-          width: width * 0.55,
+          width: width,
           overflow: "hidden",
         }}
       >
@@ -60,8 +59,8 @@ const ColorPanel = ({ width }: Props) => {
           <Panel2
             verticalChannel={themeType === "dark" ? "brightness" : "saturation"}
             style={{
-              width: width * 0.55,
-              height: (width * 0.55) / 2,
+              width: width,
+              height: width / 2,
               borderRadius: 5,
             }}
           />
@@ -71,8 +70,8 @@ const ColorPanel = ({ width }: Props) => {
             style={{
               position: "absolute",
               top: 0,
-              width: width * 0.55,
-              height: width * 0.55,
+              width: width,
+              height: width,
               borderRadius: 5,
             }}
           />

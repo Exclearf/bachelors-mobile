@@ -12,11 +12,10 @@ export type AccessibilityItemProps = {
   containerStyle: ViewStyle;
 } & SettingsSectionSubItemType;
 
-type Props = {} & SettingsSectionsItemType;
+type Props = SettingsSectionsItemType;
 
 const AccessibilitySection = ({
   getTranslationKey,
-  width,
   style,
   textStyle,
 }: Props) => {
@@ -33,7 +32,6 @@ const AccessibilitySection = ({
             getTranslationKey={getTranslationKey}
             textStyle={textStyle}
             containerStyle={styles.accessibilityItemStyle}
-            width={width}
           />
         </View>
       ))}

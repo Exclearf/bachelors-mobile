@@ -8,12 +8,13 @@ import Animated, {
 } from "react-native-reanimated";
 import TranslatedText from "../text/TranslatedText";
 import { useTheme } from "../../hooks/useTheme";
+import { FontSizeMultiplier, useFontSize } from "../../hooks/useFontSize";
 
 type Props = {
   items: ToggleItemType[];
   onChange: (e: ToggleItemType) => void;
   selectedIndex: number;
-  width?: number;
+  width: number;
   height?: number;
   changeWhenAnimationEnds?: boolean;
   changeWhenAnimationEndsOffset?: number;
@@ -35,13 +36,14 @@ const ToggleGroup = ({
   changeWhenAnimationEnds,
   changeWhenAnimationEndsOffset = 25,
 }: Props) => {
-  width = width ?? 300;
-  height = height ?? 30;
+  const fontSize = useFontSize();
+  height ??= fontSize.regular * FontSizeMultiplier;
+
+  const theme = useTheme();
   const itemWidth = width / items.length;
   const activeIndex = useSharedValue(selectedIndex);
 
   const switchActiveBackgroundPosition = useAnimatedStyle(() => {
-    "worklet";
     return {
       left: itemWidth * activeIndex.value,
     };
@@ -63,13 +65,6 @@ const ToggleGroup = ({
     runOnJS(clickHandler)(item);
   };
 
-  const theme = useTheme();
-
-  styles.activeBackground = {
-    ...styles.activeBackground,
-    backgroundColor: theme?.primaryBackground!,
-  };
-
   return (
     <View
       style={[
@@ -85,6 +80,7 @@ const ToggleGroup = ({
         style={[
           styles.activeBackground,
           {
+            backgroundColor: theme?.primaryBackground,
             width: itemWidth,
             height: height,
             zIndex: 1,
@@ -107,7 +103,6 @@ const ToggleGroup = ({
                 {
                   width: itemWidth,
                   height: height,
-                  padding: height / 8,
                   zIndex: 2,
                 },
               ]}
@@ -115,7 +110,7 @@ const ToggleGroup = ({
               onPress={() => changeActiveIndex(item, index)}
             >
               <TranslatedText
-                style={[styles.itemText, { color: theme?.primaryForeground }]}
+                style={[{ color: theme?.primaryForeground }]}
                 translationKey={item.title}
               />
             </Pressable>
@@ -140,7 +135,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     height: "100%",
-    backgroundColor: "grey",
   },
   toggleGroupItem: {
     display: "flex",
@@ -151,10 +145,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-  },
-  itemText: {
-    position: "relative",
-    color: "white",
   },
 });
 
