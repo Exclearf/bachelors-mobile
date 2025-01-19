@@ -24,7 +24,11 @@ type ComponentProps = {
   isSecondary?: boolean;
   isBold?: boolean;
   numberOfLines?: number;
+  children?: React.ReactNode;
+  fontSizeOverride?: number;
 };
+
+//TODO: Seprate the children into TranslatedText.
 
 const TranslatedText = ({
   t,
@@ -35,6 +39,8 @@ const TranslatedText = ({
   isSecondary,
   isBold,
   numberOfLines = 1,
+  children,
+  fontSizeOverride,
 }: WithTranslation & ComponentProps) => {
   const theme = useTheme();
   const currentFontSize = useFontSize();
@@ -54,7 +60,7 @@ const TranslatedText = ({
       <Text
         numberOfLines={numberOfLines}
         style={[
-          { textAlign: "center" },
+          { textAlign: "center", position: "relative" },
           {
             fontFamily: isBold
               ? globalTheme.fontSemiBold
@@ -64,11 +70,12 @@ const TranslatedText = ({
               : theme?.primaryForeground,
           },
           ...userStyle,
-          { fontSize: currentFontSize[fontSize] },
+          { fontSize: fontSizeOverride ?? currentFontSize[fontSize] },
         ]}
       >
         {t(translationKey, translationParameters)}
       </Text>
+      {children}
     </Suspense>
   );
 };

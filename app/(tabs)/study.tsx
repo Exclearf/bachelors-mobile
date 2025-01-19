@@ -3,6 +3,7 @@ import React from "react";
 import TranslatedText from "@/features/shared/components/text/TranslatedText";
 import { useLocalization } from "@/features/shared/hooks/useLocalization";
 import { useTheme } from "@/features/shared/hooks/useTheme";
+import Test from "@/features/study/components/Test";
 
 const StudyTab = () => {
   const getTranslationKey = useLocalization("studyPage");
@@ -14,10 +15,11 @@ const StudyTab = () => {
         <TranslatedText
           fontSize="large"
           isBold={true}
-          style={[styles.headerText, { color: theme?.primaryForeground }]}
+          style={[{ color: theme?.primaryForeground }]}
           translationKey={getTranslationKey("headerText")}
         />
       </View>
+      <Test />
     </View>
   );
 };
@@ -30,5 +32,4 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  headerText: {},
 });

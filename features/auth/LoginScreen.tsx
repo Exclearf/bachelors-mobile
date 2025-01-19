@@ -16,6 +16,7 @@ const LoginScreen = () => {
   const { signInWithGoogle } = useAuthFlow();
   const getTranslationKey = useLocalization("loginPage");
   const theme = useTheme();
+
   useEffect(() => {
     bottomSheet?.expand?.();
   }, [bottomSheet]);
@@ -62,6 +63,8 @@ const LoginScreen = () => {
             }}
           >
             <TranslatedText
+              isBold={true}
+              fontSizeOverride={34}
               style={[styles.headerText, { color: theme?.primaryForeground }]}
               translationKey={getTranslationKey("signInTitle")}
             />
@@ -77,6 +80,7 @@ const LoginScreen = () => {
             <View style={styles.buttonContainer}>
               <Image source={google_logo} style={styles.googleLogo}></Image>
               <TranslatedText
+                fontSize="large"
                 style={[styles.buttonText, { color: theme?.primaryForeground }]}
                 translationKey={getTranslationKey("signInWithGoogle")}
               />
@@ -99,8 +103,6 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   headerText: {
-    fontSize: 34,
-    fontWeight: "bold",
     textAlign: "center",
   },
   content: {
@@ -118,8 +120,5 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
   },
-  buttonText: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
+  buttonText: {},
 });

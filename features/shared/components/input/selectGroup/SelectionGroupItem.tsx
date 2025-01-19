@@ -42,9 +42,8 @@ export default SelectionGroupItem;
 const styles = StyleSheet.create({
   container: {
     display: "flex",
-    gap: 5,
-    justifyContent: "space-around",
-    alignItems: "baseline",
+    justifyContent: "center",
+    alignItems: "center",
     flexDirection: "row",
   },
 });

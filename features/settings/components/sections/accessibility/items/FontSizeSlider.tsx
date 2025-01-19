@@ -14,7 +14,7 @@ const FontSizeSlider = ({
   textStyle,
   containerStyle,
 }: Props) => {
-  const fontSizeMultipliers = [1, 1.06, 1.12];
+  const fontSizeMultipliers = [1, 1.07, 1.14];
   const [fontScale, setFontScale] = usePersonalizationStore(
     useShallow((state) => [state.fontScale, state.setFontScale]),
   );

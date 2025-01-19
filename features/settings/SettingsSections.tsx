@@ -36,6 +36,7 @@ export type SettingsSectionsItemType = {
 export type SettingsSectionSubItemType = {
   getTranslationKey: (key: string) => string;
   textStyle: TextStyle;
+  tooltipTranslationKey?: string;
 };
 
 const SettingsSections = ({ getTranslationKey, height }: Props) => {
@@ -71,18 +72,31 @@ const SettingsSections = ({ getTranslationKey, height }: Props) => {
             <View
               style={[
                 styles.sectionContainer,
-                { borderColor: theme?.secondaryBackground, borderWidth: 1.35 },
+                {
+                  borderColor: theme?.secondaryBackground,
+                  borderWidth: 1.35,
+                },
               ]}
             >
-              <TranslatedText
+              <View
                 style={{
-                  ...styles.sectionHeader,
-                  color: theme?.primaryForeground,
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: 10,
                 }}
-                fontSize="medium"
-                isBold={true}
-                translationKey={translationKey}
-              />
+              >
+                <TranslatedText
+                  style={{
+                    ...styles.sectionHeader,
+                    color: theme?.primaryForeground,
+                  }}
+                  fontSize="medium"
+                  isBold={true}
+                  translationKey={translationKey}
+                />
+              </View>
               <Component
                 style={styles.sectionContent}
                 textStyle={{

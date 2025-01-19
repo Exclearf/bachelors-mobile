@@ -72,7 +72,7 @@ const ToggleGroup = ({
           borderRadius: 5,
           width,
           height: height,
-          backgroundColor: theme?.secondaryBackground,
+          backgroundColor: theme?.mutedBackground,
         },
       ]}
     >
@@ -80,7 +80,7 @@ const ToggleGroup = ({
         style={[
           styles.activeBackground,
           {
-            backgroundColor: theme?.primaryBackground,
+            backgroundColor: theme?.mutedForeground,
             width: itemWidth,
             height: height,
             zIndex: 1,

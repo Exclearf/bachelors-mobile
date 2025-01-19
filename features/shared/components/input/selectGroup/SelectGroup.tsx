@@ -7,6 +7,7 @@ import { useShallow } from "zustand/react/shallow";
 import { useCameraOptionsStore } from "@/features/camera/stores/cameraOptions";
 import { useTheme } from "@/features/shared/hooks/useTheme";
 import { globalTheme } from "@/features/shared/utils/themes";
+import { useFontSize } from "@/features/shared/hooks/useFontSize";
 
 export type SelectionGroupItemConfig = {
   id: "signToText" | "textToSign";
@@ -26,6 +27,7 @@ const SelectGroup = ({ items, containerHeight }: Props) => {
   );
   const setIsAvailable = useCameraOptionsStore((state) => state.setIsAvailable);
   const theme = useTheme();
+  const fontSize = useFontSize();
 
   // TODO: Workaround
   //@ts-expect-error
@@ -34,8 +36,20 @@ const SelectGroup = ({ items, containerHeight }: Props) => {
     backgroundColor: theme?.mutedBackground,
   });
 
+  const baseFontStyle = {
+    color: theme?.primaryForeground,
+    flex: 1,
+    textAlign: "left" as const,
+    fontSize: fontSize?.regular,
+  };
+
   return (
-    <Animated.View style={[styles.container, { height: containerHeight }]}>
+    <Animated.View
+      style={[
+        styles.container,
+        { height: containerHeight, position: "relative" },
+      ]}
+    >
       {items?.map((item) => (
         <SelectionGroupItem
           key={item.id}
@@ -48,6 +62,7 @@ const SelectGroup = ({ items, containerHeight }: Props) => {
           translationKey={item.translationKey}
           Icon={
             <item.icon
+              style={styles.iconStyle}
               color={
                 item.id === mode
                   ? theme?.primaryForeground
@@ -66,10 +81,8 @@ const SelectGroup = ({ items, containerHeight }: Props) => {
           }
           textStyle={
             item.id === mode
-              ? StyleSheet.compose(styles.itemChosen, {
-                  color: theme?.primaryForeground,
-                })
-              : StyleSheet.compose(styles.itemText, {
+              ? StyleSheet.compose(styles.itemChosen, baseFontStyle)
+              : StyleSheet.compose(baseFontStyle, {
                   color: theme?.mutedForeground,
                 })
           }
@@ -92,8 +105,8 @@ const styles = StyleSheet.create({
   item: {
     backgroundColor: "transparent",
     borderRadius: 20,
-    paddingHorizontal: 30,
-    paddingVertical: 4,
+    width: "25%",
+    paddingHorizontal: 10,
     borderColor: "grey",
     borderWidth: 1,
     height: 35,
@@ -105,9 +118,9 @@ const styles = StyleSheet.create({
     fontFamily: globalTheme.fontSemiBold,
     borderColor: "rgba(100, 146, 222, 0.3)",
   },
-  itemText: {},
-  itemTextChosen: {
-    fontWeight: "bold",
+  iconStyle: {
+    flex: 1,
+    textAlign: "center",
   },
 });
 

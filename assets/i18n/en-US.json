@@ -15,7 +15,9 @@
       "accessibilitySectionHeader": "Accessibility",
       "languagePreferencesSection": {
         "appLanguage": "Application",
-        "translationLanguage": "Translation"
+        "appLanguageTooltip": "The language of the application",
+        "translationLanguage": "Translation",
+        "translationLanguageTooltip": "The language of the translation"
       },
       "personalizationSection": {
         "lightTheme": "Light mode",

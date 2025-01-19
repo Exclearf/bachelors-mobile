@@ -2,10 +2,10 @@ import { View } from "react-native";
 import React from "react";
 import { SettingsSectionsItemType } from "../../../SettingsSections";
 import { useLocalization } from "@/features/shared/hooks/useLocalization";
-import AppLanguageToggle from "./items/appLanguageToggle";
-import TranslationLanguageToggle from "./items/translationLanguageToggle";
+import AppLanguageToggle from "./items/AppLanguageToggle";
+import TranslationLanguageToggle from "./items/TranslationLanguageToggle";
 
-type Props = {} & SettingsSectionsItemType;
+type Props = SettingsSectionsItemType;
 
 const LanguageTogglesSection = ({
   getTranslationKey,
