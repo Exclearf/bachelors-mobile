@@ -39,14 +39,6 @@ export type SettingsSectionSubItemType = {
   tooltipTranslationKey?: string;
 };
 
-export const textContainerStyle = {
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "center",
-  gap: 4,
-} as ViewStyle;
-
 const SettingsSections = ({ getTranslationKey, height }: Props) => {
   getTranslationKey = useLocalization(getTranslationKey("sections"));
   const theme = useTheme();

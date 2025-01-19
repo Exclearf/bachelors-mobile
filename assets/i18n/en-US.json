@@ -15,15 +15,15 @@
       "accessibilitySectionHeader": "Accessibility",
       "languagePreferencesSection": {
         "appLanguage": "Application",
-        "appLanguageTooltip": "The language of the application",
+        "appLanguageTooltip": "UI language",
         "translationLanguage": "Translation",
-        "translationLanguageTooltip": "The language of the translation"
+        "translationLanguageTooltip": "Translate into this"
       },
       "personalizationSection": {
         "lightTheme": "Light mode",
         "darkTheme": "Dark mode",
         "appTheme": "App Theme",
-        "accentColor": "Accent Color",
+        "accentColor": "Accent",
         "accentColorTooltip": "Which color accent to use",
         "animationSpeed": "Animation Speed"
       },

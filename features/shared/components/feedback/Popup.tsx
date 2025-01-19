@@ -44,6 +44,7 @@ type PopupContentProps = PropsWithChildren<{
   position: "top" | "bottom";
   height: number | string;
   width: number | string;
+  verticalAlignment?: "left" | "center" | "right";
 }>;
 
 type PopupComposition = {
@@ -57,6 +58,8 @@ type PopupProps = {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 } & PopupComposition;
+
+// TODO: Add position checking in onLayout (at least for horizontal)
 
 const Popup = ({ isOpen, setIsOpen, children }: PopupProps) => {
   const [triggerLayout, setTriggerLayout] = useState<TriggerPosition | null>(
@@ -104,24 +107,32 @@ const padding = 10;
 const createTopPosition = (
   triggerLayout: TriggerPosition,
   height: number,
-  width: number,
+  horizontalPositionModifier: number,
 ): [number, number] => {
   const top = triggerLayout.y - height - padding;
-  const left = triggerLayout.x + triggerLayout.width / 2 - width / 2;
+  const left =
+    triggerLayout.x + triggerLayout.width / 2 - horizontalPositionModifier;
   return [top, left];
 };
 
 const createBottomPosition = (
   triggerLayout: TriggerPosition,
-  width: number,
+  horizontalPositionModifier: number,
 ): [number, number] => {
   const top = triggerLayout.y + triggerLayout.height + padding;
-  const left = triggerLayout.x + triggerLayout.width / 2 - width / 2;
+  const left =
+    triggerLayout.x + triggerLayout.width / 2 - horizontalPositionModifier;
 
   return [top, left];
 };
 
-Popup.Content = ({ children, position, width, height }: PopupContentProps) => {
+Popup.Content = ({
+  children,
+  position,
+  width,
+  height,
+  verticalAlignment = "center",
+}: PopupContentProps) => {
   //const { height: screenHeight } = useAppDimensions();
   const { isOpen, setIsOpen, triggerLayout } = usePopupContext();
 
@@ -135,17 +146,43 @@ Popup.Content = ({ children, position, width, height }: PopupContentProps) => {
     height = percentageToDecimal(height) * triggerLayout.height;
   }
 
+  let horizontalPositionModifier = 0;
+
+  switch (verticalAlignment) {
+    case "left":
+      horizontalPositionModifier = width - triggerLayout.width / 4;
+      break;
+    case "right":
+      horizontalPositionModifier = triggerLayout.width / 2;
+      break;
+    case "center":
+      horizontalPositionModifier = width / 2;
+    default:
+      horizontalPositionModifier = width / 2;
+  }
+
   let left, top;
 
   switch (position) {
     case "top":
-      [top, left] = createTopPosition(triggerLayout, height, width);
+      [top, left] = createTopPosition(
+        triggerLayout,
+        height,
+        horizontalPositionModifier,
+      );
       break;
     case "bottom":
-      [top, left] = createBottomPosition(triggerLayout, width);
+      [top, left] = createBottomPosition(
+        triggerLayout,
+        horizontalPositionModifier,
+      );
       break;
     default:
-      [top, left] = createTopPosition(triggerLayout, height, width);
+      [top, left] = createTopPosition(
+        triggerLayout,
+        height,
+        horizontalPositionModifier,
+      );
   }
 
   // TODO: Rewrite to use measure and a global pop-up container

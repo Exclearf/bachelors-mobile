@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
   },
   header: {
     position: "absolute",
+    width: "100%",
   },
   headerText: {
     textAlign: "center",
@@ -120,5 +121,7 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
   },
-  buttonText: {},
+  buttonText: {
+    width: "75%",
+  },
 });
