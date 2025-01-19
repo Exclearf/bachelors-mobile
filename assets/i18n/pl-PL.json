@@ -24,6 +24,7 @@
         "darkTheme": "Tryb ciemny",
         "appTheme": "Motyw",
         "accentColor": "Akcent",
+        "accentColorTooltip": "Kolor używany jako akcent",
         "animationSpeed": "Animacja"
       },
       "accessibilitySection": {

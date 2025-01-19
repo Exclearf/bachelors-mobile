@@ -24,6 +24,7 @@
         "darkTheme": "Dark mode",
         "appTheme": "App Theme",
         "accentColor": "Accent Color",
+        "accentColorTooltip": "Which color accent to use",
         "animationSpeed": "Animation Speed"
       },
       "accessibilitySection": {

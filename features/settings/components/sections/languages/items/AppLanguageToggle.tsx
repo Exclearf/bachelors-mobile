@@ -3,13 +3,10 @@ import { SettingsSectionSubItemType } from "@/features/settings/SettingsSections
 import ToggleGroup, {
   ToggleItemType,
 } from "@/features/shared/components/input/ToggleGroup";
-import TranslatedText from "@/features/shared/components/text/TranslatedText";
 import { useTranslation } from "react-i18next";
 import { locales } from "@/features/translation/i18n/i18n";
 import { useSettingsItemWidth } from "@/features/settings/hooks/useSettingsItemWidth";
-import Tooltip from "@/features/shared/components/feedback/Tooltip";
-import { useFontSize } from "@/features/shared/hooks/useFontSize";
-import { StyleSheet, View } from "react-native";
+import SettingsMenuEntry from "../../shared/SettingsMenuEntryText";
 
 type Props = SettingsSectionSubItemType;
 
@@ -19,7 +16,6 @@ const AppLanguageToggle = ({ getTranslationKey, textStyle }: Props) => {
     i18n.language,
   );
   const { width } = useSettingsItemWidth();
-  const fontSize = useFontSize();
   const appLanguages: ToggleItemType[] = locales.map((item) => ({
     id: item.code,
     title: item.displayName,
@@ -37,24 +33,11 @@ const AppLanguageToggle = ({ getTranslationKey, textStyle }: Props) => {
 
   return (
     <>
-      <View style={styles.textContainer}>
-        <TranslatedText
-          translationKey={getTranslationKey("appLanguage")}
-          style={textStyle}
-        >
-          <Tooltip
-            width={150 + fontSize["large"]}
-            iconSize={fontSize["regular"]}
-            height={75}
-            position="bottom"
-          >
-            <TranslatedText
-              numberOfLines={2}
-              translationKey={getTranslationKey("appLanguageTooltip")}
-            />
-          </Tooltip>
-        </TranslatedText>
-      </View>
+      <SettingsMenuEntry
+        textStyle={textStyle}
+        textTranslationKey={getTranslationKey("appLanguage")}
+        tooltipTranslationKey={getTranslationKey("appLanguageTooltip")}
+      />
       <ToggleGroup
         selectedIndex={currentAppLanguageIndex}
         items={appLanguages}
@@ -66,13 +49,3 @@ const AppLanguageToggle = ({ getTranslationKey, textStyle }: Props) => {
 };
 
 export default AppLanguageToggle;
-
-const styles = StyleSheet.create({
-  textContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    gap: 5,
-  },
-});

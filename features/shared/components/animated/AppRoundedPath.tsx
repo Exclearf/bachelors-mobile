@@ -32,7 +32,7 @@ const AppRoundedPath = ({
 
   handlePadColor ??= usePersonalizationStore(
     (state) => state.theme,
-  )?.mutedForeground!;
+  )?.secondaryForeground!;
 
   //TODO: Workaround
   const sharedValue = useSharedValue(0);
@@ -75,7 +75,6 @@ const AppRoundedPath = ({
           width: parentWidth,
           height: barHeight,
           marginTop: 10,
-          backgroundColor: "rgba(0,0,0,0)",
         }}
       >
         <Path path={skiaPath} color={theme?.background} />

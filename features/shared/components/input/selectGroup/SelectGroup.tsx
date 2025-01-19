@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
   item: {
     backgroundColor: "transparent",
     borderRadius: 20,
-    width: "25%",
+    width: "33%",
     paddingHorizontal: 10,
     borderColor: "grey",
     borderWidth: 1,

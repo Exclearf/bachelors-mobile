@@ -1,7 +1,7 @@
 import React from "react";
-import TranslatedText from "@/features/shared/components/text/TranslatedText";
 import { SettingsSectionSubItemType } from "@/features/settings/SettingsSections";
 import ColorPanel from "./ColorPanel";
+import SettingsMenuEntryText from "../../shared/SettingsMenuEntryText";
 
 type Props = SettingsSectionSubItemType;
 
@@ -10,10 +10,10 @@ type Props = SettingsSectionSubItemType;
 const ThemeColorSlider = ({ getTranslationKey, textStyle }: Props) => {
   return (
     <>
-      <TranslatedText
-        numberOfLines={2}
-        style={textStyle}
-        translationKey={getTranslationKey("accentColor")}
+      <SettingsMenuEntryText
+        textStyle={textStyle}
+        textTranslationKey={getTranslationKey("accentColor")}
+        tooltipTranslationKey={getTranslationKey("accentColorTooltip")}
       />
       <ColorPanel />
     </>

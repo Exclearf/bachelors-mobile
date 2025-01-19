@@ -39,6 +39,14 @@ export type SettingsSectionSubItemType = {
   tooltipTranslationKey?: string;
 };
 
+export const textContainerStyle = {
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "space-between",
+  alignItems: "center",
+  gap: 4,
+} as ViewStyle;
+
 const SettingsSections = ({ getTranslationKey, height }: Props) => {
   getTranslationKey = useLocalization(getTranslationKey("sections"));
   const theme = useTheme();
@@ -117,12 +125,12 @@ export default SettingsSections;
 const styles = StyleSheet.create({
   sectionContainer: {
     height: "auto",
-    marginVertical: 7,
+    marginVertical: 5,
     textAlign: "justify",
     padding: 10,
     borderWidth: 1,
     borderRadius: 10,
-    paddingHorizontal: 14,
+    paddingHorizontal: 10,
   },
   sectionHeader: {
     fontSize: 18,

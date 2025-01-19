@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-type AppDimensionsType = {
+export type AppDimensionsType = {
   width: number;
   height: number;
 };
