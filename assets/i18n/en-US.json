@@ -21,8 +21,8 @@
         "modelSelect": "AI Model",
         "modelSelectOptions": {
           "placeholder": "Select a model",
-          "vivit": "ViViT",
-          "timesformer": "TimeSformer"
+          "vivit": "ViViT 🧠",
+          "timesformer": "TimeSformer ⚡"
         }
       },
       "personalizationSection": {

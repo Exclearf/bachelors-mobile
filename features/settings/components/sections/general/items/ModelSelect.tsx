@@ -32,13 +32,6 @@ const ModelSelect = ({ getTranslationKey, textStyle }: Props) => {
     })),
   ];
 
-  console.log(
-    mockSelectData.map((item) => ({
-      translationKey: modelSelectionTranslationKey(item.key),
-      id: item.key,
-    })),
-  );
-
   const [currentItem, setCurrentItem] = useState<SelectItemType | null>(null);
 
   const handleChange = (item: SelectItemType) => {

@@ -128,7 +128,6 @@ const Content = ({
   const context = useExpandableContext();
 
   if (!context) {
-    console.log("Context is null");
     return null;
   }
 
