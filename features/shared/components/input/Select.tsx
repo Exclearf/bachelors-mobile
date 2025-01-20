@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, View } from "react-native";
-import React, { Dispatch, SetStateAction, useRef } from "react";
+import React, { useRef } from "react";
 import Expandable, { ExpandableRef } from "../layout/Expandable";
 import Animated, {
   useAnimatedStyle,
@@ -11,72 +11,93 @@ import TranslatedText from "../text/TranslatedText";
 
 export type SelectItemType = {
   id: string | number;
-  title: string;
+  translationKey: string;
+  isPlaceholder?: boolean;
 };
 
 type Props = {
   items: SelectItemType[];
-  currentItem: SelectItemType;
-  setCurrentItem: Dispatch<SetStateAction<SelectItemType>>;
+  currentItem: SelectItemType | null;
+  setCurrentItem: (item: SelectItemType) => any;
+  width?: number;
 };
 
 type SelectItemProps = {
   onPress: () => any;
+  isActive: boolean;
+  translationKey: string;
 } & Partial<SelectItemType>;
 
 type SelectPickerProps = {
-  title: string;
+  translationKey: string;
+  width: number;
 };
 
-const SelectPicker = ({ title }: SelectPickerProps) => {
+const SelectPicker = ({ translationKey, width }: SelectPickerProps) => {
   const theme = useTheme();
 
   return (
     <View
       style={[
         {
-          backgroundColor: theme?.primaryBackground,
+          backgroundColor: theme?.mutedBackground,
           borderColor: theme?.mutedForeground,
           borderWidth: 1,
+          width,
         },
         styles.pickerContainer,
       ]}
     >
       <TranslatedText
-        translationKey={title}
-        style={{ color: theme?.primaryForeground, textAlign: "center" }}
-      ></TranslatedText>
+        translationKey={translationKey}
+        style={{
+          color: theme?.primaryForeground,
+          textAlign: "center",
+        }}
+      />
     </View>
   );
 };
 
-const SelectItem = ({ title, onPress }: SelectItemProps) => {
-  const themes = useTheme();
+const SelectItem = ({ translationKey, isActive, onPress }: SelectItemProps) => {
+  const theme = useTheme();
 
   return (
-    <Pressable onPress={onPress}>
+    <Pressable onPress={onPress} style={{ width: "100%" }}>
       <TranslatedText
-        translationKey={title!}
+        isBold={isActive}
+        fontSize={"regular"}
+        isSecondary={!isActive}
+        translationKey={translationKey}
         style={{
-          textAlign: "center",
-          color: themes?.primaryForeground,
-          width: "100%",
+          height: "100%",
+          borderWidth: 0,
+          backgroundColor: isActive ? theme?.mutedForeground : "transparent",
         }}
       />
     </Pressable>
   );
 };
 
-const Select = ({ items, setCurrentItem, currentItem }: Props) => {
+const Select = ({ items, setCurrentItem, currentItem, width }: Props) => {
   const expanded = useSharedValue(0);
   const theme = useTheme();
   const fontSize = useFontSize();
   const expandableRef = useRef<ExpandableRef>();
+  const validItems = items.filter((item) => !item.isPlaceholder);
+
+  width ??=
+    (items.sort((a, b) => a.translationKey.length - b.translationKey.length)[0]
+      .translationKey.length +
+      2) *
+      fontSize["regular"] +
+    30;
+
+  currentItem ??= items.find((item) => item.isPlaceholder)!;
 
   const animatedContentStyle = useAnimatedStyle(() => {
+    "worklet";
     return {
-      borderColor: theme?.mutedForeground,
-      backgroundColor: theme?.mutedBackground,
       borderWidth: expanded.get() === 0 ? 0 : 1,
     };
   });
@@ -85,27 +106,54 @@ const Select = ({ items, setCurrentItem, currentItem }: Props) => {
     <Expandable
       ref={expandableRef}
       expanded={expanded}
-      height={(items.length + 2) * fontSize["regular"]}
+      height={4 + validItems.length * fontSize["regular"] * 2}
     >
       <Expandable.Trigger>
-        <SelectPicker title={currentItem.title} />
+        <SelectPicker
+          translationKey={currentItem.translationKey}
+          width={width}
+        />
       </Expandable.Trigger>
       <Expandable.Content
         isAbsolute={true}
-        style={[animatedContentStyle, styles.containerWrapper]}
+        style={[styles.containerWrapper, animatedContentStyle]}
         padding={5}
       >
-        <Animated.View style={styles.contentContainer}>
-          {items.map((item) => (
-            <SelectItem
-              onPress={() => {
-                expandableRef.current?.close();
-                setCurrentItem(item);
-              }}
-              title={item.title}
-              key={item.id}
-            />
-          ))}
+        <Animated.View
+          style={[
+            styles.contentContainer,
+            animatedContentStyle,
+            {
+              borderColor: theme?.mutedForeground,
+              backgroundColor: theme?.mutedBackground,
+            },
+          ]}
+        >
+          {items.map((item) => {
+            if (item.isPlaceholder) return null;
+
+            return (
+              <View
+                key={item.id}
+                style={[
+                  {
+                    overflow: "hidden",
+                    alignItems: "center",
+                    height: fontSize["regular"] * 2,
+                  },
+                ]}
+              >
+                <SelectItem
+                  onPress={() => {
+                    expandableRef.current?.close();
+                    setCurrentItem(item);
+                  }}
+                  isActive={currentItem.id === item.id}
+                  translationKey={item.translationKey}
+                />
+              </View>
+            );
+          })}
         </Animated.View>
       </Expandable.Content>
     </Expandable>
@@ -123,9 +171,13 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     position: "absolute",
-    justifyContent: "space-evenly",
+    borderRadius: 5,
+    justifyContent: "space-around",
+    overflow: "hidden",
   },
   containerWrapper: {
     borderRadius: 5,
+    borderWidth: 1,
+    zIndex: 10,
   },
 });

@@ -13,15 +13,11 @@ const TextToVoiceButton = ({ size, color }: Props) => {
       name="volume-2"
       size={size}
       color={color}
-      style={[styles.container, { padding: size / 2, width: size * 2 }]}
+      style={{ padding: size / 2, width: size * 2 }}
     />
   );
 };
 
 export default TextToVoiceButton;
 
-const styles = StyleSheet.create({
-  container: {
-    position: "absolute",
-  },
-});
+const styles = StyleSheet.create({});

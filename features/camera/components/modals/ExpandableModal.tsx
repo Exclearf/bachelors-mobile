@@ -72,33 +72,32 @@ const ExpandableModal = ({
           translationKey={titleTranslationKey}
         />
         <View
-          style={{
-            width: iconSize * 4,
-            height: iconSize * 2,
-          }}
+          style={[
+            expandableModalStyles.customSectionStyle,
+            {
+              height: iconSize * 2,
+            },
+          ]}
         >
           {mode === "signToText" && (
             <TextToVoiceButton size={24} color="white" />
           )}
-          <TouchableWithoutFeedback
-            onPress={() => {
-              expansionFactor.set(withTiming(isExpanding.current ? 0 : 1));
-              isExpanding.current = !isExpanding.current;
-            }}
-            style={{
-              position: "absolute",
-              right: 0,
-              top: 0,
-              height: iconSize * 2,
-              width: iconSize * 2,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <CollapseAnimated value={expansionFactor} color="white" size={24} />
-          </TouchableWithoutFeedback>
         </View>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            expansionFactor.set(withTiming(isExpanding.current ? 0 : 1));
+            isExpanding.current = !isExpanding.current;
+          }}
+          style={{
+            height: iconSize * 2,
+            width: iconSize * 2,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CollapseAnimated value={expansionFactor} color="white" size={24} />
+        </TouchableWithoutFeedback>
       </View>
       {children}
     </Animated.View>
@@ -120,5 +119,12 @@ export const expandableModalStyles = StyleSheet.create({
     marginHorizontal: 15,
     color: "white",
     fontSize: 20,
+  },
+  customSectionStyle: {
+    flex: 1,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
   },
 });

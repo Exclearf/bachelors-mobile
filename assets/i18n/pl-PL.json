@@ -10,14 +10,20 @@
       }
     },
     "sections": {
-      "languagePreferencesSectionHeader": "Preferencje językowe",
+      "generalSectionHeader": "Ogólne",
       "personalizationSectionHeader": "Personalizacja",
       "accessibilitySectionHeader": "Dostępność",
-      "languagePreferencesSection": {
+      "generalSettingsSection": {
         "appLanguage": "Aplikacja",
         "appLanguageTooltip": "Język aplikacji",
         "translationLanguage": "Tłumaczenie",
-        "translationLanguageTooltip": "Język tłumaczenia"
+        "translationLanguageTooltip": "Język tłumaczenia",
+        "modelSelect": "AI Model",
+        "modelSelectOptions": {
+          "placeholder": "Wybierz model",
+          "vivit": "ViViT",
+          "timesformer": "TimeSformer"
+        }
       },
       "personalizationSection": {
         "lightTheme": "Tryb jasny",

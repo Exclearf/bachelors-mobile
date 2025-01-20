@@ -4,6 +4,13 @@ import { immer } from "zustand/middleware/immer";
 
 type Modes = "signToText" | "textToSign";
 
+export const AvailableModels = {
+  vivit: "vivit",
+  timesformer: "timesformer",
+};
+
+export type Model = keyof typeof AvailableModels | null;
+
 const availableLanguages: ToggleItemType[] = [
   {
     id: "en-US",
@@ -19,13 +26,15 @@ type LanguageItem = (typeof availableLanguages)[number];
 
 type TranslationStoreState = {
   mode: Modes;
+  model: Model;
   currentLanguage: LanguageItem;
-  setCurrentLanguage: (newLanguage: LanguageItem) => void;
   availableLanguages: typeof availableLanguages;
 };
 
 type TranslationStoreActions = {
   setMode: (newState: Modes) => void;
+  setModel: (newModel: Model) => void;
+  setCurrentLanguage: (newLanguage: LanguageItem) => void;
 };
 
 export const useTranslationStore = create<
@@ -33,11 +42,17 @@ export const useTranslationStore = create<
 >()(
   immer((set) => ({
     mode: "signToText",
+    model: null,
     availableLanguages,
     currentLanguage: availableLanguages[0],
     setCurrentLanguage: (newLanguage: LanguageItem) => {
       set((state) => {
         state.currentLanguage = newLanguage;
+      });
+    },
+    setModel: (newModel: Model) => {
+      set((state) => {
+        state.model = newModel;
       });
     },
     setMode: (newMode: Modes) => {

@@ -4,15 +4,18 @@ import { Video, ResizeMode, AVPlaybackStatusSuccess } from "expo-av";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { useAnimationPlayer } from "@/features/translation/hooks/useAnimationPlayer";
-import Spinner from "../shared/components/feedback/Spinner";
+import Spinner from "../../shared/components/feedback/Spinner";
+import { useTheme } from "@/features/shared/hooks/useTheme";
 
-const controlsColor = "rgba(75, 75, 75, 0.95)";
 const controlsSize = 56;
 
-const TextTranslation = () => {
+const TextTranslationPlayer = () => {
   const [status, setStatus] = useState<AVPlaybackStatusSuccess>();
   const [isReset, setIsReset] = useState(false);
   const video = useRef<Video>(null);
+  const theme = useTheme();
+
+  const controlsColor = theme?.mutedForeground;
 
   const [currentSources, index, hasFinished, resetPlayback] =
     useAnimationPlayer(status!, "you", "you", "you");
@@ -39,7 +42,7 @@ const TextTranslation = () => {
         resizeMode={ResizeMode.COVER}
       />
       {!status?.isLoaded && (
-        <Spinner size={controlsSize} color={controlsColor} />
+        <Spinner size={controlsSize} color={controlsColor!} />
       )}
       <TouchableWithoutFeedback
         onPress={() => {
@@ -56,7 +59,16 @@ const TextTranslation = () => {
           }
         }}
       >
-        <View style={styles.buttonContrainer}>
+        <View
+          style={[
+            styles.buttonContrainer,
+            {
+              backgroundColor: theme?.secondaryBackground,
+              height: controlsSize + 10,
+              width: controlsSize + 10,
+            },
+          ]}
+        >
           {hasFinished && (
             <FontAwesome
               name="refresh"
@@ -85,7 +97,7 @@ const TextTranslation = () => {
   );
 };
 
-export default TextTranslation;
+export default TextTranslationPlayer;
 
 const styles = StyleSheet.create({
   contentContainer: {
@@ -98,10 +110,10 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   buttonContrainer: {
-    paddingBottom: 5,
-  },
-  button: {
-    backgroundColor: "rgba(75, 75, 75, 0.5)",
+    marginBottom: 8,
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
   },
   video: {
     position: "absolute",

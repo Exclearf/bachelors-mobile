@@ -68,6 +68,7 @@ const TranslatedText = ({
             color: isSecondary
               ? theme?.secondaryForeground
               : theme?.primaryForeground,
+            verticalAlign: "middle",
           },
           ...userStyle,
           { fontSize: fontSizeOverride ?? currentFontSize[fontSize] },

@@ -3,7 +3,7 @@ import React from "react";
 import { useSharedValue } from "react-native-reanimated";
 import Expandable from "../layout/Expandable";
 
-type Props = {};
+type AccordionProps = {};
 
 const Accordion = (props: Props) => {
   const expanded = useSharedValue(0);
@@ -11,7 +11,7 @@ const Accordion = (props: Props) => {
   return (
     <Expandable expanded={expanded} height={200}>
       <Expandable.Trigger />
-      <Expandable.Content />
+      <Expandable.Content isAbsolute={false} />
     </Expandable>
   );
 };

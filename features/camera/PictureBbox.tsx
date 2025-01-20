@@ -11,6 +11,8 @@ import Animated, {
 } from "react-native-reanimated";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { AppDimensionsContext } from "../shared/contexts/appDimensions";
+import { useTheme } from "../shared/hooks/useTheme";
+import { colorKit } from "reanimated-color-picker";
 
 type CornerCordinates = {
   x: SharedValue<number>;
@@ -73,11 +75,17 @@ const PictureBbox = () => {
         left: corner.x.value - leftOffset,
       };
     });
+  const theme = useTheme();
 
+  const cornerColor = colorKit.RGB(theme?.primaryForeground!).array();
   const cornerOpacity = useSharedValue<number>(0.5);
 
+  const backgroundColor = colorKit
+    .setAlpha(theme?.primaryBackground!, 0.5)
+    .hex();
+
   const cornerStyle = useDerivedValue(() => {
-    return `rgba(255,255,255,${cornerOpacity.get()})`;
+    return `rgba(${cornerColor[0]},${cornerColor[1]},${cornerColor[2]},${cornerOpacity.get()})`;
   });
 
   const gestureFactory = (
@@ -170,7 +178,7 @@ const PictureBbox = () => {
               y={0}
               width={width}
               height={height}
-              color="rgba(0,0,0,0.45)"
+              color={backgroundColor}
             />
           </Group>
           {(

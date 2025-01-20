@@ -153,7 +153,11 @@ const Content = ({
     };
   });
 
-  return <Animated.View style={[style, viewStyle]}>{children}</Animated.View>;
+  const tempStyle = Array.isArray(style) ? style : [style];
+
+  return (
+    <Animated.View style={[viewStyle, ...tempStyle]}>{children}</Animated.View>
+  );
 };
 
 const Expandable = Object.assign(ExpandableComponent, {

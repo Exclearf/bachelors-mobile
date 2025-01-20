@@ -12,8 +12,8 @@ import TranslatedText from "@/features/shared/components/text/TranslatedText";
 import Skeleton from "../shared/components/feedback/Skeleton";
 import SettingsItemWidthProvider from "./components/providers/SettingsItemWidthProvider";
 
-const LanguageTogglesSection = lazy(
-  () => import("./components/sections/languages/LanguagePreferencesSection"),
+const GeneralSection = lazy(
+  () => import("./components/sections/general/GeneralSection"),
 );
 const PersonalizationSection = lazy(
   () => import("./components/sections/personalization/PersonalizationSection"),
@@ -43,10 +43,7 @@ const SettingsSections = ({ getTranslationKey, height }: Props) => {
   getTranslationKey = useLocalization(getTranslationKey("sections"));
   const theme = useTheme();
   const settingsSections = [
-    [
-      getTranslationKey("languagePreferencesSectionHeader"),
-      LanguageTogglesSection,
-    ],
+    [getTranslationKey("generalSectionHeader"), GeneralSection],
     [getTranslationKey("personalizationSectionHeader"), PersonalizationSection],
     [getTranslationKey("accessibilitySectionHeader"), AccessibilitySection],
   ] as const;

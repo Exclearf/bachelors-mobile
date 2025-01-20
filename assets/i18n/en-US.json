@@ -10,14 +10,20 @@
       }
     },
     "sections": {
-      "languagePreferencesSectionHeader": "Language Preferences",
+      "generalSectionHeader": "General",
       "personalizationSectionHeader": "Personalization",
       "accessibilitySectionHeader": "Accessibility",
-      "languagePreferencesSection": {
+      "generalSettingsSection": {
         "appLanguage": "Application",
         "appLanguageTooltip": "UI language",
         "translationLanguage": "Translation",
-        "translationLanguageTooltip": "Translate into this"
+        "translationLanguageTooltip": "Translate into this",
+        "modelSelect": "AI Model",
+        "modelSelectOptions": {
+          "placeholder": "Select a model",
+          "vivit": "ViViT",
+          "timesformer": "TimeSformer"
+        }
       },
       "personalizationSection": {
         "lightTheme": "Light mode",

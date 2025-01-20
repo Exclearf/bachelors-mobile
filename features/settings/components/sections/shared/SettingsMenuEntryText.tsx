@@ -7,7 +7,7 @@ import { useFontSize } from "@/features/shared/hooks/useFontSize";
 
 type Props = {
   textTranslationKey: string;
-  tooltipTranslationKey: string;
+  tooltipTranslationKey?: string;
   position?: "bottom" | "top";
 } & Partial<SettingsSectionSubItemType>;
 
@@ -22,17 +22,19 @@ const SettingsMenuEntryText = ({
   return (
     <View style={styles.textContainer}>
       <TranslatedText style={textStyle} translationKey={textTranslationKey}>
-        <Tooltip
-          width={125 + fontSize["large"]}
-          iconSize={fontSize["regular"]}
-          height={75}
-          position={position}
-        >
-          <TranslatedText
-            numberOfLines={2}
-            translationKey={tooltipTranslationKey}
-          />
-        </Tooltip>
+        {tooltipTranslationKey && (
+          <Tooltip
+            width={125 + fontSize["large"]}
+            iconSize={fontSize["regular"]}
+            height={75}
+            position={position}
+          >
+            <TranslatedText
+              numberOfLines={2}
+              translationKey={tooltipTranslationKey}
+            />
+          </Tooltip>
+        )}
       </TranslatedText>
     </View>
   );

@@ -9,7 +9,7 @@ import { useTranslationStore } from "@/features/translation/stores/translationSt
 import ExpandableModal from "@/features/camera/components/modals/ExpandableModal";
 import History from "@/features/translation/components/History";
 import SignTranslation from "@/features/translation/components/SignTranslation";
-import TextTranslation from "@/features/translation/TextTranslation";
+import TextTranslation from "@/features/translation/components/TextTranslationPlayer";
 import { useLocalization } from "@/features/shared/hooks/useLocalization";
 import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
 import { useTheme } from "@/features/shared/hooks/useTheme";
