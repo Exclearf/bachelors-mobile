@@ -26,7 +26,9 @@ const ThemeProvider = ({ children }: Props) => {
   const colorScheme = useColorScheme();
 
   useEffect(() => {
-    setThemeType(colorScheme);
+    if (themeType == null) {
+      setThemeType(colorScheme);
+    }
   }, []);
 
   useEffect(() => {

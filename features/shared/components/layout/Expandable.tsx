@@ -50,7 +50,9 @@ type ExpandableProps = PropsWithChildren<{
   height: number;
 }>;
 
-type ExpandableTriggerProps = PropsWithChildren<{}>;
+type ExpandableTriggerProps = PropsWithChildren<{
+  style?: StyleProp<ViewStyle>;
+}>;
 
 type ExpandableContentProps = PropsWithChildren<{
   style?: StyleProp<ViewStyle>;
@@ -97,7 +99,7 @@ const ExpandableComponent = forwardRef(
   },
 );
 
-const Trigger = ({ children }: ExpandableTriggerProps) => {
+const Trigger = ({ children, style }: ExpandableTriggerProps) => {
   const context = useExpandableContext();
   const triggerRef = useRef<View>(null);
 
@@ -113,7 +115,12 @@ const Trigger = ({ children }: ExpandableTriggerProps) => {
   };
 
   return (
-    <Pressable ref={triggerRef} onPress={switchExpanded} onLayout={onLayout}>
+    <Pressable
+      style={style}
+      ref={triggerRef}
+      onPress={switchExpanded}
+      onLayout={onLayout}
+    >
       {children}
     </Pressable>
   );

@@ -2,12 +2,14 @@ import { Pressable, StyleSheet, View } from "react-native";
 import React, { useRef } from "react";
 import Expandable, { ExpandableRef } from "../layout/Expandable";
 import Animated, {
+  SharedValue,
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
 import { useTheme } from "../../hooks/useTheme";
 import { useFontSize } from "../../hooks/useFontSize";
 import TranslatedText from "../text/TranslatedText";
+import ExpandArrow from "../animated/ExpandArrow";
 
 export type SelectItemType = {
   id: string | number;
@@ -31,30 +33,36 @@ type SelectItemProps = {
 type SelectPickerProps = {
   translationKey: string;
   width: number;
+  maxHeight: number;
+  expanded: SharedValue<number>;
 };
 
-const SelectPicker = ({ translationKey, width }: SelectPickerProps) => {
+const SelectPicker = ({
+  translationKey,
+  width,
+  maxHeight,
+  expanded,
+}: SelectPickerProps) => {
   const theme = useTheme();
-
+  const fontSize = useFontSize();
   return (
     <View
       style={[
         {
           backgroundColor: theme?.mutedBackground,
           borderColor: theme?.mutedForeground,
-          borderWidth: 1,
           width,
+          paddingHorizontal: fontSize["regular"] / 2,
+          paddingVertical: fontSize["regular"] / 4,
         },
         styles.pickerContainer,
       ]}
     >
       <TranslatedText
         translationKey={translationKey}
-        style={{
-          color: theme?.primaryForeground,
-          textAlign: "center",
-        }}
+        style={[styles.contentText, { color: theme?.primaryForeground }]}
       />
+      <ExpandArrow maxHeight={maxHeight} expanded={expanded} />
     </View>
   );
 };
@@ -102,14 +110,18 @@ const Select = ({ items, setCurrentItem, currentItem, width }: Props) => {
     };
   });
 
+  const maxHeight = 4 + validItems.length * fontSize["regular"] * 2;
+
   return (
-    <Expandable
-      ref={expandableRef}
-      expanded={expanded}
-      height={4 + validItems.length * fontSize["regular"] * 2}
-    >
-      <Expandable.Trigger>
+    <Expandable ref={expandableRef} expanded={expanded} height={maxHeight}>
+      <Expandable.Trigger
+        style={{
+          flexDirection: "row",
+        }}
+      >
         <SelectPicker
+          expanded={expanded}
+          maxHeight={maxHeight}
           translationKey={currentItem.translationKey}
           width={width}
         />
@@ -164,8 +176,10 @@ export default Select;
 
 const styles = StyleSheet.create({
   pickerContainer: {
-    padding: 5,
+    borderWidth: 1,
     borderRadius: 5,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   contentContainer: {
     height: "100%",
@@ -179,5 +193,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     zIndex: 10,
+  },
+  contentText: {
+    flex: 1,
+    textAlign: "center",
   },
 });

@@ -8,6 +8,9 @@ import {
 } from "../../shared/utils/themes";
 import { hexFromArgb } from "@material/material-color-utilities";
 import { colorKit } from "reanimated-color-picker";
+import { persist, createJSONStorage } from "zustand/middleware";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createPersistedStore } from "@/features/shared/utils/createPersistStore";
 
 export type FontSize = {
   regular: number;
@@ -53,64 +56,70 @@ const baseFontSize = {
 export const usePersonalizationStore = create<
   PersonalizationState & PersonalizationActions
 >()(
-  immer((set, get) => ({
-    theme: null,
-    fontSize: baseFontSize,
-    fontScale: 1,
-    themeType: "light",
-    accentColor: "hsv(163, 0%, 50%)",
-    isHighContrast: false,
-    setTheme: (newTheme) =>
-      set((state) => {
-        state.theme = {} as Theme;
-        for (const [key, value] of Object.entries(newTheme)) {
-          state.theme[key as keyof typeof newTheme] = hexFromArgb(
-            Number(value),
-          );
+  persist(
+    immer((set, get) => ({
+      theme: null,
+      fontSize: baseFontSize,
+      fontScale: 1,
+      themeType: null,
+      accentColor: "hsv(163, 0%, 50%)",
+      isHighContrast: false,
+      setTheme: (newTheme) =>
+        set((state) => {
+          state.theme = {} as Theme;
+          for (const [key, value] of Object.entries(newTheme)) {
+            state.theme[key as keyof typeof newTheme] = hexFromArgb(
+              Number(value),
+            );
+          }
+        }),
+      setFontScale: (newScale) => {
+        set((state) => {
+          state.fontScale = newScale;
+          state.fontSize = {
+            regular: baseFontSize.regular * newScale,
+            medium: baseFontSize.medium * newScale,
+            large: baseFontSize.large * newScale,
+          };
+        });
+      },
+      setThemeType: (newTheme) => {
+        let newAccentColor = get().accentColor;
+        if (newTheme === "dark") {
+          console.log("Dark theme");
+          const saturation = getSaturation(newAccentColor);
+          newAccentColor = setSaturation(newAccentColor, 100);
+          newAccentColor = colorKit
+            .setBrightness(newAccentColor, saturation)
+            .hsv()
+            .string();
+        } else {
+          console.log("Light theme");
+          const brightness = colorKit.getBrightness(newAccentColor);
+          newAccentColor = colorKit
+            .setBrightness(newAccentColor, 100)
+            .hsv()
+            .string();
+          newAccentColor = setSaturation(newAccentColor, brightness);
         }
-      }),
-    setFontScale: (newScale) => {
-      set((state) => {
-        state.fontScale = newScale;
-        state.fontSize = {
-          regular: baseFontSize.regular * newScale,
-          medium: baseFontSize.medium * newScale,
-          large: baseFontSize.large * newScale,
-        };
-      });
-    },
-    setThemeType: (newTheme) => {
-      let newAccentColor = get().accentColor;
-      if (newTheme === "dark") {
-        console.log("Dark theme");
-        const saturation = getSaturation(newAccentColor);
-        newAccentColor = setSaturation(newAccentColor, 100);
-        newAccentColor = colorKit
-          .setBrightness(newAccentColor, saturation)
-          .hsv()
-          .string();
-      } else {
-        console.log("Light theme");
-        const brightness = colorKit.getBrightness(newAccentColor);
-        newAccentColor = colorKit
-          .setBrightness(newAccentColor, 100)
-          .hsv()
-          .string();
-        newAccentColor = setSaturation(newAccentColor, brightness);
-      }
 
-      set((state) => {
-        state.themeType = newTheme;
-        state.accentColor = newAccentColor;
-      });
+        set((state) => {
+          state.themeType = newTheme;
+          state.accentColor = newAccentColor;
+        });
+      },
+      setIsHighContrast: (newState) =>
+        set((state) => {
+          state.isHighContrast = newState;
+        }),
+      setAccentColor: (newColor) =>
+        set((state) => {
+          state.accentColor = newColor;
+        }),
+    })),
+    {
+      name: "personalization-store",
+      storage: createJSONStorage(() => AsyncStorage),
     },
-    setIsHighContrast: (newState) =>
-      set((state) => {
-        state.isHighContrast = newState;
-      }),
-    setAccentColor: (newColor) =>
-      set((state) => {
-        state.accentColor = newColor;
-      }),
-  })),
+  ),
 );

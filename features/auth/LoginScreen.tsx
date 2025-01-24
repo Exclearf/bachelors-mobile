@@ -44,12 +44,7 @@ const LoginScreen = () => {
     <View style={styles.container}>
       <Animated.View
         style={[
-          {
-            position: "absolute",
-            width: "100%",
-            justifyContent: "center",
-            alignItems: "center",
-          },
+          styles.wrapper,
           containerStyle,
           {
             backgroundColor: theme?.background,
@@ -80,7 +75,7 @@ const LoginScreen = () => {
             <View style={styles.buttonContainer}>
               <Image source={google_logo} style={styles.googleLogo}></Image>
               <TranslatedText
-                fontSize="large"
+                fontSize="medium"
                 style={[styles.buttonText, { color: theme?.primaryForeground }]}
                 translationKey={getTranslationKey("signInWithGoogle")}
               />
@@ -95,6 +90,12 @@ const LoginScreen = () => {
 export default LoginScreen;
 
 const styles = StyleSheet.create({
+  wrapper: {
+    position: "absolute",
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   container: {
     width: "100%",
     height: "100%",

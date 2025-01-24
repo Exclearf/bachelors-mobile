@@ -43,6 +43,7 @@ const AppLanguageToggle = ({ getTranslationKey, textStyle }: Props) => {
         items={appLanguages}
         onChange={changeAppLanguage}
         width={width}
+        changeWhenAnimationEnds={true}
       />
     </>
   );

@@ -22,6 +22,7 @@ const AppThemeSwitch = ({ getTranslationKey, textStyle }: Props) => {
       title: getTranslationKey("darkTheme"),
     },
   ];
+
   const [themeType, setThemeType] = usePersonalizationStore(
     useShallow((state) => [state.themeType, state.setThemeType]),
   );

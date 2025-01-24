@@ -63,7 +63,8 @@
     "react-native-web": "~0.19.13",
     "react-native-webview": "13.12.5",
     "reanimated-color-picker": "^3.0.6",
-    "zustand": "^5.0.2"
+    "zustand": "^5.0.2",
+    "@react-native-async-storage/async-storage": "1.23.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

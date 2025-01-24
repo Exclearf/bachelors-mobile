@@ -11,6 +11,7 @@ import { useAppSetup } from "@/features/shared/hooks/useAppSetup";
 
 const RootLayout = () => {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const theme = usePersonalizationStore((state) => state.theme);
 
   // This hook is used to prevent the splash screen from hiding before the app is fully loaded
   // It is placed here in order not to re-render the app
@@ -19,8 +20,6 @@ const RootLayout = () => {
   if (!isLoggedIn && false) {
     return <LoginScreen />;
   }
-
-  const theme = usePersonalizationStore((state) => state.theme);
 
   return (
     <Tabs
