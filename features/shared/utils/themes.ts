@@ -82,19 +82,19 @@ const generateLightTheme = (palette: Theme, isHighContrast: boolean) => {
   return {
     background: palette.palettes.neutral.tone(95 * backgroundMultiplier),
     primaryBackground: palette.palettes.neutralVariant.tone(
-      78.5 * foregroundMultipler,
+      85 * foregroundMultipler,
     ),
-    primaryForeground: palette.palettes.primary.tone(7 * foregroundMultipler),
+    primaryForeground: palette.palettes.primary.tone(7.5 * foregroundMultipler),
     secondaryBackground: palette.palettes.neutralVariant.tone(
-      88.5 * foregroundMultipler,
+      7 * foregroundMultipler,
     ),
     secondaryForeground: palette.palettes.secondary.tone(
       14 * foregroundMultipler,
     ),
     mutedBackground: palette.palettes.neutralVariant.tone(
-      93 * backgroundMultiplier,
+      90 * backgroundMultiplier,
     ),
-    mutedForeground: palette.palettes.secondary.tone(30 * foregroundMultipler),
+    mutedForeground: palette.palettes.tertiary.tone(50 * foregroundMultipler),
   };
 };
 
