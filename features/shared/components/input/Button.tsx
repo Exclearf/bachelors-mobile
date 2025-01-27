@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, ViewStyle } from "react-native";
 import React, { PropsWithChildren } from "react";
 
 type Props = {
@@ -6,6 +6,7 @@ type Props = {
   width: number;
   height: number;
   backgroundColor: string;
+  style?: ViewStyle;
 };
 
 const Button = ({
@@ -14,6 +15,7 @@ const Button = ({
   backgroundColor,
   width,
   height,
+  style,
 }: PropsWithChildren<Props>) => {
   return (
     <TouchableOpacity
@@ -21,7 +23,7 @@ const Button = ({
         console.log("Button clicked");
         onPress?.();
       }}
-      style={[styles.container, { backgroundColor, width, height }]}
+      style={[styles.container, { backgroundColor, width, height }, style]}
     >
       {children}
     </TouchableOpacity>

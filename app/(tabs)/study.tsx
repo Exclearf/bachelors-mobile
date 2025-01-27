@@ -2,18 +2,24 @@ import { StyleSheet, View } from "react-native";
 import React from "react";
 import TranslatedText from "@/features/shared/components/text/TranslatedText";
 import { useLocalization } from "@/features/shared/hooks/useLocalization";
+import { useTheme } from "@/features/shared/hooks/useTheme";
+import Test from "@/features/study/components/Test";
 
 const StudyTab = () => {
   const getTranslationKey = useLocalization("studyPage");
+  const theme = useTheme();
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#1e1e1e" }}>
+    <View style={{ flex: 1, backgroundColor: theme?.background }}>
       <View style={styles.headerContainer}>
         <TranslatedText
-          style={styles.headerText}
+          fontSize="large"
+          isBold={true}
+          style={[{ color: theme?.primaryForeground }]}
           translationKey={getTranslationKey("headerText")}
         />
       </View>
+      <Test />
     </View>
   );
 };
@@ -25,9 +31,5 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
-  },
-  headerText: {
-    fontSize: 20,
-    color: "#fff",
   },
 });

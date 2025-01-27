@@ -1,57 +1,67 @@
-import { useCallback } from "react";
-import { SharedValue, useDerivedValue } from "react-native-reanimated";
+import { SharedValue } from "react-native-reanimated";
+import { useAppDimensions } from "../hooks/useAppDimensions";
+import { Skia, SkPath, usePathInterpolation } from "@shopify/react-native-skia";
 
-export const useBottomPath = () => {
-  const pathCreator = useCallback((borderRadius: number) => {
-    "worklet";
-    return `M 0 0
-          Q 0 ${borderRadius} 5 ${borderRadius}
-          H 95
-          Q 100 ${borderRadius} 100 0
-          V 100
-          H 0
-       `;
-  }, []);
+export const minTopPath = (height: number, width: number) =>
+  Skia.Path.MakeFromSVGString(`M 0 0
+          H ${width}
+          V ${height}
+          Q ${width} ${height} ${width * 0.95} ${height}
+          H ${width * 0.05}
+          Q 0 ${height} 0 ${height}
+          Z
+`)!;
 
-  return pathCreator;
-};
-
-export const useTopPath = () => {
-  const pathCreator = useCallback((borderRadius: number) => {
-    "worklet";
-    return `M 0 0
-            H 100
-            V 30
-            Q 100 ${30 - borderRadius} 95 ${30 - borderRadius}
-            H 5
-            Q 0 ${30 - borderRadius} 0 30
+export const maxTopPath = (height: number, width: number) =>
+  Skia.Path.MakeFromSVGString(`M 0 0
+            H ${width}
+            V ${height}
+            Q ${width} 0 ${width * 0.95} 0
+            H ${width * 0.05}
+            Q 0 0 0 ${height}
     Z
-`;
-  }, []);
+`)!;
 
-  return pathCreator;
-};
+export const minBottomPath = (height: number, width: number) =>
+  Skia.Path.MakeFromSVGString(`M 0 0
+            Q 0 0 ${width * 0.05} 0
+            H ${width * 0.95}
+            Q ${width} 0 ${width} 0
+            V ${height}
+            H 0
+            Z
+`)!;
 
-interface UseSkiaPathProps {
+export const maxBottomPath = (height: number, width: number) =>
+  Skia.Path.MakeFromSVGString(`M 0 0
+            Q 0 ${height} ${width * 0.05} ${height}
+            H ${width * 0.95}
+            Q ${width} ${height} ${width} 0
+            V ${height}
+            H 0
+            Z
+`)!;
+
+type SkiaPathCreator = (height: number, width: number) => SkPath;
+
+export type UseSkiaPathProps = {
   animatedPosition: SharedValue<number>;
   height: number;
-  pathCreator: (borderRadius: number) => string;
-}
+  maxPathCreator: SkiaPathCreator;
+  minPathCreator: SkiaPathCreator;
+};
 
 export function useSkiaPath({
   animatedPosition,
   height,
-  pathCreator,
+  minPathCreator,
+  maxPathCreator,
 }: UseSkiaPathProps) {
-  const borderRadius = useDerivedValue(() => {
-    const pos = animatedPosition?.get() ?? 0;
-    return (32 * pos) / height;
-  }, [animatedPosition]);
+  const { height: safeHeight, width: safeWidth } = useAppDimensions();
 
-  const skiaPath = useDerivedValue(() => {
-    const path = pathCreator(borderRadius.value);
-    return path || "M 0 0";
-  }, [pathCreator, borderRadius]);
-
-  return skiaPath;
+  return usePathInterpolation(
+    animatedPosition,
+    [0, safeHeight],
+    [minPathCreator(height, safeWidth), maxPathCreator(height, safeWidth)],
+  );
 }

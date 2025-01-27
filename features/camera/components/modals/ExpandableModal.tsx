@@ -7,12 +7,12 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import { useTranslationStore } from "@/features/settings/stores/translationStore";
+import { useTranslationStore } from "@/features/translation/stores/translationStore";
 import { useBottomSheet } from "@/features/shared/hooks/useBottomSheet";
 import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
 import TranslatedText from "@/features/shared/components/text/TranslatedText";
-import TextToVoiceButton from "@/features/translation/TextToVoiceButton";
 import CollapseAnimated from "@/features/shared/components/animated/CollapseAnimated";
+import TextToVoiceButton from "@/features/translation/components/TextToVoiceButton";
 
 type Props = PropsWithChildren<{
   initialHeight: number;
@@ -54,7 +54,7 @@ const ExpandableModal = ({
             height * 0.55 - height * 0.11 - 36,
             height -
               (bottomSheet?.animatedPosition.get() ?? 0) -
-              height * 0.2 -
+              height * 0.19 -
               padding / 2,
           ),
         ],
@@ -66,37 +66,38 @@ const ExpandableModal = ({
     <Animated.View style={[...containerStyle, animateStyle]}>
       <View style={expandableModalStyles.header}>
         <TranslatedText
+          isBold={true}
+          fontSize="medium"
           style={expandableModalStyles.headerText}
           translationKey={titleTranslationKey}
         />
         <View
-          style={{
-            width: iconSize * 4,
-            height: iconSize * 2,
-          }}
+          style={[
+            expandableModalStyles.customSectionStyle,
+            {
+              height: iconSize * 2,
+            },
+          ]}
         >
           {mode === "signToText" && (
             <TextToVoiceButton size={24} color="white" />
           )}
-          <TouchableWithoutFeedback
-            onPress={() => {
-              expansionFactor.set(withTiming(isExpanding.current ? 0 : 1));
-              isExpanding.current = !isExpanding.current;
-            }}
-            style={{
-              position: "absolute",
-              right: 0,
-              top: 0,
-              height: iconSize * 2,
-              width: iconSize * 2,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <CollapseAnimated value={expansionFactor} color="white" size={24} />
-          </TouchableWithoutFeedback>
         </View>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            expansionFactor.set(withTiming(isExpanding.current ? 0 : 1));
+            isExpanding.current = !isExpanding.current;
+          }}
+          style={{
+            height: iconSize * 2,
+            width: iconSize * 2,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CollapseAnimated value={expansionFactor} color="white" size={24} />
+        </TouchableWithoutFeedback>
       </View>
       {children}
     </Animated.View>
@@ -118,6 +119,12 @@ export const expandableModalStyles = StyleSheet.create({
     marginHorizontal: 15,
     color: "white",
     fontSize: 20,
-    fontWeight: 400,
+  },
+  customSectionStyle: {
+    flex: 1,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
   },
 });

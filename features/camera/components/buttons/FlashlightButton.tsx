@@ -52,7 +52,7 @@ const FlashlightButton = ({
       >
         <Path
           path={derivedPath}
-          color={"white"}
+          color={color}
           strokeWidth={3}
           strokeCap={derivedStrokeCap}
           style={"stroke"}

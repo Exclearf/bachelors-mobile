@@ -8,15 +8,17 @@ import { useAuthFlow } from "@/features/auth/hooks/useAuthFlow";
 import { useLocalization } from "@/features/shared/hooks/useLocalization";
 import { AppDimensionsContext } from "../shared/contexts/appDimensions";
 import { useBottomSheet } from "../shared/hooks/useBottomSheet";
+import { useTheme } from "../shared/hooks/useTheme";
 
 const LoginScreen = () => {
   const { height } = useContext(AppDimensionsContext);
   const { bottomSheet } = useBottomSheet();
   const { signInWithGoogle } = useAuthFlow();
   const getTranslationKey = useLocalization("loginPage");
+  const theme = useTheme();
 
   useEffect(() => {
-    bottomSheet?.snapToIndex(1);
+    bottomSheet?.expand?.();
   }, [bottomSheet]);
 
   const containerStyle = useAnimatedStyle(() => {
@@ -42,13 +44,11 @@ const LoginScreen = () => {
     <View style={styles.container}>
       <Animated.View
         style={[
-          {
-            position: "absolute",
-            width: "100%",
-            justifyContent: "center",
-            alignItems: "center",
-          },
+          styles.wrapper,
           containerStyle,
+          {
+            backgroundColor: theme?.background,
+          },
         ]}
       >
         <Animated.View style={[styles.header, headerStyle]}>
@@ -58,7 +58,9 @@ const LoginScreen = () => {
             }}
           >
             <TranslatedText
-              style={styles.headerText}
+              isBold={true}
+              fontSizeOverride={34}
+              style={[styles.headerText, { color: theme?.primaryForeground }]}
               translationKey={getTranslationKey("signInTitle")}
             />
           </Pressable>
@@ -73,7 +75,8 @@ const LoginScreen = () => {
             <View style={styles.buttonContainer}>
               <Image source={google_logo} style={styles.googleLogo}></Image>
               <TranslatedText
-                style={styles.buttonText}
+                fontSize="medium"
+                style={[styles.buttonText, { color: theme?.primaryForeground }]}
                 translationKey={getTranslationKey("signInWithGoogle")}
               />
             </View>
@@ -87,18 +90,21 @@ const LoginScreen = () => {
 export default LoginScreen;
 
 const styles = StyleSheet.create({
+  wrapper: {
+    position: "absolute",
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   container: {
-    backgroundColor: "#1e1e1e",
     width: "100%",
     height: "100%",
   },
   header: {
     position: "absolute",
+    width: "100%",
   },
   headerText: {
-    color: "#fff",
-    fontSize: 34,
-    fontWeight: "bold",
     textAlign: "center",
   },
   content: {
@@ -117,8 +123,6 @@ const styles = StyleSheet.create({
     height: 35,
   },
   buttonText: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
+    width: "75%",
   },
 });

@@ -6,11 +6,18 @@ import Feather from "@expo/vector-icons/Feather";
 import Entypo from "@expo/vector-icons/Entypo";
 import LoginScreen from "@/features/auth/LoginScreen";
 import { useAuthStore } from "@/features/auth/stores/authStore";
+import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
+import { useAppSetup } from "@/features/shared/hooks/useAppSetup";
 
 const RootLayout = () => {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const theme = usePersonalizationStore((state) => state.theme);
 
-  if (!isLoggedIn) {
+  // This hook is used to prevent the splash screen from hiding before the app is fully loaded
+  // It is placed here in order not to re-render the app
+  useAppSetup();
+
+  if (!isLoggedIn && false) {
     return <LoginScreen />;
   }
 
@@ -18,7 +25,13 @@ const RootLayout = () => {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarStyle: styles.tabBarStyle,
+        tabBarStyle: [
+          styles.tabBarStyle,
+          {
+            backgroundColor: theme?.background,
+            borderColor: theme?.primaryBackground,
+          },
+        ],
         tabBarItemStyle: styles.centerItems,
         tabBarShowLabel: false,
         tabBarButton: (props) => (
@@ -27,7 +40,8 @@ const RootLayout = () => {
             style={[styles.centerItems, styles.tabBarButton]}
           />
         ),
-        tabBarActiveTintColor: "white",
+        tabBarInactiveTintColor: theme?.mutedForeground,
+        tabBarActiveTintColor: theme?.secondaryForeground,
       }}
     >
       <Tabs.Screen
@@ -62,11 +76,9 @@ export default RootLayout;
 
 const styles = StyleSheet.create({
   tabBarStyle: {
-    backgroundColor: "#1e1e1e",
-    borderColor: "#5e5e5e",
-    borderTopWidth: 2,
+    borderTopWidth: 1.5,
     borderWidth: 0,
-    height: 60,
+    height: "7%",
   },
   centerItems: {
     display: "flex",

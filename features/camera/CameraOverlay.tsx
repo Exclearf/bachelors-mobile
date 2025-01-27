@@ -18,12 +18,13 @@ import SettingsButton from "./components/buttons/SettingsButton";
 import FlashlightButton from "./components/buttons/FlashlightButton";
 import SettingsModal from "./components/modals/SettingsModal";
 import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
-import SettingsPanel from "./components/containers/SettingsContainer";
+import CameraSettingsContainer from "./components/containers/CameraSettingsContainer";
 import { useCameraOptionsStore } from "@/features/camera/stores/cameraOptions";
 import { StyleSheet } from "react-native";
 import { useAuthStore } from "@/features/auth/stores/authStore";
 import { useBottomSheet } from "@/features/shared/hooks/useBottomSheet";
 import Spinner from "../shared/components/feedback/Spinner";
+import { usePersonalizationStore } from "../settings/stores/personalizationStore";
 
 type CameraOverlayProps = {
   setFlashOn: Dispatch<SetStateAction<boolean>>;
@@ -45,23 +46,24 @@ export type IconParameters = {
   size: number;
 };
 
-const buttonParameters: ButtonParameters = {
-  buttonStyle: {
-    padding: 10,
-  },
-};
-
-const iconParameters: IconParameters = {
-  color: "rgba(255,255,255,0.9)",
-  size: 38,
-};
-
 const CameraOverlay = ({ setFlashOn, setIsBack }: CameraOverlayProps) => {
   const { height } = useContext(AppDimensionsContext);
   const { bottomSheet } = useBottomSheet();
   const [settingsModalExpanded, setSettingsModalExpanded] = useState(false);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const isAvailable = useCameraOptionsStore((state) => state.isAvailable);
+  const theme = usePersonalizationStore((state) => state.theme);
+
+  const buttonParameters: ButtonParameters = {
+    buttonStyle: {
+      padding: 10,
+    },
+  };
+
+  const iconParameters: IconParameters = {
+    color: theme?.primaryForeground!,
+    size: 38,
+  };
 
   const notLoggedInOnClick = () => console.log("Not logged in");
 
@@ -114,12 +116,12 @@ const CameraOverlay = ({ setFlashOn, setIsBack }: CameraOverlayProps) => {
           isVisible={settingsModalExpanded}
           iconParameters={iconParameters}
         >
-          <SettingsPanel />
+          <CameraSettingsContainer />
         </SettingsModal>
       </CameraTopContainer>
       {!isAvailable && (
         <Animated.View style={[styles.spinnerContainer, spinnerContainerStyle]}>
-          <Spinner size={64} color="white" />
+          <Spinner size={64} color={theme?.primaryForeground!} />
         </Animated.View>
       )}
       <CameraBottomContainer scale={containersScale}>

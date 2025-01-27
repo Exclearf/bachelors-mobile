@@ -1,20 +1,43 @@
 {
   "settingsPage": {
-    "greetings": {
-      "morning": "Dzień dobry{{name, optionalName}}!",
-      "afternoon": "Dobry wieczór{{name, optionalName}}!",
-      "evening": "Dobry wieczór{{name, optionalName}}!",
-      "night": "Dobranoc{{name, optionalName}}!"
+    "userInfo": {
+      "logOut": "Wyloguj się",
+      "greetings": {
+        "morning": "Dzień dobry{{name, optionalName}}!",
+        "afternoon": "Dobry wieczór{{name, optionalName}}!",
+        "evening": "Dobry wieczór{{name, optionalName}}!",
+        "night": "Dobranoc{{name, optionalName}}!"
+      }
     },
-    "logOut": "Wyloguj się",
-    "languagesSettingsSection": "Preferencje językowe",
-    "appLanguage": "Aplikacja",
-    "translationLanguage": "Tłumaczenie",
-    "personalizationHeader": "Personalizacja",
-    "lightTheme": "Tryb jasny",
-    "darkTheme": "Tryb ciemny",
-    "appTheme": "Motyw",
-    "highContrast": "Kontrast"
+    "sections": {
+      "generalSectionHeader": "Ogólne",
+      "personalizationSectionHeader": "Personalizacja",
+      "accessibilitySectionHeader": "Dostępność",
+      "generalSettingsSection": {
+        "appLanguage": "Aplikacja",
+        "appLanguageTooltip": "Język aplikacji",
+        "translationLanguage": "Tłumaczenie",
+        "translationLanguageTooltip": "Język tłumaczenia",
+        "modelSelect": "AI Model",
+        "modelSelectOptions": {
+          "placeholder": "Wybierz model",
+          "vivit": "ViViT 🧠",
+          "timesformer": "TimeSformer ⚡"
+        }
+      },
+      "personalizationSection": {
+        "lightTheme": "Tryb jasny",
+        "darkTheme": "Tryb ciemny",
+        "appTheme": "Motyw",
+        "accentColor": "Akcent",
+        "accentColorTooltip": "Kolor używany jako akcent",
+        "animationSpeed": "Animacja"
+      },
+      "accessibilitySection": {
+        "highContrast": "Kontrast",
+        "fontSize": "Czcionka"
+      }
+    }
   },
   "indexPage": {
     "signToText": "Znak",

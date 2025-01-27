@@ -1,18 +1,23 @@
 import { Pressable, StyleSheet, View } from "react-native";
 import React from "react";
 import Animated, {
+  runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
 import TranslatedText from "../text/TranslatedText";
+import { useTheme } from "../../hooks/useTheme";
+import { FontSizeMultiplier, useFontSize } from "../../hooks/useFontSize";
 
 type Props = {
   items: ToggleItemType[];
   onChange: (e: ToggleItemType) => void;
   selectedIndex: number;
-  width?: number;
+  width: number;
   height?: number;
+  changeWhenAnimationEnds?: boolean;
+  changeWhenAnimationEndsOffset?: number;
 };
 
 export type ToggleItemType = {
@@ -20,29 +25,44 @@ export type ToggleItemType = {
   title: string;
 };
 
+const animationDuration = 150;
+
 const ToggleGroup = ({
   items,
   onChange,
   selectedIndex,
   width,
   height,
+  changeWhenAnimationEnds,
+  changeWhenAnimationEndsOffset = 25,
 }: Props) => {
-  width = width ?? 300;
-  height = height ?? 30;
+  const fontSize = useFontSize();
+  height ??= fontSize.regular * FontSizeMultiplier;
+
+  const theme = useTheme();
   const itemWidth = width / items.length;
   const activeIndex = useSharedValue(selectedIndex);
 
   const switchActiveBackgroundPosition = useAnimatedStyle(() => {
-    "worklet";
     return {
       left: itemWidth * activeIndex.value,
     };
   });
 
+  const clickHandler = (item: ToggleItemType) => {
+    const handler = () => onChange(item);
+    changeWhenAnimationEnds
+      ? setTimeout(
+          handler,
+          animationDuration - (changeWhenAnimationEndsOffset ?? 0),
+        )
+      : handler();
+  };
+
   const changeActiveIndex = (item: ToggleItemType, index: number) => {
     "worklet";
-    activeIndex.set(withTiming(index));
-    onChange(item);
+    activeIndex.set(withTiming(index, { duration: animationDuration }));
+    runOnJS(clickHandler)(item);
   };
 
   return (
@@ -51,8 +71,8 @@ const ToggleGroup = ({
         {
           borderRadius: 5,
           width,
-          height,
-          backgroundColor: "rgba(75,75,75,0.5)",
+          height: height,
+          backgroundColor: theme?.mutedBackground,
         },
       ]}
     >
@@ -60,12 +80,21 @@ const ToggleGroup = ({
         style={[
           styles.activeBackground,
           {
+            backgroundColor: theme?.mutedForeground,
             width: itemWidth,
+            height: height,
+            zIndex: 1,
+            borderColor: theme?.secondaryForeground,
           },
           switchActiveBackgroundPosition,
         ]}
       />
-      <View style={[styles.switchContainer, { height }]}>
+      <View
+        style={[
+          styles.switchContainer,
+          { height, borderColor: theme?.mutedForeground },
+        ]}
+      >
         {items.map((item, index) => {
           return (
             <Pressable
@@ -74,14 +103,14 @@ const ToggleGroup = ({
                 {
                   width: itemWidth,
                   height: height,
-                  padding: height / 8,
+                  zIndex: 2,
                 },
               ]}
               key={item.id}
               onPress={() => changeActiveIndex(item, index)}
             >
               <TranslatedText
-                style={styles.itemText}
+                style={[{ color: theme?.primaryForeground }]}
                 translationKey={item.title}
               />
             </Pressable>
@@ -97,7 +126,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     borderRadius: 5,
-    borderColor: "rgba(255,255,255,0.2)",
     borderWidth: 1,
     justifyContent: "space-around",
     alignItems: "center",
@@ -106,8 +134,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.2)",
-    backgroundColor: "rgba(255,255,255,0.1)",
     height: "100%",
   },
   toggleGroupItem: {
@@ -119,10 +145,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    zIndex: 1,
-  },
-  itemText: {
-    color: "white",
   },
 });
 
