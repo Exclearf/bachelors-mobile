@@ -2,16 +2,16 @@ import { StyleSheet, View } from "react-native";
 import React from "react";
 import { SharedValue } from "react-native-reanimated";
 import {
-  Canvas,
-  Path,
-  Skia,
-  usePathInterpolation,
+    Canvas,
+    Path,
+    Skia,
+    usePathInterpolation,
 } from "@shopify/react-native-skia";
 import { useFontSize } from "../../hooks/useFontSize";
 
 type Props = {
-  expanded: SharedValue<number>;
-  maxHeight: number;
+    expanded: SharedValue<number>;
+    maxHeight: number;
 };
 
 const createOpenArrow = (height: number) => `
@@ -26,49 +26,49 @@ const createCloseArrow = (height: number) => `
 `;
 
 const createSkiaPath = (
-  creator: typeof createCloseArrow | typeof createOpenArrow,
-  ...args: any
+    creator: typeof createCloseArrow | typeof createOpenArrow,
+    ...args: any
 ) => Skia.Path.MakeFromSVGString(creator.apply(null, args as any))!;
 
 const ExpandArrow = ({ expanded, maxHeight }: Props) => {
-  const fontSize = useFontSize();
-  const arrowDimensions = fontSize["regular"] * 1.25;
+    const fontSize = useFontSize();
+    const arrowDimensions = fontSize["regular"] * 1.25;
 
-  const arrowPath = usePathInterpolation(
-    expanded,
-    [0, maxHeight],
-    [
-      createSkiaPath(createOpenArrow, arrowDimensions),
-      createSkiaPath(createCloseArrow, arrowDimensions),
-    ],
-  );
+    const arrowPath = usePathInterpolation(
+        expanded,
+        [0, maxHeight],
+        [
+            createSkiaPath(createOpenArrow, arrowDimensions),
+            createSkiaPath(createCloseArrow, arrowDimensions),
+        ],
+    );
 
-  return (
-    <View style={styles.contentContainer}>
-      <Canvas
-        style={{
-          width: arrowDimensions,
-          height: arrowDimensions,
-        }}
-      >
-        <Path
-          path={arrowPath}
-          style={"stroke"}
-          strokeWidth={2}
-          color={"white"}
-          strokeCap={"round"}
-        />
-      </Canvas>
-    </View>
-  );
+    return (
+        <View style={styles.contentContainer}>
+            <Canvas
+                style={{
+                    width: arrowDimensions,
+                    height: arrowDimensions,
+                }}
+            >
+                <Path
+                    path={arrowPath}
+                    style={"stroke"}
+                    strokeWidth={2}
+                    color={"white"}
+                    strokeCap={"round"}
+                />
+            </Canvas>
+        </View>
+    );
 };
 
 export default ExpandArrow;
 
 const styles = StyleSheet.create({
-  contentContainer: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
+    contentContainer: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+    },
 });

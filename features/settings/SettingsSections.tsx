@@ -47,6 +47,7 @@ const SettingsSections = ({ getTranslationKey, height }: Props) => {
     [getTranslationKey("personalizationSectionHeader"), PersonalizationSection],
     [getTranslationKey("accessibilitySectionHeader"), AccessibilitySection],
   ] as const;
+
   // 100 - UserInfo height - Tabs height - padding
   const itemHeght = (height * 0.75) / settingsSections.length;
 

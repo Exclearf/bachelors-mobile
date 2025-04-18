@@ -1,5 +1,6 @@
-import { StyleSheet, View } from "react-native";
 import React from "react";
+import { StyleSheet, View } from "react-native";
+
 import TranslatedText from "@/features/shared/components/text/TranslatedText";
 import { useLocalization } from "@/features/shared/hooks/useLocalization";
 import { useTheme } from "@/features/shared/hooks/useTheme";

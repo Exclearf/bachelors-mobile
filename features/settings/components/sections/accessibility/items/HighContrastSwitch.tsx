@@ -10,49 +10,49 @@ import { WithForwardRef } from "@/features/shared/utils/WithForwardRef";
 import { AccessibilityItemProps } from "../AccessibilitySection";
 import { useSettingsItemWidth } from "@/features/settings/hooks/useSettingsItemWidth";
 import {
-  NonFontSizeMultiplier,
-  useFontSize,
+    NonFontSizeMultiplier,
+    useFontSize,
 } from "@/features/shared/hooks/useFontSize";
 
 type Props = AccessibilityItemProps;
 
 const HighContrastOnIcon = Animated.createAnimatedComponent(
-  WithForwardRef(Feather, { name: "eye" }),
+    WithForwardRef(Feather, { name: "eye" }),
 );
 
 const HighContrastOffIcon = Animated.createAnimatedComponent(
-  WithForwardRef(Feather, { name: "eye-off" }),
+    WithForwardRef(Feather, { name: "eye-off" }),
 );
 
 const HighContrastSwitch = ({
-  getTranslationKey,
-  textStyle,
-  containerStyle,
+    getTranslationKey,
+    textStyle,
+    containerStyle,
 }: Props) => {
-  const [isHighContrast, setIsHighContrast] = usePersonalizationStore(
-    useShallow((state) => [state.isHighContrast, state.setIsHighContrast]),
-  );
-  const fontSize = useFontSize();
-  const { width } = useSettingsItemWidth();
+    const [isHighContrast, setIsHighContrast] = usePersonalizationStore(
+        useShallow((state) => [state.isHighContrast, state.setIsHighContrast]),
+    );
+    const fontSize = useFontSize();
+    const { width } = useSettingsItemWidth();
 
-  return (
-    <>
-      <TranslatedText
-        numberOfLines={2}
-        style={textStyle}
-        translationKey={getTranslationKey("highContrast")}
-      />
-      <View style={[{ width }, containerStyle]}>
-        <Switch
-          CustomTrueThumb={HighContrastOnIcon}
-          CustomFalseThumb={HighContrastOffIcon}
-          checked={isHighContrast}
-          setChecked={setIsHighContrast}
-          diameter={fontSize["regular"] * NonFontSizeMultiplier}
-        />
-      </View>
-    </>
-  );
+    return (
+        <>
+            <TranslatedText
+                numberOfLines={2}
+                style={textStyle}
+                translationKey={getTranslationKey("highContrast")}
+            />
+            <View style={[{ width }, containerStyle]}>
+                <Switch
+                    CustomTrueThumb={HighContrastOnIcon}
+                    CustomFalseThumb={HighContrastOffIcon}
+                    checked={isHighContrast}
+                    setChecked={setIsHighContrast}
+                    diameter={fontSize["regular"] * NonFontSizeMultiplier}
+                />
+            </View>
+        </>
+    );
 };
 
 export default HighContrastSwitch;

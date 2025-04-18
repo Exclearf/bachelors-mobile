@@ -2,22 +2,22 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
 type CameraStoreState = {
-  isAvailable: boolean;
+    isAvailable: boolean;
 };
 
 type CameraStoreActions = {
-  setIsAvailable: (newState: boolean) => void;
+    setIsAvailable: (newState: boolean) => void;
 };
 
 export const useCameraOptionsStore = create<
-  CameraStoreState & CameraStoreActions
+    CameraStoreState & CameraStoreActions
 >()(
-  immer((set) => ({
-    isAvailable: false,
-    setIsAvailable: (newMode: boolean) => {
-      set((state) => {
-        state.isAvailable = newMode;
-      });
-    },
-  })),
+    immer((set) => ({
+        isAvailable: false,
+        setIsAvailable: (newMode: boolean) => {
+            set((state) => {
+                state.isAvailable = newMode;
+            });
+        },
+    })),
 );

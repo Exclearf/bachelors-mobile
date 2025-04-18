@@ -5,13 +5,13 @@ import { SettingsItemWidthContext } from "../../contexts/settingsItemWidth";
 type Props = PropsWithChildren<{}>;
 
 const SettingsItemWidthProvider = ({ children }: Props) => {
-  const { width } = useAppDimensions();
+    const { width } = useAppDimensions();
 
-  return (
-    <SettingsItemWidthContext.Provider value={{ width: width * 0.55 }}>
-      {children}
-    </SettingsItemWidthContext.Provider>
-  );
+    return (
+        <SettingsItemWidthContext.Provider value={{ width: width * 0.55 }}>
+            {children}
+        </SettingsItemWidthContext.Provider>
+    );
 };
 
 export default SettingsItemWidthProvider;

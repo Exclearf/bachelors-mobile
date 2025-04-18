@@ -4,11 +4,11 @@ import React from "react";
 type Props = {};
 
 const SIgnCategoryItem = (props: Props) => {
-  return (
-    <View>
-      <Text>SIgnCategoryItem</Text>
-    </View>
-  );
+    return (
+        <View>
+            <Text>SIgnCategoryItem</Text>
+        </View>
+    );
 };
 
 export default SIgnCategoryItem;

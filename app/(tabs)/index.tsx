@@ -1,18 +1,19 @@
-import { StyleSheet, View } from "react-native";
-import React, { useContext } from "react";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import React, { useContext } from "react";
+import { StyleSheet, View } from "react-native";
+
+import ExpandableModal from "@/features/camera/components/modals/ExpandableModal";
 import SelectGroup, {
   SelectionGroupItemConfig,
 } from "@/features/shared/components/input/selectGroup/SelectGroup";
-import { useTranslationStore } from "@/features/translation/stores/translationStore";
-import ExpandableModal from "@/features/camera/components/modals/ExpandableModal";
+import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
+import { useLocalization } from "@/features/shared/hooks/useLocalization";
+import { useTheme } from "@/features/shared/hooks/useTheme";
 import History from "@/features/translation/components/History";
 import SignTranslation from "@/features/translation/components/SignTranslation";
 import TextTranslation from "@/features/translation/components/TextTranslationPlayer";
-import { useLocalization } from "@/features/shared/hooks/useLocalization";
-import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
-import { useTheme } from "@/features/shared/hooks/useTheme";
+import { useTranslationStore } from "@/features/translation/stores/translationStore";
 
 const IndexTab = () => {
   const getTranslationKey = useLocalization("indexPage");

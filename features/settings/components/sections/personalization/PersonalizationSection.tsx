@@ -8,30 +8,30 @@ import { useLocalization } from "@/features/shared/hooks/useLocalization";
 type Props = SettingsSectionsItemType;
 
 const PersonalizationSection = ({
-  getTranslationKey,
-  style,
-  textStyle,
+    getTranslationKey,
+    style,
+    textStyle,
 }: Props) => {
-  const items = [AppThemeSwitch, ThemeColorSlider];
-  getTranslationKey = useLocalization(
-    getTranslationKey("personalizationSection"),
-  );
+    const items = [AppThemeSwitch, ThemeColorSlider];
+    getTranslationKey = useLocalization(
+        getTranslationKey("personalizationSection"),
+    );
 
-  return (
-    <>
-      {items.map((Item, index) => (
-        <View style={[style, styles.containerItem]} key={index}>
-          <Item getTranslationKey={getTranslationKey} textStyle={textStyle} />
-        </View>
-      ))}
-    </>
-  );
+    return (
+        <>
+            {items.map((Item, index) => (
+                <View style={[style, styles.containerItem]} key={index}>
+                    <Item getTranslationKey={getTranslationKey} textStyle={textStyle} />
+                </View>
+            ))}
+        </>
+    );
 };
 
 export default PersonalizationSection;
 
 const styles = StyleSheet.create({
-  containerItem: {
-    paddingVertical: 10,
-  },
+    containerItem: {
+        paddingVertical: 10,
+    },
 });

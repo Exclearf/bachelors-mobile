@@ -1,33 +1,34 @@
-import { Modal, StyleSheet } from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { useEffect, useRef, useState } from "react";
-import { StatusBar } from "expo-status-bar";
 import {
   CameraView,
   PermissionStatus,
   useCameraPermissions,
 } from "expo-camera";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { Slot, SplashScreen } from "expo-router";
-import { useTranslationStore } from "@/features/translation/stores/translationStore";
-import { useCameraOptionsStore } from "@/features/camera/stores/cameraOptions";
 import * as Linking from "expo-linking";
-import { useShallow } from "zustand/react/shallow";
-import initiateLocalization from "@/features/translation/i18n/i18n"; // Side-effect import
-import AppRoundedPath from "@/features/shared/components/animated/AppRoundedPath";
-import PictureBbox from "@/features/camera/PictureBbox";
-import CameraOverlay from "@/features/camera/CameraOverlay";
-import AppBottomSheet from "@/features/shared/components/layout/AppBottomSheet";
-import CameraAccessRequest from "@/features/camera/components/modals/CameraAccessRequest";
-import BottomSheetProvider from "@/features/shared/components/providers/BottomSheetProvider";
-import AppDimensionsProvider from "@/features/shared/components/providers/AppDimensionsProvider";
-import ThemeProvider from "@/features/shared/components/providers/ThemeProvider";
-import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
 import * as NavigationBar from "expo-navigation-bar";
+import { Slot, SplashScreen } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { useEffect, useRef, useState } from "react";
+import { Modal, StyleSheet, View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { useShallow } from "zustand/react/shallow";
+
+import CameraOverlay from "@/features/camera/CameraOverlay";
+import CameraAccessRequest from "@/features/camera/components/modals/CameraAccessRequest";
+import PictureBbox from "@/features/camera/PictureBbox";
+import { useCameraOptionsStore } from "@/features/camera/stores/cameraOptions";
+import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
+import AppRoundedPath from "@/features/shared/components/animated/AppRoundedPath";
+import AppBottomSheet from "@/features/shared/components/layout/AppBottomSheet";
+import AppDimensionsProvider from "@/features/shared/components/providers/AppDimensionsProvider";
+import BottomSheetProvider from "@/features/shared/components/providers/BottomSheetProvider";
+import ThemeProvider from "@/features/shared/components/providers/ThemeProvider";
 import {
   maxTopPath,
   minTopPath,
 } from "@/features/shared/utils/roundedPathCreators";
+import initiateLocalization from "@/features/translation/i18n/i18n"; // Side-effect import
+import { useTranslationStore } from "@/features/translation/stores/translationStore";
 
 initiateLocalization();
 

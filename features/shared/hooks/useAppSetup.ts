@@ -5,29 +5,29 @@ import { usePersonalizationStore } from "@/features/settings/stores/personalizat
 import { SplashScreen } from "expo-router";
 
 import {
-  useFonts,
-  OpenSans_400Regular,
-  OpenSans_600SemiBold,
+    useFonts,
+    OpenSans_400Regular,
+    OpenSans_600SemiBold,
 } from "@expo-google-fonts/open-sans";
 
 export const useAppSetup = () => {
-  const isCameraAvailable = useCameraOptionsStore((state) => state.isAvailable);
-  const isBottomSheetRegistered = useBottomSheet().isRegistered;
-  const theme = usePersonalizationStore((state) => state.theme);
-  const [isFontLoaded] = useFonts({
-    OpenSans_400Regular,
-    OpenSans_600SemiBold,
-  });
+    const isCameraAvailable = useCameraOptionsStore((state) => state.isAvailable);
+    const isBottomSheetRegistered = useBottomSheet().isRegistered;
+    const theme = usePersonalizationStore((state) => state.theme);
+    const [isFontLoaded] = useFonts({
+        OpenSans_400Regular,
+        OpenSans_600SemiBold,
+    });
 
-  const isAppLoaded = [
-    isCameraAvailable,
-    isBottomSheetRegistered,
-    isFontLoaded,
-  ];
+    const isAppLoaded = [
+        isCameraAvailable,
+        isBottomSheetRegistered,
+        isFontLoaded,
+    ];
 
-  useEffect(() => {
-    if (isAppLoaded.every((loaded) => loaded) && theme != null) {
-      SplashScreen.hide();
-    }
-  }, [...isAppLoaded, theme]);
+    useEffect(() => {
+        if (isAppLoaded.every((loaded) => loaded) && theme != null) {
+            SplashScreen.hide();
+        }
+    }, [...isAppLoaded, theme]);
 };

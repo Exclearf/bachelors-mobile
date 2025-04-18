@@ -1,9 +1,10 @@
-import { Pressable, StyleSheet } from "react-native";
-import React from "react";
-import { Tabs } from "expo-router";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import Feather from "@expo/vector-icons/Feather";
 import Entypo from "@expo/vector-icons/Entypo";
+import Feather from "@expo/vector-icons/Feather";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { Tabs } from "expo-router";
+import React from "react";
+import { Pressable, StyleSheet } from "react-native";
+
 import LoginScreen from "@/features/auth/LoginScreen";
 import { useAuthStore } from "@/features/auth/stores/authStore";
 import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";

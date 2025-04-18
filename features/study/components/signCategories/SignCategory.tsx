@@ -4,11 +4,11 @@ import React from "react";
 type Props = {};
 
 const SignCategory = (props: Props) => {
-  return (
-    <View>
-      <Text>SignCategory</Text>
-    </View>
-  );
+    return (
+        <View>
+            <Text>SignCategory</Text>
+        </View>
+    );
 };
 
 export default SignCategory;

@@ -9,24 +9,24 @@ import ModelSelect from "./items/ModelSelect";
 type Props = SettingsSectionsItemType;
 
 const GeneralSection = ({ getTranslationKey, style, textStyle }: Props) => {
-  getTranslationKey = useLocalization(
-    getTranslationKey("generalSettingsSection"),
-  );
+    getTranslationKey = useLocalization(
+        getTranslationKey("generalSettingsSection"),
+    );
 
-  return (
-    <>
-      {(
-        [AppLanguageToggle, TranslationLanguageToggle, ModelSelect] as const
-      ).map((LanguageToggle, index) => (
-        <View key={index} style={style}>
-          <LanguageToggle
-            getTranslationKey={getTranslationKey}
-            textStyle={textStyle}
-          />
-        </View>
-      ))}
-    </>
-  );
+    return (
+        <>
+            {(
+                [AppLanguageToggle, TranslationLanguageToggle, ModelSelect] as const
+            ).map((LanguageToggle, index) => (
+                <View key={index} style={style}>
+                    <LanguageToggle
+                        getTranslationKey={getTranslationKey}
+                        textStyle={textStyle}
+                    />
+                </View>
+            ))}
+        </>
+    );
 };
 
 export default GeneralSection;
