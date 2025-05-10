@@ -86,5 +86,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  tabBarButton: { flex: 1, width: "100%" },
+  tabBarButton: {
+    flex: 1,
+    width: "100%",
+  },
 });

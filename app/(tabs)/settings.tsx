@@ -19,7 +19,14 @@ const SettingsTab = () => {
   return (
     <View style={[styles.container, { backgroundColor: theme?.background }]}>
       <Suspense
-        fallback={<Skeleton style={{ height: height * 0.05, width: "100%" }} />}
+        fallback={
+          <Skeleton
+            style={{
+              height: height * 0.05,
+              width: "100%",
+            }}
+          />
+        }
       >
         <UserInfo getTranslationKey={getTranslationKey} height={height} />
       </Suspense>

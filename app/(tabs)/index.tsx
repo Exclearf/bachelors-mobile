@@ -40,7 +40,12 @@ const IndexTab = () => {
   const initialHeight = height - height * 0.11 - height * 0.07 - height * 0.06;
 
   return (
-    <View style={{ ...styles.container, backgroundColor: theme?.background }}>
+    <View
+      style={{
+        ...styles.container,
+        backgroundColor: theme?.background,
+      }}
+    >
       <SelectGroup
         items={availableFunctions}
         containerHeight={height * 0.11 - 39}

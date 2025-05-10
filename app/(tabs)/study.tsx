@@ -11,7 +11,12 @@ const StudyTab = () => {
   const theme = useTheme();
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme?.background }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: theme?.background,
+      }}
+    >
       <View style={styles.headerContainer}>
         <TranslatedText
           fontSize="large"

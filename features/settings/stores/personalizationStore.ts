@@ -1,16 +1,18 @@
+import { hexFromArgb } from "@material/material-color-utilities";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ColorSchemeName } from "react-native";
+import { colorKit } from "reanimated-color-picker";
 import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
+
+import { createPersistedStore } from "@/features/shared/utils/createPersistStore";
+
 import {
   generateTheme,
   getSaturation,
   setSaturation,
 } from "../../shared/utils/themes";
-import { hexFromArgb } from "@material/material-color-utilities";
-import { colorKit } from "reanimated-color-picker";
-import { persist, createJSONStorage } from "zustand/middleware";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { createPersistedStore } from "@/features/shared/utils/createPersistStore";
 
 export type FontSize = {
   regular: number;

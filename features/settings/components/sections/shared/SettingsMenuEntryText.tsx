@@ -1,8 +1,9 @@
-import { StyleSheet, View } from "react-native";
 import React from "react";
+import { StyleSheet, View } from "react-native";
+
 import { SettingsSectionSubItemType } from "@/features/settings/SettingsSections";
-import TranslatedText from "@/features/shared/components/text/TranslatedText";
 import Tooltip from "@/features/shared/components/feedback/Tooltip";
+import TranslatedText from "@/features/shared/components/text/TranslatedText";
 import { useFontSize } from "@/features/shared/hooks/useFontSize";
 
 type Props = {

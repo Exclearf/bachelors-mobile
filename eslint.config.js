@@ -1,22 +1,41 @@
-const { defineConfig } = require('eslint/config');
-const expoConfig = require('eslint-config-expo/flat');
-const eslintPluginPrettierRecommended = require('eslint-plugin-prettier/recommended');
+import stylisticJs from "@stylistic/eslint-plugin-js";
+import { defineConfig } from "eslint/config";
+import expoConfig from "eslint-config-expo/flat.js";
+import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 
-module.exports = defineConfig([
-    expoConfig,
-    eslintPluginPrettierRecommended,
-    {
-        ignores: ['dist/*'],
-        rules: {
-            'import/order': [
-                'error',
-                {
-                    alphabetize: { order: 'asc', caseInsensitive: true },
-                    groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
-                    'newlines-between': 'always',
-                },
-            ],
+export default defineConfig([
+  expoConfig,
+  eslintPluginPrettierRecommended,
+  {
+    plugins: { "@stylistic/js": stylisticJs },
+    ignores: ["dist/*"],
+    rules: {
+      "sort-imports": "off",
+      "import/order": [
+        "error",
+        {
+          groups: [
+            "builtin",
+            "external",
+            "internal",
+            ["parent", "sibling", "index"],
+            "type",
+          ],
+          "newlines-between": "always",
+          alphabetize: {
+            order: "asc",
+            caseInsensitive: true,
+          },
+          pathGroups: [
+            {
+              pattern: "@/**",
+              group: "internal",
+              position: "after",
+            },
+          ],
+          pathGroupsExcludedImportTypes: ["builtin"],
         },
+      ],
     },
+  },
 ]);
-

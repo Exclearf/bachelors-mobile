@@ -28,7 +28,6 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="myapp"/>
-        <data android:scheme="com.encape.app"/>
         <data android:scheme="exp+mimika"/>
       </intent-filter>
     </activity>

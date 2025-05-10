@@ -1,28 +1,23 @@
-import {
-  CameraView,
-  PermissionStatus,
-  useCameraPermissions,
-} from "expo-camera";
+import Constants from "expo-constants";
 import * as Linking from "expo-linking";
-import * as NavigationBar from "expo-navigation-bar";
 import { Slot, SplashScreen } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Modal, StyleSheet, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { Camera, useCameraPermission } from "react-native-vision-camera";
 import { useShallow } from "zustand/react/shallow";
 
 import CameraOverlay from "@/features/camera/CameraOverlay";
 import CameraAccessRequest from "@/features/camera/components/modals/CameraAccessRequest";
+import useCamera from "@/features/camera/hooks/useCamera";
 import PictureBbox from "@/features/camera/PictureBbox";
-import { useCameraOptionsStore } from "@/features/camera/stores/cameraOptions";
+import { useCameraOptionsStore } from "@/features/camera/stores/useCameraOptions";
 import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
-import AppRoundedPath from "@/features/shared/components/animated/AppRoundedPath";
 import AppBottomSheet from "@/features/shared/components/layout/AppBottomSheet";
-import AppDimensionsProvider from "@/features/shared/components/providers/AppDimensionsProvider";
-import BottomSheetProvider from "@/features/shared/components/providers/BottomSheetProvider";
-import ThemeProvider from "@/features/shared/components/providers/ThemeProvider";
+import AppRoundedPath from "@/features/shared/components/primitive/AppRoundedPath";
+import AppDimensionsProvider from "@/features/shared/components/provider/AppDimensionsProvider";
+import BottomSheetProvider from "@/features/shared/components/provider/BottomSheetProvider";
+import ThemeProvider from "@/features/shared/components/provider/ThemeProvider";
 import {
   maxTopPath,
   minTopPath,
@@ -35,97 +30,93 @@ initiateLocalization();
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [cameraPermission, requestPermission] = useCameraPermissions();
-  const [flashOn, setFlashOn] = useState(false);
-  const [isBack, setIsBack] = useState(true);
-  const cameraRef = useRef<CameraView>(null);
+  const { hasPermission, requestPermission } = useCameraPermission();
+  const { currentDevice, switchDevice, isCameraSwitchEnabled } = useCamera(0);
+  const cameraRef = useRef<Camera>(null);
   const mode = useTranslationStore((state) => state.mode);
-  const [isAvailable, setIsAvailable] = useCameraOptionsStore(
-    useShallow((state) => [state.isAvailable, state.setIsAvailable]),
+  const [isAvailable, isTorchOn, switchTorch] = useCameraOptionsStore(
+    useShallow((state) => [
+      state.isAvailable,
+      state.isTorchOn,
+      state.switchTorch,
+    ]),
   );
   const theme = usePersonalizationStore((state) => state.theme);
+  const statusBarHeight = Constants.statusBarHeight;
 
   useEffect(() => {
-    if (!cameraPermission?.granted || cameraPermission?.canAskAgain) {
+    if (!hasPermission) {
       requestPermission();
     }
-
-    const hideNavBar = async () => {
-      await NavigationBar.setVisibilityAsync("hidden");
-      await NavigationBar.setBehaviorAsync("overlay-swipe");
-    };
-
-    hideNavBar();
-  }, []);
+  }, [hasPermission, requestPermission]);
 
   return (
     <GestureHandlerRootView>
       <AppDimensionsProvider>
         <ThemeProvider>
-          <SafeAreaProvider>
-            <BottomSheetProvider>
-              <StatusBar
-                translucent={false}
-                style={"dark"}
-                backgroundColor={theme?.background}
+          <BottomSheetProvider>
+            <View
+              style={{
+                backgroundColor: theme?.background,
+                height: statusBarHeight,
+                width: "100%",
+              }}
+            />
+            <View
+              style={[styles.container, { backgroundColor: theme?.background }]}
+            >
+              <AppRoundedPath
+                zIndex={1}
+                style={{
+                  top: -10,
+                  position: "absolute",
+                }}
+                barHeight={30}
+                handlePadColorOverride="transparent"
+                maxPathCreator={maxTopPath}
+                minPathCreator={minTopPath}
               />
-              <SafeAreaView
-                style={[
-                  styles.container,
-                  { backgroundColor: theme?.background },
-                ]}
-              >
-                <AppRoundedPath
-                  zIndex={2}
-                  style={{ top: 10 }}
-                  barHeight={30}
-                  handlePadColor="transparent"
-                  maxPathCreator={maxTopPath}
-                  minPathCreator={minTopPath}
-                />
 
-                {mode === "textToSign" && <PictureBbox />}
+              {mode === "textToSign" && <PictureBbox />}
 
-                <CameraView
-                  ref={cameraRef}
-                  style={styles.cameraViewStyle}
-                  mode={mode === "signToText" ? "video" : "picture"}
-                  enableTorch={flashOn}
-                  onCameraReady={() => setIsAvailable(true)}
-                  facing={isBack ? "back" : "front"}
-                />
+              <Camera
+                style={styles.cameraViewStyle}
+                device={currentDevice}
+                isActive={true}
+                ref={cameraRef}
+                torch={isTorchOn}
+              />
 
-                <CameraOverlay setFlashOn={setFlashOn} setIsBack={setIsBack} />
+              <CameraOverlay
+                switchTorch={switchTorch}
+                switchDevice={switchDevice}
+                switchDeviceEnabled={isCameraSwitchEnabled}
+              />
 
-                <AppBottomSheet snapPoints={["11", "53", "100%"]}>
-                  <Slot />
-                </AppBottomSheet>
-              </SafeAreaView>
+              <AppBottomSheet snapPoints={["11", "53", "100%"]}>
+                <Slot />
+              </AppBottomSheet>
+            </View>
 
-              <Modal
-                visible={
-                  cameraPermission?.status === PermissionStatus.DENIED &&
-                  !cameraPermission.canAskAgain &&
-                  !isAvailable
-                }
-                animationType="none"
-                transparent={true}
-              >
-                <CameraAccessRequest
-                  handler={() => {
-                    const tryToAskForPermission = async () => {
-                      const response = await requestPermission();
+            <Modal
+              visible={!hasPermission && !isAvailable}
+              animationType="none"
+              transparent={true}
+            >
+              <CameraAccessRequest
+                handler={() => {
+                  const tryToAskForPermission = async () => {
+                    const response = await requestPermission();
 
-                      if (!response.granted && !response.canAskAgain) {
-                        Linking.openSettings();
-                      }
-                    };
-                    tryToAskForPermission();
-                  }}
-                />
-              </Modal>
-            </BottomSheetProvider>
-          </SafeAreaProvider>
+                    if (!response) {
+                      Linking.openSettings();
+                    }
+                  };
+                  tryToAskForPermission();
+                }}
+              />
+            </Modal>
+          </BottomSheetProvider>
         </ThemeProvider>
       </AppDimensionsProvider>
     </GestureHandlerRootView>
@@ -134,7 +125,6 @@ export default function RootLayout() {
 
 const styles = StyleSheet.create({
   cameraViewStyle: {
-    top: -30,
     width: "100%",
     height: "100%",
     zIndex: -1,

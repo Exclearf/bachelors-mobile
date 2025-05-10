@@ -51,5 +51,8 @@
   "loginPage": {
     "signInTitle": "Log in",
     "signInWithGoogle": "Log in with Google"
+  },
+  "misc": {
+    "notLoggedInInfo": "Please, Log In!"
   }
 }

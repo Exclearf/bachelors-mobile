@@ -1,3 +1,4 @@
+import React, { lazy, Suspense } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -5,11 +6,12 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import React, { lazy, Suspense } from "react";
+
+import TranslatedText from "@/features/shared/components/text/TranslatedText";
+
+import Skeleton from "../shared/components/feedback/Skeleton";
 import { useLocalization } from "../shared/hooks/useLocalization";
 import { useTheme } from "../shared/hooks/useTheme";
-import TranslatedText from "@/features/shared/components/text/TranslatedText";
-import Skeleton from "../shared/components/feedback/Skeleton";
 import SettingsItemWidthProvider from "./components/providers/SettingsItemWidthProvider";
 
 const GeneralSection = lazy(
@@ -97,9 +99,7 @@ const SettingsSections = ({ getTranslationKey, height }: Props) => {
               </View>
               <Component
                 style={styles.sectionContent}
-                textStyle={{
-                  color: theme?.secondaryForeground,
-                }}
+                textStyle={{ color: theme?.secondaryForeground }}
                 getTranslationKey={getTranslationKey}
               />
             </View>

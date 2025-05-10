@@ -1,19 +1,21 @@
-import { Image, StyleSheet, View } from "react-native";
-import React, { useState } from "react";
-import { useShallow } from "zustand/react/shallow";
 import { router } from "expo-router";
-import { useTranslationStore } from "@/features/translation/stores/translationStore";
-import { useTimeTranslationKey } from "@/features/shared/hooks/useTimeTranslationKey";
-import TranslatedText from "../shared/components/text/TranslatedText";
+import React, { useState } from "react";
+import { Image, StyleSheet, View } from "react-native";
+import { useShallow } from "zustand/react/shallow";
+
 import { defaultPicture } from "@/features/auth/hooks/useAuthFlow";
-import Button from "../shared/components/input/Button";
+import { useTimeTranslationKey } from "@/features/shared/hooks/useTimeTranslationKey";
+import { useTranslationStore } from "@/features/translation/stores/translationStore";
+
 import { useAuthStore } from "../auth/stores/authStore";
+import Popup from "../shared/components/feedback/Popup";
+import Button from "../shared/components/input/Button";
+import TranslatedText from "../shared/components/text/TranslatedText";
 import {
   useLocalization,
   UseLocalizationFunction,
 } from "../shared/hooks/useLocalization";
 import { useTheme } from "../shared/hooks/useTheme";
-import Popup from "../shared/components/feedback/Popup";
 
 type Props = {
   getTranslationKey: UseLocalizationFunction;

@@ -1,154 +1,159 @@
-import React, {
-    Dispatch,
-    SetStateAction,
-    useContext,
-    useRef,
-    useState,
-} from "react";
-import CameraTopContainer from "./components/containers/CameraTopContainer";
-import CameraBottomContainer from "./components/containers/CameraBottomContainer";
+import React, { useContext, useRef, useState } from "react";
+import { StyleSheet } from "react-native";
 import Animated, {
-    useAnimatedStyle,
-    useDerivedValue,
+  useAnimatedStyle,
+  useDerivedValue,
 } from "react-native-reanimated";
+
+import { useCameraOptionsStore } from "@/features/camera/stores/useCameraOptions";
+import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
+import { useBottomSheet } from "@/features/shared/hooks/useBottomSheet";
+
+import FlashlightButton from "./components/buttons/FlashlightButton";
+import FlipCameraButton from "./components/buttons/FlipCameraButton";
 import GalleryButton from "./components/buttons/GalleryButton";
 import RecordButton from "./components/buttons/RecordButton";
-import FlipCameraButton from "./components/buttons/FlipCameraButton";
 import SettingsButton from "./components/buttons/SettingsButton";
-import FlashlightButton from "./components/buttons/FlashlightButton";
-import SettingsModal from "./components/modals/SettingsModal";
-import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
+import CameraBottomContainer from "./components/containers/CameraBottomContainer";
 import CameraSettingsContainer from "./components/containers/CameraSettingsContainer";
-import { useCameraOptionsStore } from "@/features/camera/stores/cameraOptions";
-import { StyleSheet } from "react-native";
-import { useAuthStore } from "@/features/auth/stores/authStore";
-import { useBottomSheet } from "@/features/shared/hooks/useBottomSheet";
-import Spinner from "../shared/components/feedback/Spinner";
+import CameraTopContainer from "./components/containers/CameraTopContainer";
+import SettingsModal from "./components/modals/SettingsModal";
 import { usePersonalizationStore } from "../settings/stores/personalizationStore";
-import { SNAP_POINT_TYPE } from "@gorhom/bottom-sheet";
+import Spinner from "../shared/components/feedback/Spinner";
+import useWrapAuth from "../shared/hooks/useWrapAuth";
 
 type CameraOverlayProps = {
-    setFlashOn: Dispatch<SetStateAction<boolean>>;
-    setIsBack: Dispatch<SetStateAction<boolean>>;
+  switchTorch: () => void;
+  switchDevice: () => void;
+  switchDeviceEnabled: boolean;
 };
 
 export type CameraOverlayButtonProps = React.PropsWithChildren<{
-    onClick?: () => void;
+  onClick?: () => void;
 }> &
-    IconParameters &
-    ButtonParameters;
+  IconParameters &
+  ButtonParameters;
 
 export type ButtonParameters = {
-    buttonStyle?: any;
+  buttonStyle?: any;
 };
 
 export type IconParameters = {
-    color: string;
-    size: number;
+  color: string;
+  size: number;
+  secondaryColor?: string;
 };
 
-const CameraOverlay = ({ setFlashOn, setIsBack }: CameraOverlayProps) => {
-    const { height } = useContext(AppDimensionsContext);
-    const { bottomSheet } = useBottomSheet();
-    const [settingsModalExpanded, setSettingsModalExpanded] = useState(false);
-    const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-    const isAvailable = useCameraOptionsStore((state) => state.isAvailable);
-    const theme = usePersonalizationStore((state) => state.theme);
+const CameraOverlay = ({
+  switchTorch,
+  switchDevice,
+  switchDeviceEnabled,
+}: CameraOverlayProps) => {
+  const { height } = useContext(AppDimensionsContext);
+  const { bottomSheet } = useBottomSheet();
+  const [settingsModalExpanded, setSettingsModalExpanded] = useState(false);
+  const isAvailable = useCameraOptionsStore((state) => state.isAvailable);
+  const theme = usePersonalizationStore((state) => state.theme);
 
-    const buttonParameters: ButtonParameters = {
-        buttonStyle: {
-            padding: 10,
-        },
+  const buttonParameters: ButtonParameters = { buttonStyle: { padding: 10 } };
+
+  const iconParameters: IconParameters = {
+    color: theme?.primaryForeground!,
+    secondaryColor: theme?.mutedForeground,
+    size: 38,
+  };
+
+  const notLoggedInOnClick = () => console.log("Not logged in");
+
+  const topContainerButtons = useRef([
+    {
+      item: SettingsButton,
+      onClick: () => setSettingsModalExpanded((prev) => !prev),
+    },
+    {
+      item: FlashlightButton,
+      onClick: switchTorch,
+    },
+  ]);
+
+  const bottomContainerButtons = useRef([
+    {
+      item: GalleryButton,
+      onClick: useWrapAuth(notLoggedInOnClick),
+      enabled: true,
+    },
+    {
+      item: RecordButton,
+      onClick: useWrapAuth(notLoggedInOnClick),
+      enabled: true,
+    },
+    {
+      item: FlipCameraButton,
+      onClick: switchDevice,
+      enabled: switchDeviceEnabled,
+    },
+  ]);
+
+  const containersScale = useDerivedValue(() => {
+    return (bottomSheet?.animatedPosition.get() ?? 0) / height;
+  });
+
+  const spinnerBottomSheetRelativeHeight = useDerivedValue(() => {
+    return (bottomSheet?.animatedPosition.get() ?? 0) * 0.5 - 50;
+  });
+
+  const spinnerContainerStyle = useAnimatedStyle(() => {
+    return {
+      top: Math.max(height * 0.24 - 50, spinnerBottomSheetRelativeHeight.get()),
     };
+  });
 
-    const iconParameters: IconParameters = {
-        color: theme?.primaryForeground!,
-        size: 38,
-    };
-
-    const notLoggedInOnClick = () => console.log("Not logged in");
-
-    const topContainerButtons = useRef([
-        {
-            item: SettingsButton,
-            onClick: () => setSettingsModalExpanded((prev) => !prev),
-        },
-        {
-            item: FlashlightButton,
-            onClick: () => setFlashOn((prev) => !prev),
-        },
-    ]);
-
-    const bottomContainerButtons = useRef([
-        { item: GalleryButton, notLoggedInOnClick },
-        {
-            item: RecordButton,
-            notLoggedInOnClick,
-        },
-        { item: FlipCameraButton, onClick: () => setIsBack((prev) => !prev) },
-    ]);
-
-    const containersScale = useDerivedValue(() => {
-        return (bottomSheet?.animatedPosition.get() ?? 0) / height;
-    });
-
-    const spinnerBottomSheetRelativeHeight = useDerivedValue(() => {
-        return (bottomSheet?.animatedPosition.get() ?? 0) * 0.5 - 50;
-    });
-
-    const spinnerContainerStyle = useAnimatedStyle(() => {
-        return {
-            top: Math.max(height * 0.24 - 50, spinnerBottomSheetRelativeHeight.get()),
-        };
-    });
-
-    return (
-        <>
-            <CameraTopContainer scale={containersScale}>
-                {topContainerButtons.current.map((button, index) => (
-                    <button.item
-                        {...iconParameters}
-                        {...buttonParameters}
-                        key={index}
-                        onClick={button.onClick}
-                    />
-                ))}
-                <SettingsModal
-                    isVisible={settingsModalExpanded}
-                    iconParameters={iconParameters}
-                >
-                    <CameraSettingsContainer />
-                </SettingsModal>
-            </CameraTopContainer>
-            {!isAvailable && (
-                <Animated.View style={[styles.spinnerContainer, spinnerContainerStyle]}>
-                    <Spinner size={64} color={theme?.primaryForeground!} />
-                </Animated.View>
-            )}
-            <CameraBottomContainer scale={containersScale}>
-                {bottomContainerButtons.current.map((button, index) => (
-                    <button.item
-                        {...iconParameters}
-                        key={index}
-                        onClick={
-                            !isLoggedIn && button?.notLoggedInOnClick
-                                ? button.notLoggedInOnClick
-                                : button.onClick
-                        }
-                    />
-                ))}
-            </CameraBottomContainer>
-        </>
-    );
+  return (
+    <>
+      <CameraTopContainer scale={containersScale}>
+        {topContainerButtons.current.map((button, index) => (
+          <button.item
+            {...iconParameters}
+            {...buttonParameters}
+            key={index}
+            onClick={button.onClick}
+          />
+        ))}
+        <SettingsModal
+          isVisible={settingsModalExpanded}
+          iconParameters={iconParameters}
+        >
+          <CameraSettingsContainer />
+        </SettingsModal>
+      </CameraTopContainer>
+      {!isAvailable && (
+        <Animated.View style={[styles.spinnerContainer, spinnerContainerStyle]}>
+          <Spinner size={64} color={theme?.primaryForeground!} />
+        </Animated.View>
+      )}
+      <CameraBottomContainer scale={containersScale}>
+        {bottomContainerButtons.current.map(
+          (button, index) =>
+            button.enabled && (
+              <button.item
+                {...iconParameters}
+                key={index}
+                onClick={button.onClick}
+              />
+            ),
+        )}
+      </CameraBottomContainer>
+    </>
+  );
 };
 
 export default CameraOverlay;
 
 const styles = StyleSheet.create({
-    spinnerContainer: {
-        width: 64,
-        height: 64,
-        position: "absolute",
-        zIndex: 2,
-    },
+  spinnerContainer: {
+    width: 64,
+    height: 64,
+    position: "absolute",
+    zIndex: 2,
+  },
 });
