@@ -100,6 +100,8 @@ export const useAuthStore = create<AuthState & AuthActions>()(
           state.isLoggedIn = true;
         });
 
+        console.log("Logged in!");
+
         return true;
       } catch (error) {
         console.error("Error refreshing session:", error);

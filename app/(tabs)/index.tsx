@@ -48,11 +48,11 @@ const IndexTab = () => {
     >
       <SelectGroup
         items={availableFunctions}
-        containerHeight={height * 0.11 - 39}
+        containerHeight={height * 0.068}
       />
       <View style={styles.innerContainer}>
         <ExpandableModal
-          initialHeight={initialHeight / 2}
+          initialHeight={initialHeight / 1.93}
           padding={height * 0.02}
           containerStyle={[
             styles.indexSection,
@@ -67,7 +67,7 @@ const IndexTab = () => {
         </ExpandableModal>
         <History
           padding={height * 0.02}
-          height={initialHeight / 2}
+          height={initialHeight / 1.93}
           containerStyle={[
             styles.indexSection,
             {

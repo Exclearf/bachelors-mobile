@@ -97,7 +97,7 @@ const ExpandableComponent = forwardRef(
           {children}
           <View
             style={{
-              borderBottomColor: "blue",
+              borderBottomColor: "transparent",
               borderBottomWidth: 1,
               bottom: -1,
             }}
@@ -172,7 +172,6 @@ const Content = ({
       width: triggerLayout?.width,
       height: expanded.value,
       overflow: "hidden",
-      borderColor: "blue",
       zIndex: 2,
     };
   });

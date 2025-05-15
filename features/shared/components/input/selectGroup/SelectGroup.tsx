@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  StyleProp,
-  StyleSheet,
-  TextStyle,
-  TouchableWithoutFeedback,
-  View,
-  ViewStyle,
-} from "react-native";
+import { StyleSheet, ViewStyle } from "react-native";
 import Animated from "react-native-reanimated";
 import { useShallow } from "zustand/react/shallow";
 
@@ -16,21 +9,13 @@ import { useTheme } from "@/features/shared/hooks/useTheme";
 import { globalTheme } from "@/features/shared/utils/themes";
 import { useTranslationStore } from "@/features/translation/stores/translationStore";
 
-import TranslatedText from "../../text/TranslatedText";
+import SelectionGroupItem from "./SelectGroundItem";
 
 export type SelectionGroupItemConfig = {
   id: "signToText" | "textToSign";
   translationKey: string;
   onClick: () => void;
   icon: (props: any) => React.ReactNode;
-};
-
-export type SelectionGroupItemProps = {
-  translationKey: string;
-  onClick: () => void;
-  textStyle: StyleProp<TextStyle>;
-  itemStyle: ViewStyle;
-  Icon: React.ReactNode;
 };
 
 type Props = {
@@ -74,6 +59,8 @@ const SelectGroup = ({ items, containerHeight }: Props) => {
         <SelectionGroupItem
           key={item.id}
           onClick={() => {
+            if (mode === item.id) return;
+
             item.onClick();
             setIsAvailable(false);
             setMode(item.id);
@@ -111,27 +98,6 @@ const SelectGroup = ({ items, containerHeight }: Props) => {
     </Animated.View>
   );
 };
-
-const SelectionGroupItem = ({
-  translationKey,
-  onClick,
-  itemStyle,
-  textStyle,
-  Icon,
-}: SelectionGroupItemProps) => {
-  return (
-    <TouchableWithoutFeedback onPress={onClick}>
-      <View style={[styles.itemContainer, itemStyle]}>
-        {Icon}
-        <TranslatedText
-          style={textStyle as TextStyle}
-          translationKey={translationKey}
-        />
-      </View>
-    </TouchableWithoutFeedback>
-  );
-};
-
 export default SelectGroup;
 
 const styles = StyleSheet.create({

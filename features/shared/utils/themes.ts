@@ -55,7 +55,7 @@ const generateDarkTheme = (palette: Theme, isHighContrast: boolean) => {
   const backgroundMultiplier = isHighContrast ? 0.25 : 1;
 
   return {
-    background: palette.palettes.neutral.tone(1 * backgroundMultiplier),
+    background: palette.palettes.neutral.tone(5 * backgroundMultiplier),
     primaryBackground: palette.palettes.neutralVariant.tone(
       13 * backgroundMultiplier,
     ),

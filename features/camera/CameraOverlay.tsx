@@ -26,6 +26,8 @@ type CameraOverlayProps = {
   switchTorch: () => void;
   switchDevice: () => void;
   switchDeviceEnabled: boolean;
+
+  onCameraClick: () => void;
 };
 
 export type CameraOverlayButtonProps = React.PropsWithChildren<{
@@ -48,12 +50,14 @@ const CameraOverlay = ({
   switchTorch,
   switchDevice,
   switchDeviceEnabled,
+  onCameraClick,
 }: CameraOverlayProps) => {
   const { height } = useContext(AppDimensionsContext);
   const { bottomSheet } = useBottomSheet();
   const [settingsModalExpanded, setSettingsModalExpanded] = useState(false);
   const isAvailable = useCameraOptionsStore((state) => state.isAvailable);
   const theme = usePersonalizationStore((state) => state.theme);
+  const wrapAuth = useWrapAuth();
 
   const buttonParameters: ButtonParameters = { buttonStyle: { padding: 10 } };
 
@@ -76,15 +80,17 @@ const CameraOverlay = ({
     },
   ]);
 
+  const recordButtonClick = onCameraClick;
+
   const bottomContainerButtons = useRef([
     {
       item: GalleryButton,
-      onClick: useWrapAuth(notLoggedInOnClick),
+      onClick: notLoggedInOnClick,
       enabled: true,
     },
     {
       item: RecordButton,
-      onClick: useWrapAuth(notLoggedInOnClick),
+      onClick: recordButtonClick,
       enabled: true,
     },
     {

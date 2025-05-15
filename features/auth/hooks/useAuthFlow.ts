@@ -1,10 +1,11 @@
+import * as AuthSession from "expo-auth-session";
 import * as Linking from "expo-linking";
 import { router } from "expo-router";
 import { useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";
 
 import defaultPicture from "@/assets/images/default_user_avatar.png";
-import { supabase, useAuthStore } from "@/features/auth/stores/authStore";
+import { supabase, useAuthStore } from "@/features/auth/stores/useAuthStore";
 
 export { defaultPicture };
 
@@ -22,13 +23,19 @@ export const useAuthFlow = () => {
   const signInWithGoogle = async () => {
     try {
       console.log("Signing in with Google...");
-      const redirectUrl = Linking.createURL("auth/callback");
+      const redirectUrl = AuthSession.makeRedirectUri({
+        scheme: "myapp",
+        path: "auth/callback",
+      });
+      //const redirectUrl = Linking.createURL("auth/callback");
+
+      console.log(redirectUrl);
 
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
           redirectTo: redirectUrl,
-          skipBrowserRedirect: false,
+          skipBrowserRedirect: true,
         },
       });
 
@@ -68,6 +75,8 @@ export const useAuthFlow = () => {
             setAccessToken(access_token);
             setRefreshToken(refresh_token);
             setIsLoggedIn(true);
+
+            console.log("Logged in!");
 
             router.replace("/");
           } else {

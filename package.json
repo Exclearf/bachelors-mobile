@@ -67,7 +67,8 @@
     "react-native-web": "^0.20.0",
     "react-native-webview": "13.13.5",
     "reanimated-color-picker": "^3.0.6",
-    "zustand": "^5.0.2"
+    "zustand": "^5.0.2",
+    "expo-image-manipulator": "~13.1.7"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

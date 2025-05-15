@@ -60,7 +60,7 @@ const ExpandableModal = ({
             height * 0.55 - height * 0.11 - 36,
             height -
               (bottomSheet?.animatedPosition.get() ?? 0) -
-              height * 0.19 -
+              height * 0.157 -
               padding / 2,
           ),
         ],

@@ -6,7 +6,7 @@ import React from "react";
 import { Pressable, StyleSheet } from "react-native";
 
 import LoginScreen from "@/features/auth/LoginScreen";
-import { useAuthStore } from "@/features/auth/stores/authStore";
+import { useAuthStore } from "@/features/auth/stores/useAuthStore";
 import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
 import { useAppSetup } from "@/features/shared/hooks/useAppSetup";
 
@@ -18,7 +18,7 @@ const RootLayout = () => {
   // It is placed here in order not to re-render the app
   useAppSetup();
 
-  if (!isLoggedIn && false) {
+  if (!isLoggedIn) {
     return <LoginScreen />;
   }
 
