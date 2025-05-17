@@ -27,9 +27,6 @@ export const useAuthFlow = () => {
         scheme: "myapp",
         path: "auth/callback",
       });
-      //const redirectUrl = Linking.createURL("auth/callback");
-
-      console.log(redirectUrl);
 
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: "google",

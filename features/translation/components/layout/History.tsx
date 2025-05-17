@@ -3,13 +3,12 @@ import React, { useContext } from "react";
 import { StyleProp, StyleSheet, Text, View, ViewStyle } from "react-native";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 
+import { expandableModalStyles } from "@/features/camera/components/modals/ExpandableModal";
+import TranslatedText from "@/features/shared/components/text/TranslatedText";
 import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
 import { useLocalization } from "@/features/shared/hooks/useLocalization";
+import { useTheme } from "@/features/shared/hooks/useTheme";
 import { useTranslationStore } from "@/features/translation/stores/translationStore";
-
-import { expandableModalStyles } from "../../camera/components/modals/ExpandableModal";
-import TranslatedText from "../../shared/components/text/TranslatedText";
-import { useTheme } from "../../shared/hooks/useTheme";
 
 type Props = {
   padding: number;

@@ -7,7 +7,7 @@ import { defaultPicture } from "@/features/auth/hooks/useAuthFlow";
 import { useTimeTranslationKey } from "@/features/shared/hooks/useTimeTranslationKey";
 import { useTranslationStore } from "@/features/translation/stores/translationStore";
 
-import { useAuthStore } from "../auth/stores/authStore";
+import { useAuthStore } from "../auth/stores/useAuthStore";
 import Popup from "../shared/components/feedback/Popup";
 import Button from "../shared/components/input/Button";
 import TranslatedText from "../shared/components/text/TranslatedText";

@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import Button from "@/features/shared/components/input/Button";
-import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
+import { useAppDimensions } from "@/features/shared/hooks/useAppDimensions";
 
 type Props = {
   handler: () => void;
@@ -14,7 +14,7 @@ const BUTTON_HEIGHT = 45;
 const BUTTON_WIDTH = 90;
 
 const CameraAccessRequestModal = ({ handler }: Props) => {
-  const { width, height } = useContext(AppDimensionsContext);
+  const { width, height } = useAppDimensions();
   return (
     <View
       style={[

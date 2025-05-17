@@ -29,8 +29,6 @@ type ComponentProps = {
   fontSizeOverride?: number;
 };
 
-//TODO: Seprate the children into TranslatedText.
-
 const TranslatedText = ({
   t,
   translationKey,

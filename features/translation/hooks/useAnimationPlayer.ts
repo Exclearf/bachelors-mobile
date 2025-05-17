@@ -19,7 +19,6 @@ export const useAnimationPlayer = (
   useEffect(() => {
     if (status?.didJustFinish && !hasFinished) {
       if (currentAnimationIndex + 1 >= animationsList.length) {
-        console.log("RESETTING PLAYBACK");
         return setHasFinished(true);
       }
       console.log(`Setting Current animation  ${currentAnimationIndex + 1}`);
@@ -28,7 +27,6 @@ export const useAnimationPlayer = (
   }, [status, animationsList.length, currentAnimationIndex, hasFinished]);
 
   const resetPlayback = () => {
-    console.log("RESET PLAYBACK");
     setHasFinished(false);
     setCurrentAnimationIndex(0);
   };

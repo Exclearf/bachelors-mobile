@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { AppDimensionsContext } from "../../contexts/appDimensions";
 
-type Props = PropsWithChildren<{}>;
+type Props = PropsWithChildren<object>;
 
 const AppDimensionsProvider = ({ children }: Props) => {
   const windowDimensions = Dimensions.get("window");

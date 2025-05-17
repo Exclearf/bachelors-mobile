@@ -6,8 +6,6 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
-import { createPersistedStore } from "@/features/shared/utils/createPersistStore";
-
 import {
   generateTheme,
   getSaturation,

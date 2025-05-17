@@ -10,9 +10,9 @@ import SelectGroup, {
 import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
 import { useLocalization } from "@/features/shared/hooks/useLocalization";
 import { useTheme } from "@/features/shared/hooks/useTheme";
-import History from "@/features/translation/components/History";
-import SignTranslation from "@/features/translation/components/SignTranslation";
-import TextTranslation from "@/features/translation/components/TextTranslationPlayer";
+import TextTranslationPlayer from "@/features/translation/components/feedback/TextTranslationPlayer";
+import History from "@/features/translation/components/layout/History";
+import SignTranslation from "@/features/translation/components/layout/SignTranslation";
 import { useTranslationStore } from "@/features/translation/stores/translationStore";
 
 const IndexTab = () => {
@@ -63,7 +63,11 @@ const IndexTab = () => {
           ]}
           titleTranslationKey={getTranslationKey("translation")}
         >
-          {mode === "signToText" ? <SignTranslation /> : <TextTranslation />}
+          {mode === "signToText" ? (
+            <SignTranslation />
+          ) : (
+            <TextTranslationPlayer />
+          )}
         </ExpandableModal>
         <History
           padding={height * 0.02}

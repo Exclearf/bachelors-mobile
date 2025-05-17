@@ -4,10 +4,9 @@ import { AVPlaybackStatusSuccess, ResizeMode, Video } from "expo-av";
 import React, { useEffect, useRef, useState } from "react";
 import { StyleSheet, TouchableWithoutFeedback, View } from "react-native";
 
+import Spinner from "@/features/shared/components/feedback/Spinner";
 import { useTheme } from "@/features/shared/hooks/useTheme";
 import { useAnimationPlayer } from "@/features/translation/hooks/useAnimationPlayer";
-
-import Spinner from "../../shared/components/feedback/Spinner";
 
 const controlsSize = 56;
 

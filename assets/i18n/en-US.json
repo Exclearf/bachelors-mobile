@@ -53,6 +53,14 @@
     "signInWithGoogle": "Log in with Google"
   },
   "misc": {
-    "notLoggedInInfo": "Please, Log In!"
+    "notLoggedInInfo": "Please, Log In!",
+    "accept": "Accept",
+    "cancel": "Cancel"
+  },
+  "translation": {
+    "textToVideo": {
+      "translationConfirm": "Confirm crop region"
+    },
+    "videoToText": {}
   }
 }

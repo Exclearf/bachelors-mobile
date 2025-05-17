@@ -1,34 +1,39 @@
 import React, { PropsWithChildren } from "react";
 import { StyleSheet, TouchableOpacity, ViewStyle } from "react-native";
 
+import { useTheme } from "../../hooks/useTheme";
+
 type Props = {
   onPress?: () => any;
-  width: number;
-  height: number;
-  backgroundColor: string;
+  width?: number;
+  height?: number;
+  padding?: number;
   style?: ViewStyle;
 };
 
 const Button = ({
   children,
   onPress,
-  backgroundColor,
   width,
   height,
+  padding,
   style,
 }: PropsWithChildren<Props>) => {
+  const theme = useTheme();
+
   return (
     <TouchableOpacity
       onPress={() => {
-        console.log("Button clicked");
         onPress?.();
       }}
       style={[
         styles.container,
         {
-          backgroundColor,
+          backgroundColor: theme?.secondaryBackground,
+          borderColor: theme?.mutedForeground,
           width,
           height,
+          padding,
         },
         style,
       ]}
@@ -45,7 +50,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.2)",
     justifyContent: "center",
     alignItems: "center",
   },

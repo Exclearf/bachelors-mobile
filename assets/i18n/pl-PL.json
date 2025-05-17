@@ -53,6 +53,14 @@
     "signInWithGoogle": "Zaloguj się przez Google"
   },
   "misc": {
-    "notLoggedInInfo": "Proszę się zalogować!"
+    "notLoggedInInfo": "Proszę się zalogować!",
+    "accept": "Akceptuj",
+    "cancel": "Anuluj"
+  },
+  "translation": {
+    "textToVideo": {
+      "cropConfirm": "Potwierdź obszar przycięcia"
+    },
+    "videoToText": {}
   }
 }

@@ -19,7 +19,6 @@ const useWrapAuth = () => {
         funcToWrap: T,
         notSignedInCallback?: K,
       ): ((...args: Parameters<T>) => ReturnType<T> | void) => {
-        console.log(`The user is ${isLoggedIn}`);
         return isLoggedIn
           ? funcToWrap
           : (notSignedInCallback ??

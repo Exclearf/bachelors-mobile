@@ -1,63 +1,77 @@
 import * as ImageManipulator from "expo-image-manipulator";
-import { RefObject, useState } from "react";
-import { useWindowDimensions } from "react-native";
+import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 import { Camera } from "react-native-vision-camera";
 
-import { HANDLE_SIZE } from "../misc/constants";
+import { ComponentSize } from "@/features/shared/hooks/useComponentSize";
+
 import { PictureBboxRef } from "../PictureBbox";
 
 const useBboxPhoto = (
   pictureBboxRef: RefObject<PictureBboxRef | null>,
   cameraRef: RefObject<Camera | null>,
+  previewFrame: ComponentSize | null,
 ) => {
   const [photo, setPhoto] = useState<string | null>(null);
-  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
+  const isTakingPhoto = useRef(false);
 
-  const takePhoto = async () => {
+  const frameRef = useRef<ComponentSize | null>(null);
+
+  useEffect(() => {
+    frameRef.current = previewFrame;
+  }, [previewFrame]);
+
+  const takePhoto = useCallback(async () => {
+    const frame = frameRef.current;
+
+    if (isTakingPhoto.current || !frame) return;
+
     try {
+      isTakingPhoto.current = true;
+
+      const { width: pW, height: pH } = frame;
+
       const pictureBbox = pictureBboxRef.current!;
       const topLeft = pictureBbox.topLeft;
       const bottomRight = pictureBbox.bottomRight;
 
+      const pic = await cameraRef.current!.takePhoto();
+
+      const needsRotate = pic.width > pic.height;
+
+      const ratioX = (needsRotate ? pic.height : pic.width) / pW;
+      const ratioY = (needsRotate ? pic.width : pic.height) / pH;
+
       const focusBox = {
-        x: topLeft.x.get() - HANDLE_SIZE,
-        y: topLeft.y.get() + HANDLE_SIZE,
+        x: topLeft.x.get(),
+        y: topLeft.y.get(),
         width: bottomRight.x.get() - topLeft.x.get(),
         height: bottomRight.y.get() - topLeft.y.get(),
       };
 
-      const pic = await cameraRef.current!.takePhoto();
-
-      const scaleX = pic.width / screenWidth;
-      const scaleY = pic.height / screenHeight;
-
-      const originX = focusBox.x * scaleX;
-      const originY = focusBox.y * scaleY;
-
       const crop = {
-        originX: Math.round(originX),
-        originY: Math.round(originY),
-        width: Math.round(focusBox.width * scaleX),
-        height: Math.round(focusBox.height * scaleY),
+        originX: Math.floor(focusBox.x * ratioX),
+        originY: Math.floor(focusBox.y * ratioY),
+        width: Math.floor(focusBox.width * ratioX),
+        height: Math.floor(focusBox.height * ratioY),
       };
 
-      console.log(crop);
-
-      const fileUri = pic.path.startsWith("file:")
+      const uri = pic.path.startsWith("file:")
         ? pic.path
         : `file://${pic.path}`;
+      const actions = needsRotate ? [{ crop }] : [{ crop }];
 
-      const result = await ImageManipulator.manipulateAsync(
-        fileUri,
-        [{ crop }],
-        { compress: 1, format: ImageManipulator.SaveFormat.JPEG },
-      );
+      const result = await ImageManipulator.manipulateAsync(uri, actions, {
+        compress: 1,
+        format: ImageManipulator.SaveFormat.JPEG,
+      });
 
       setPhoto(result.uri);
     } catch (e) {
       console.error("❌ Error in takePhoto:", e);
+    } finally {
+      isTakingPhoto.current = false;
     }
-  };
+  }, [cameraRef, pictureBboxRef]);
 
   const resetPhoto = () => setPhoto(null);
 

@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useMemo, useRef, useState } from "react";
 import { StyleSheet } from "react-native";
 import Animated, {
   useAnimatedStyle,
@@ -82,23 +82,26 @@ const CameraOverlay = ({
 
   const recordButtonClick = onCameraClick;
 
-  const bottomContainerButtons = useRef([
-    {
-      item: GalleryButton,
-      onClick: notLoggedInOnClick,
-      enabled: true,
-    },
-    {
-      item: RecordButton,
-      onClick: recordButtonClick,
-      enabled: true,
-    },
-    {
-      item: FlipCameraButton,
-      onClick: switchDevice,
-      enabled: switchDeviceEnabled,
-    },
-  ]);
+  const bottomContainerButtons = useMemo(
+    () => [
+      {
+        item: GalleryButton,
+        onClick: notLoggedInOnClick,
+        enabled: true,
+      },
+      {
+        item: RecordButton,
+        onClick: recordButtonClick,
+        enabled: true,
+      },
+      {
+        item: FlipCameraButton,
+        onClick: switchDevice,
+        enabled: switchDeviceEnabled,
+      },
+    ],
+    [recordButtonClick, switchDevice, switchDeviceEnabled],
+  );
 
   const containersScale = useDerivedValue(() => {
     return (bottomSheet?.animatedPosition.get() ?? 0) / height;
@@ -138,7 +141,7 @@ const CameraOverlay = ({
         </Animated.View>
       )}
       <CameraBottomContainer scale={containersScale}>
-        {bottomContainerButtons.current.map(
+        {bottomContainerButtons.map(
           (button, index) =>
             button.enabled && (
               <button.item

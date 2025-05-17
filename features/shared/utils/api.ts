@@ -1,6 +1,6 @@
 import { useShallow } from "zustand/react/shallow";
 
-import { useAuthStore } from "@/features/auth/stores/authStore";
+import { useAuthStore } from "@/features/auth/stores/useAuthStore";
 
 export const useFetchWithAuth = (url: string, options: RequestInit = {}) => {
   const [refreshSession, accessToken] = useAuthStore(

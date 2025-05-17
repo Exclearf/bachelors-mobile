@@ -7,12 +7,12 @@ import { useShallow } from "zustand/react/shallow";
 import { useSettingsItemWidth } from "@/features/settings/hooks/useSettingsItemWidth";
 import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
 import Switch from "@/features/shared/components/input/Switch";
+import { WithForwardRef } from "@/features/shared/components/misc/WithForwardRef";
 import TranslatedText from "@/features/shared/components/text/TranslatedText";
 import {
   NonFontSizeMultiplier,
   useFontSize,
 } from "@/features/shared/hooks/useFontSize";
-import { WithForwardRef } from "@/features/shared/utils/WithForwardRef";
 
 import { AccessibilityItemProps } from "../AccessibilitySection";
 
