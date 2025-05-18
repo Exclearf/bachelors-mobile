@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 
 import ToggleGroup from "@/features/shared/components/input/ToggleGroup";
+import log from "@/features/shared/utils/log";
 
 const items = [
   {
@@ -28,7 +29,7 @@ const CameraSettingsContainer = () => {
         height={30}
         selectedIndex={0}
         items={items}
-        onChange={(e) => console.log(e.id)}
+        onChange={(e) => log.debug(e.id)}
       />
     </View>
   );

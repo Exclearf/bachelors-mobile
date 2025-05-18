@@ -9,6 +9,7 @@ import ToggleGroup, {
   ToggleItemType,
 } from "@/features/shared/components/input/ToggleGroup";
 import TranslatedText from "@/features/shared/components/text/TranslatedText";
+import log from "@/features/shared/utils/log";
 
 type Props = SettingsSectionSubItemType;
 
@@ -33,7 +34,7 @@ const AppThemeSwitch = ({ getTranslationKey, textStyle }: Props) => {
   const changeTheme = (e: ToggleItemType) => {
     setThemeType(e.id as ColorSchemeName);
 
-    console.log(`Theme changed to ${e.id}`);
+    log.debug(`Theme changed to ${e.id}`);
   };
 
   return (

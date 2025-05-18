@@ -6,6 +6,7 @@ import { SettingsSectionSubItemType } from "@/features/settings/SettingsSections
 import ToggleGroup, {
   ToggleItemType,
 } from "@/features/shared/components/input/ToggleGroup";
+import log from "@/features/shared/utils/log";
 import { useTranslationStore } from "@/features/translation/stores/translationStore";
 
 import SettingsMenuEntryText from "../../shared/SettingsMenuEntryText";
@@ -27,7 +28,7 @@ const TranslationLanguageToggle = ({ getTranslationKey, textStyle }: Props) => {
   );
   const changeTranslationLanguage = (language: ToggleItemType) => {
     setCurrentLanguage(language);
-    console.log("Changing translation language to:", language.id);
+    log.debug("Changing translation language to:", language.id);
   };
 
   return (

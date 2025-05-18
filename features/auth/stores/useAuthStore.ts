@@ -5,6 +5,8 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
+import log from "@/features/shared/utils/log";
+
 import { User } from "../types/types";
 import { extractUser, getTokenExp } from "../utils/utils";
 
@@ -176,11 +178,10 @@ export const useAuthStore = create<AuthState & AuthActions>()(
               state.loggedIn = true;
             });
 
-            console.log("Logged in!");
             scheduleTokenRefresh(session.access_token);
             return true;
           } catch (error) {
-            console.error("Error refreshing session:", error);
+            log.error("Error refreshing session:", error);
             if (refreshTimer) clearTimeout(refreshTimer);
             return false;
           }

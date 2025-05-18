@@ -21,6 +21,7 @@ import SettingsModal from "./components/modals/SettingsModal";
 import { usePersonalizationStore } from "../settings/stores/personalizationStore";
 import Spinner from "../shared/components/feedback/Spinner";
 import useWrapAuth from "../shared/hooks/useWrapAuth";
+import log from "../shared/utils/log";
 
 type CameraOverlayProps = {
   switchTorch: () => void;
@@ -67,7 +68,7 @@ const CameraOverlay = ({
     size: 38,
   };
 
-  const notLoggedInOnClick = () => console.log("Not logged in");
+  const notLoggedInOnClick = () => log.debug("Not logged in");
 
   const topContainerButtons = useRef([
     {

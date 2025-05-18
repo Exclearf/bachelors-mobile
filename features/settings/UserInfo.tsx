@@ -29,7 +29,7 @@ const popupPadding = 5;
 const UserInfo = ({ getTranslationKey, height }: Props) => {
   getTranslationKey = useLocalization(getTranslationKey("userInfo"));
   const [setIsSignedIn, user] = useAuthStore(
-    useShallow((state) => [state.setIsLoggedIn, state.user]),
+    useShallow((state) => [state.setLoggedIn, state.user]),
   );
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const setMode = useTranslationStore((state) => state.setMode);
@@ -97,8 +97,8 @@ const UserInfo = ({ getTranslationKey, height }: Props) => {
               <Button
                 width={popupWidth - popupPadding * 2}
                 height={popupHeight - popupPadding * 2}
-                backgroundColor="#551616"
                 style={{ borderRadius: 5 }}
+                variant="destructive"
                 onPress={() => {
                   setMode("signToText");
                   router.replace("/");

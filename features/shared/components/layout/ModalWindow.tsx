@@ -60,7 +60,11 @@ const ModalFooter = ({
   return (
     <View style={styles.modalFooter}>
       {closeCallback && (
-        <Button onPress={closeCallback} style={styles.modalFooterButtons}>
+        <Button
+          onPress={closeCallback}
+          style={styles.modalFooterButtons}
+          variant="secondary"
+        >
           <TranslatedText translationKey={getTranslationKey("cancel")} />
         </Button>
       )}
@@ -68,7 +72,7 @@ const ModalFooter = ({
         <Button
           onPress={acceptCallback}
           style={styles.modalFooterButtons}
-          padding={0}
+          variant="primary"
         >
           <TranslatedText translationKey={getTranslationKey("accept")} />
         </Button>
@@ -143,7 +147,7 @@ const styles = StyleSheet.create({
   },
   modalFooterButtons: {
     borderRadius: 5,
-    paddingVertical: 10,
+    paddingVertical: 6,
     width: "30%",
   },
 });

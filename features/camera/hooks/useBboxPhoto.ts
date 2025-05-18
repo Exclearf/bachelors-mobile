@@ -3,6 +3,7 @@ import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 import { Camera } from "react-native-vision-camera";
 
 import { ComponentSize } from "@/features/shared/hooks/useComponentSize";
+import log from "@/features/shared/utils/log";
 
 import { PictureBboxRef } from "../PictureBbox";
 
@@ -67,7 +68,7 @@ const useBboxPhoto = (
 
       setPhoto(result.uri);
     } catch (e) {
-      console.error("❌ Error in takePhoto:", e);
+      log.error("Error in takePhoto:", e);
     } finally {
       isTakingPhoto.current = false;
     }

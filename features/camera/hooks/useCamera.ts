@@ -1,6 +1,8 @@
 import { useRef, useState } from "react";
 import { useCameraDevice } from "react-native-vision-camera";
 
+import log from "@/features/shared/utils/log";
+
 const useCamera = (deviceIndex: number) => {
   const cameraDevices = useRef(
     [
@@ -18,7 +20,7 @@ const useCamera = (deviceIndex: number) => {
   const switchDevice = () => {
     currentDeviceIndex.current =
       (currentDeviceIndex.current + 1) % cameraDevices.length;
-    console.log(`New device is "${currentDeviceIndex}"`);
+    log.debug(`New device is "${currentDeviceIndex.current}"`);
     setCurrentDevice(cameraDevices[currentDeviceIndex.current]!);
   };
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { StyleSheet, ViewStyle } from "react-native";
 import Animated, {
   useAnimatedStyle,
@@ -17,7 +17,10 @@ type Props = {
 const Skeleton = ({ style }: Props) => {
   const opacity = useSharedValue(0.75);
   const theme = usePersonalizationStore((state) => state.theme);
-  const color = colorKit.RGB(theme?.secondaryBackground ?? "#000000").array();
+  const color = useMemo(
+    () => colorKit.RGB(theme?.mutedForeground ?? "#000000").array(),
+    [theme],
+  );
   useEffect(() => {
     opacity.set(withRepeat(withTiming(1, { duration: 1000 }), -1, true));
   }, []);

@@ -2,6 +2,8 @@ import { useShallow } from "zustand/react/shallow";
 
 import { useAuthStore } from "@/features/auth/stores/useAuthStore";
 
+import log from "./log";
+
 export const useFetchWithAuth = (url: string, options: RequestInit = {}) => {
   const [refreshSession, accessToken] = useAuthStore(
     useShallow((state) => [state.refreshSession, state.accessToken]),
@@ -33,7 +35,7 @@ export const useFetchWithAuth = (url: string, options: RequestInit = {}) => {
 
       return response;
     } catch (error) {
-      console.error("API call failed:", error);
+      log.error("API call failed:", error);
       throw error;
     }
   };

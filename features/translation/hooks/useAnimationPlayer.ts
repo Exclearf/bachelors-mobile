@@ -1,6 +1,8 @@
 import { AVPlaybackStatusSuccess } from "expo-av";
 import { useEffect, useState } from "react";
 
+import log from "@/features/shared/utils/log";
+
 const you = require("@/assets/signs/you-anim.mp4");
 
 const animations = { you };
@@ -21,7 +23,7 @@ export const useAnimationPlayer = (
       if (currentAnimationIndex + 1 >= animationsList.length) {
         return setHasFinished(true);
       }
-      console.log(`Setting Current animation  ${currentAnimationIndex + 1}`);
+      log.debug(`Setting Current animation  ${currentAnimationIndex + 1}`);
       setCurrentAnimationIndex(currentAnimationIndex + 1);
     }
   }, [status, animationsList.length, currentAnimationIndex, hasFinished]);

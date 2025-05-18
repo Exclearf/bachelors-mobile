@@ -1,14 +1,17 @@
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, useMemo, useRef } from "react";
 import { StyleSheet, TouchableOpacity, ViewStyle } from "react-native";
 
 import { useTheme } from "../../hooks/useTheme";
 
-type Props = {
+export type ButtonVariant = "primary" | "secondary" | "destructive";
+
+type ButtonProps = {
   onPress?: () => any;
   width?: number;
   height?: number;
   padding?: number;
   style?: ViewStyle;
+  variant?: ButtonVariant;
 };
 
 const Button = ({
@@ -18,8 +21,18 @@ const Button = ({
   height,
   padding,
   style,
-}: PropsWithChildren<Props>) => {
+  variant = "primary",
+}: PropsWithChildren<ButtonProps>) => {
   const theme = useTheme();
+
+  const colorPallete = useMemo<Record<ButtonVariant, string | undefined>>(
+    () => ({
+      primary: theme?.mutedForeground,
+      secondary: theme?.mutedBackground,
+      destructive: theme?.destructive,
+    }),
+    [theme],
+  );
 
   return (
     <TouchableOpacity
@@ -29,7 +42,7 @@ const Button = ({
       style={[
         styles.container,
         {
-          backgroundColor: theme?.secondaryBackground,
+          backgroundColor: colorPallete[variant],
           borderColor: theme?.mutedForeground,
           width,
           height,

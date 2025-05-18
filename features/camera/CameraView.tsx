@@ -24,6 +24,7 @@ import { useAppDimensions } from "../shared/hooks/useAppDimensions";
 import { ComponentSize } from "../shared/hooks/useComponentSize";
 import useIsAppFocused from "../shared/hooks/useIsAppFocused";
 import { useLocalization } from "../shared/hooks/useLocalization";
+import log from "../shared/utils/log";
 import { useTranslationStore } from "../translation/stores/translationStore";
 import CameraAccessRequestModal from "./components/modals/CameraAccessRequest";
 import TextTranslation from "../translation/components/TextTranslation";
@@ -67,7 +68,7 @@ const CameraView = ({ previewFrame }: CameraViewProps) => {
 
   // VIDEO TO TEXT W.I.P.
 
-  const takeVideo = useCallback(() => console.log("Taking video"), []);
+  const takeVideo = useCallback(() => log.info("Taking video"), []);
 
   useEffect(() => {
     if (!hasPermission) {

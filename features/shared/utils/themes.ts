@@ -16,11 +16,9 @@ export const generateTheme = (
   hexColor: string,
 ) => {
   if (hexColor === "#000000") {
-    console.log("Black theme");
     //return generateBlackTheme(isHighContrast);
   }
   if (hexColor === "#ffffff") {
-    console.log("White theme");
     //return generateWhiteTheme(isHighContrast);
   }
   return themeType === "dark"
@@ -72,6 +70,7 @@ const generateDarkTheme = (palette: Theme, isHighContrast: boolean) => {
       7 * backgroundMultiplier,
     ),
     mutedForeground: palette.palettes.secondary.tone(50 * foregroundMultipler),
+    destructive: palette.palettes.error.tone(10 * backgroundMultiplier),
   };
 };
 
@@ -95,6 +94,7 @@ const generateLightTheme = (palette: Theme, isHighContrast: boolean) => {
       90 * backgroundMultiplier,
     ),
     mutedForeground: palette.palettes.tertiary.tone(50 * foregroundMultipler),
+    destructive: palette.palettes.error.tone(80 * backgroundMultiplier),
   };
 };
 
