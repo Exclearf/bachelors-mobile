@@ -87,7 +87,7 @@ const CameraView = ({ previewFrame }: CameraViewProps) => {
       <Camera
         style={[StyleSheet.absoluteFill, styles.cameraViewStyle]}
         device={currentDevice}
-        isActive={isAvailable && isAppFocused}
+        isActive={isAvailable && isAppFocused && (photo ?? "").length === 0}
         onInitialized={() => setIsAvailable(true)}
         ref={cameraRef}
         torch={isTorchOn}

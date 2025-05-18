@@ -19,7 +19,7 @@ const useWrapAuth = () => {
         funcToWrap: T,
         notSignedInCallback?: K,
       ): ((...args: Parameters<T>) => ReturnType<T> | void) => {
-        return isLoggedIn
+        return isLoggedIn()
           ? funcToWrap
           : (notSignedInCallback ??
               (() => notSignedInFallback(translationFunction)));

@@ -23,7 +23,7 @@ const useBboxPhoto = (
   const takePhoto = useCallback(async () => {
     const frame = frameRef.current;
 
-    if (isTakingPhoto.current || !frame) return;
+    if (isTakingPhoto.current || !frame || (photo ?? "").length !== 0) return;
 
     try {
       isTakingPhoto.current = true;

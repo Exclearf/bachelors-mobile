@@ -4,6 +4,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Tabs } from "expo-router";
 import React from "react";
 import { Pressable, StyleSheet } from "react-native";
+import { useShallow } from "zustand/react/shallow";
 
 import LoginScreen from "@/features/auth/LoginScreen";
 import { useAuthStore } from "@/features/auth/stores/useAuthStore";
@@ -11,14 +12,14 @@ import { usePersonalizationStore } from "@/features/settings/stores/personalizat
 import { useAppSetup } from "@/features/shared/hooks/useAppSetup";
 
 const RootLayout = () => {
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const loggedIn = useAuthStore((state) => state.loggedIn);
   const theme = usePersonalizationStore((state) => state.theme);
 
   // This hook is used to prevent the splash screen from hiding before the app is fully loaded
   // It is placed here in order not to re-render the app
   useAppSetup();
 
-  if (!isLoggedIn) {
+  if (!loggedIn) {
     return <LoginScreen />;
   }
 

@@ -16,7 +16,7 @@ export const useAuthFlow = () => {
         state.setUser,
         state.setAccessToken,
         state.setRefreshToken,
-        state.setIsLoggedIn,
+        state.setLoggedIn,
       ]),
     );
 

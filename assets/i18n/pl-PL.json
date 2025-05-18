@@ -59,7 +59,7 @@
   },
   "translation": {
     "textToVideo": {
-      "cropConfirm": "Potwierdź obszar przycięcia"
+      "translationConfirm": "Potwierdź obszar przycięcia"
     },
     "videoToText": {}
   }

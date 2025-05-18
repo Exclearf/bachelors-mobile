@@ -41,6 +41,7 @@
     "expo-dev-client": "~5.1.8",
     "expo-font": "~13.3.1",
     "expo-haptics": "~14.1.4",
+    "expo-image-manipulator": "~13.1.7",
     "expo-linear-gradient": "~14.1.4",
     "expo-linking": "~7.1.4",
     "expo-localization": "~16.1.5",
@@ -53,6 +54,7 @@
     "expo-web-browser": "~14.1.6",
     "i18next": "^24.2.0",
     "immer": "^10.1.1",
+    "jwt-decode": "^4.0.0",
     "react": "19.0.0",
     "react-compiler-runtime": "^19.0.0-beta-df7b47d-20241124",
     "react-dom": "19.0.0",
@@ -67,8 +69,7 @@
     "react-native-web": "^0.20.0",
     "react-native-webview": "13.13.5",
     "reanimated-color-picker": "^3.0.6",
-    "zustand": "^5.0.2",
-    "expo-image-manipulator": "~13.1.7"
+    "zustand": "^5.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
