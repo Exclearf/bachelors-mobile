@@ -6,3 +6,9 @@ export type CornerCoordinates = {
 };
 
 export type CornerRadius = 1 | -1;
+
+export type UseAssetFetcher = {
+  assetUri: string;
+  resetAssetUri: () => void;
+  requestAsset: () => void;
+};

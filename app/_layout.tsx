@@ -1,9 +1,10 @@
 import Constants from "expo-constants";
 import { Slot, SplashScreen } from "expo-router";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { StyleSheet, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
+import { useAuthStore } from "@/features/auth/stores/useAuthStore";
 import CameraView from "@/features/camera/CameraView";
 import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
 import AppBottomSheet from "@/features/shared/components/layout/AppBottomSheet";
@@ -27,6 +28,12 @@ export default function RootLayout() {
   const statusBarHeight = Constants.statusBarHeight;
   const previewRef = useRef<View>(null);
   const previewFrame = useComponentSize(previewRef);
+
+  const syncAuth = useAuthStore((state) => state.syncAuth);
+
+  useEffect(() => {
+    syncAuth();
+  }, [syncAuth]);
 
   return (
     <GestureHandlerRootView>

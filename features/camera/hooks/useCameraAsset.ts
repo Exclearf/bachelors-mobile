@@ -4,16 +4,19 @@ import { Camera } from "react-native-vision-camera";
 
 import { ComponentSize } from "@/features/shared/hooks/useComponentSize";
 import log from "@/features/shared/utils/log";
+import { useTranslationStore } from "@/features/translation/stores/translationStore";
 
+import { UseAssetFetcher } from "../misc/types";
 import { PictureBboxRef } from "../PictureBbox";
 
-const useBboxPhoto = (
+const useCameraAsset = (
   pictureBboxRef: RefObject<PictureBboxRef | null>,
   cameraRef: RefObject<Camera | null>,
   previewFrame: ComponentSize | null,
 ) => {
-  const [photo, setPhoto] = useState<string | null>(null);
+  const [assetUri, setAssetUri] = useState<string>("");
   const isTakingPhoto = useRef(false);
+  const mode = useTranslationStore((state) => state.mode);
 
   const frameRef = useRef<ComponentSize | null>(null);
 
@@ -24,7 +27,7 @@ const useBboxPhoto = (
   const takePhoto = useCallback(async () => {
     const frame = frameRef.current;
 
-    if (isTakingPhoto.current || !frame || (photo ?? "").length !== 0) return;
+    if (isTakingPhoto.current || !frame || assetUri.length !== 0) return;
 
     try {
       isTakingPhoto.current = true;
@@ -66,17 +69,21 @@ const useBboxPhoto = (
         format: ImageManipulator.SaveFormat.JPEG,
       });
 
-      setPhoto(result.uri);
+      setAssetUri(result.uri);
     } catch (e) {
       log.error("Error in takePhoto:", e);
     } finally {
       isTakingPhoto.current = false;
     }
-  }, [cameraRef, pictureBboxRef]);
+  }, [cameraRef, pictureBboxRef, assetUri.length]);
 
-  const resetPhoto = () => setPhoto(null);
+  const takeVideo = () => log.debug("Taking video");
 
-  return [photo, takePhoto, resetPhoto] as const;
+  const requestAsset = mode === "textToSign" ? takePhoto : takeVideo;
+
+  const resetAssetUri = () => setAssetUri("");
+
+  return { assetUri, requestAsset, resetAssetUri } as UseAssetFetcher;
 };
 
-export default useBboxPhoto;
+export default useCameraAsset;

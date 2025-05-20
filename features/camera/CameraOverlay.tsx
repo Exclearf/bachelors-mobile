@@ -21,7 +21,6 @@ import SettingsModal from "./components/modals/SettingsModal";
 import { usePersonalizationStore } from "../settings/stores/personalizationStore";
 import Spinner from "../shared/components/feedback/Spinner";
 import useWrapAuth from "../shared/hooks/useWrapAuth";
-import log from "../shared/utils/log";
 
 type CameraOverlayProps = {
   switchTorch: () => void;
@@ -29,6 +28,7 @@ type CameraOverlayProps = {
   switchDeviceEnabled: boolean;
 
   onCameraClick: () => void;
+  onGalleryClick: () => void;
 };
 
 export type CameraOverlayButtonProps = React.PropsWithChildren<{
@@ -52,6 +52,7 @@ const CameraOverlay = ({
   switchDevice,
   switchDeviceEnabled,
   onCameraClick,
+  onGalleryClick,
 }: CameraOverlayProps) => {
   const { height } = useContext(AppDimensionsContext);
   const { bottomSheet } = useBottomSheet();
@@ -68,8 +69,6 @@ const CameraOverlay = ({
     size: 38,
   };
 
-  const notLoggedInOnClick = () => log.debug("Not logged in");
-
   const topContainerButtons = useRef([
     {
       item: SettingsButton,
@@ -81,18 +80,16 @@ const CameraOverlay = ({
     },
   ]);
 
-  const recordButtonClick = onCameraClick;
-
   const bottomContainerButtons = useMemo(
     () => [
       {
         item: GalleryButton,
-        onClick: notLoggedInOnClick,
+        onClick: onGalleryClick,
         enabled: true,
       },
       {
         item: RecordButton,
-        onClick: recordButtonClick,
+        onClick: onCameraClick,
         enabled: true,
       },
       {
@@ -101,7 +98,7 @@ const CameraOverlay = ({
         enabled: switchDeviceEnabled,
       },
     ],
-    [recordButtonClick, switchDevice, switchDeviceEnabled],
+    [switchDevice, switchDeviceEnabled, onCameraClick, onGalleryClick],
   );
 
   const containersScale = useDerivedValue(() => {

@@ -1,17 +1,15 @@
 import { useMemo } from "react";
-import { ToastAndroid } from "react-native";
 
 import { useAuthStore } from "@/features/auth/stores/useAuthStore";
 
-import { useLocalization, UseLocalizationFunction } from "./useLocalization";
+import { useLocalization } from "./useLocalization";
 import { AnyFunction } from "../types/types";
-
-const notSignedInFallback = (translationFunction: UseLocalizationFunction) =>
-  ToastAndroid.show(translationFunction("notLoggedInInfo"), ToastAndroid.SHORT);
+import useShowToast from "../utils/showToast";
 
 const useWrapAuth = () => {
   const translationFunction = useLocalization("misc");
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const showToast = useShowToast();
 
   const callback = useMemo(
     () =>
@@ -22,9 +20,9 @@ const useWrapAuth = () => {
         return isLoggedIn()
           ? funcToWrap
           : (notSignedInCallback ??
-              (() => notSignedInFallback(translationFunction)));
+              (() => showToast(translationFunction("notLoggedIn"))));
       },
-    [isLoggedIn, translationFunction],
+    [isLoggedIn, translationFunction, showToast],
   );
 
   return callback;

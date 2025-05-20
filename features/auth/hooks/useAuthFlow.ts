@@ -52,7 +52,7 @@ export const useAuthFlow = () => {
 
   useEffect(() => {
     const handleDeepLink = async (url: string) => {
-      log.debug("Deep link received: " + url);
+      log.debug("Deep link received.");
       try {
         const { access_token, refresh_token } = Object.fromEntries(
           new URLSearchParams(url.split("#")[1]),

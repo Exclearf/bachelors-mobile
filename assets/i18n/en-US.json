@@ -59,7 +59,9 @@
   },
   "translation": {
     "textToVideo": {
-      "translationConfirm": "Confirm crop region"
+      "translationConfirm": "Confirm the crop region.",
+      "noText": "No text detected.",
+      "tryAgain": "Please, try again."
     },
     "videoToText": {}
   }

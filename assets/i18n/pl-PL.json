@@ -59,7 +59,9 @@
   },
   "translation": {
     "textToVideo": {
-      "translationConfirm": "Potwierdź obszar przycięcia"
+      "translationConfirm": "Potwierdź obszar przycięcia.",
+      "noText": "Nie rozpoznano tekstu.",
+      "tryAgain": "Proszę spróbować ponownie."
     },
     "videoToText": {}
   }

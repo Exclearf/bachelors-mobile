@@ -5,7 +5,7 @@ import { User } from "../types/types";
 export const getTokenExp = (token: string): number | null => {
   try {
     const { exp } = jwtDecode<{ exp: number } & JwtPayload>(token);
-    return typeof exp === "number" ? exp : null;
+    return typeof exp === "number" ? Math.max(exp, 5 * 60 * 1000) : null;
   } catch {
     return null;
   }

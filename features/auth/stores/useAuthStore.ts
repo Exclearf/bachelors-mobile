@@ -1,6 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createClient } from "@supabase/supabase-js";
-import { AppState } from "react-native";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
@@ -24,28 +23,24 @@ type AuthActions = {
   setUser: (user: AuthState["user"]) => void;
   setAccessToken: (token: string | null) => void;
   setRefreshToken: (token: string | null) => void;
-  refreshSession: () => Promise<boolean>;
+  refreshAuthSession: () => Promise<boolean>;
   signOut: () => Promise<void>;
 };
 
-let refreshInFlight: Promise<boolean> | null = null;
 let refreshTimer: ReturnType<typeof setTimeout> | null = null;
 
-const withSingleFlight = (fn: () => Promise<boolean>) => {
-  if (refreshInFlight) return refreshInFlight;
-
-  refreshInFlight = fn().finally(() => (refreshInFlight = null));
-
-  return refreshInFlight;
-};
-
 const scheduleTokenRefresh = (token: string) => {
+  log.debug("Scheduling a token renewal.");
   const exp = getTokenExp(token);
+
   if (!exp) return;
-  const delay = Math.max(exp * 1000 - Date.now() - 30_000, 5000);
+
+  const delay = Math.max(exp * 1000 - Date.now() - 30_000, 5 * 60 * 1000);
+
   if (refreshTimer) clearTimeout(refreshTimer);
+
   refreshTimer = setTimeout(
-    () => useAuthStore.getState().refreshSession(),
+    () => useAuthStore.getState().refreshAuthSession(),
     delay,
   );
 };
@@ -78,6 +73,7 @@ supabase.auth.onAuthStateChange((_event, session) => {
             picture: session.user.user_metadata?.picture ?? null,
           },
         });
+
         scheduleTokenRefresh(session.access_token);
       }
       break;
@@ -95,12 +91,6 @@ supabase.auth.onAuthStateChange((_event, session) => {
   }
 });
 
-AppState.addEventListener("change", (state) => {
-  if (state === "active") {
-    useAuthStore.getState().syncAuth();
-  }
-});
-
 export const useAuthStore = create<AuthState & AuthActions>()(
   persist(
     immer((set, get) => ({
@@ -111,26 +101,38 @@ export const useAuthStore = create<AuthState & AuthActions>()(
       isLoggedIn: () => {
         const { accessToken } = get();
         const exp = accessToken ? getTokenExp(accessToken) : null;
+        log.debug(`Token expires in ${exp}`);
         return !!exp && exp * 1000 > Date.now();
       },
       syncAuth: async () => {
-        const {
-          isLoggedIn,
-          loggedIn,
-          setLoggedIn,
-          refreshSession,
-          accessToken,
-        } = get();
+        log.debug("Synchronizing authentication");
 
-        const valid = isLoggedIn();
+        const { loggedIn, accessToken } = get();
+
+        const valid = get().isLoggedIn();
+
         if (valid) {
-          if (!loggedIn) setLoggedIn(true);
+          log.debug("Access token is valid.");
+
+          if (!loggedIn) get().setLoggedIn(true);
           if (accessToken) scheduleTokenRefresh(accessToken);
+
           return true;
         }
 
-        if (loggedIn) setLoggedIn(false);
-        return await refreshSession();
+        log.debug("Access token is invalid.");
+
+        if (loggedIn) get().setLoggedIn(false);
+
+        try {
+          const value = await get().refreshAuthSession();
+
+          return value;
+        } catch (e) {
+          log.debug(e);
+        }
+
+        return false;
       },
       setLoggedIn: (isLoggedIn) =>
         set((state) => {
@@ -152,40 +154,51 @@ export const useAuthStore = create<AuthState & AuthActions>()(
           state.refreshToken = token;
         }),
 
-      refreshSession: async () =>
-        withSingleFlight(async () => {
-          try {
-            const {
-              data: { session },
-              error,
-            } = await supabase.auth.refreshSession();
+      refreshAuthSession: async () => {
+        log.debug("Refreshing session");
 
-            if (error || !session) {
-              set((state) => {
-                state.loggedIn = false;
-                state.user = null;
-                state.accessToken = null;
-                state.refreshToken = null;
-              });
-              if (refreshTimer) clearTimeout(refreshTimer);
-              return false;
-            }
+        try {
+          const {
+            data: { session },
+            error,
+          } = await supabase.auth.refreshSession();
+
+          if (error || !session) {
+            log.info(`Failed to refresh the session.`);
+            log.debug(error);
 
             set((state) => {
-              state.accessToken = session.access_token;
-              state.refreshToken = session.refresh_token;
-              state.user = extractUser(session.user);
-              state.loggedIn = true;
+              state.loggedIn = false;
+              state.user = null;
+              state.accessToken = null;
+              state.refreshToken = null;
             });
 
-            scheduleTokenRefresh(session.access_token);
-            return true;
-          } catch (error) {
-            log.error("Error refreshing session:", error);
             if (refreshTimer) clearTimeout(refreshTimer);
+
             return false;
           }
-        }),
+
+          log.debug("Refreshed session successfully.");
+
+          set((state) => {
+            state.accessToken = session.access_token;
+            state.refreshToken = session.refresh_token;
+            state.user = extractUser(session.user);
+            state.loggedIn = true;
+          });
+
+          scheduleTokenRefresh(session.access_token);
+
+          return true;
+        } catch (error) {
+          log.error("Error refreshing session:", error);
+
+          if (refreshTimer) clearTimeout(refreshTimer);
+
+          return false;
+        }
+      },
 
       signOut: async () => {
         try {
@@ -208,7 +221,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
       name: "auth-store",
       storage: createJSONStorage(() => AsyncStorage),
       onRehydrateStorage: (state) => {
-        state.syncAuth();
+        log.debug("Rehydrating");
       },
     },
   ),

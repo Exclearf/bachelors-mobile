@@ -1,12 +1,5 @@
-import { useCallback, useEffect, useMemo, useRef } from "react";
-import {
-  View,
-  Button,
-  Image,
-  Linking,
-  StyleSheet,
-  AppState,
-} from "react-native";
+import { useEffect, useMemo, useRef } from "react";
+import { Linking, StyleSheet } from "react-native";
 import {
   Camera,
   useCameraFormat,
@@ -15,8 +8,9 @@ import {
 import { useShallow } from "zustand/react/shallow";
 
 import CameraOverlay from "./CameraOverlay";
-import useBboxPhoto from "./hooks/useBboxPhoto";
 import useCamera from "./hooks/useCamera";
+import useCameraAsset from "./hooks/useCameraAsset";
+import useGalleryAsset from "./hooks/useGalleryAsset";
 import PictureBbox, { PictureBboxRef } from "./PictureBbox";
 import { useCameraOptionsStore } from "./stores/useCameraOptions";
 import ModalWindow from "../shared/components/layout/ModalWindow";
@@ -24,7 +18,6 @@ import { useAppDimensions } from "../shared/hooks/useAppDimensions";
 import { ComponentSize } from "../shared/hooks/useComponentSize";
 import useIsAppFocused from "../shared/hooks/useIsAppFocused";
 import { useLocalization } from "../shared/hooks/useLocalization";
-import log from "../shared/utils/log";
 import { useTranslationStore } from "../translation/stores/translationStore";
 import CameraAccessRequestModal from "./components/modals/CameraAccessRequest";
 import TextTranslation from "../translation/components/TextTranslation";
@@ -59,16 +52,17 @@ const CameraView = ({ previewFrame }: CameraViewProps) => {
   const { hasPermission, requestPermission } = useCameraPermission();
   const getTranslationKey = useLocalization("translation");
 
-  // TEXT TO VIDEO
-  const [photo, takePhoto, resetPhoto] = useBboxPhoto(
-    bboxRef,
-    cameraRef,
-    previewFrame,
-  );
+  const {
+    assetUri: cameraAssetUri,
+    requestAsset: requestCameraAsset,
+    resetAssetUri: resetCameraAssetUri,
+  } = useCameraAsset(bboxRef, cameraRef, previewFrame);
 
-  // VIDEO TO TEXT W.I.P.
-
-  const takeVideo = useCallback(() => log.info("Taking video"), []);
+  const {
+    assetUri: galleryAssetUri,
+    requestAsset: requestGalleryAssetUri,
+    resetAssetUri: resetGalleryAssetUri,
+  } = useGalleryAsset();
 
   useEffect(() => {
     if (!hasPermission) {
@@ -78,9 +72,30 @@ const CameraView = ({ previewFrame }: CameraViewProps) => {
 
   const isAppFocused = useIsAppFocused();
 
-  const onCameraClick = useMemo(
-    () => (mode === "textToSign" ? takePhoto : takeVideo),
-    [mode, takeVideo, takePhoto],
+  const isAssetAvailable = useMemo(
+    () => cameraAssetUri !== "" || galleryAssetUri !== "",
+    [cameraAssetUri, galleryAssetUri],
+  );
+
+  const isCameraSource = useMemo(
+    () => cameraAssetUri.length !== 0,
+    [cameraAssetUri.length],
+  );
+
+  const currentSourceData = useMemo(
+    () => ({
+      assetUri: isCameraSource ? cameraAssetUri : galleryAssetUri,
+      resetAssetUri: isCameraSource
+        ? resetCameraAssetUri
+        : resetGalleryAssetUri,
+    }),
+    [
+      isCameraSource,
+      cameraAssetUri,
+      galleryAssetUri,
+      resetCameraAssetUri,
+      resetGalleryAssetUri,
+    ],
   );
 
   return (
@@ -88,7 +103,7 @@ const CameraView = ({ previewFrame }: CameraViewProps) => {
       <Camera
         style={[StyleSheet.absoluteFill, styles.cameraViewStyle]}
         device={currentDevice}
-        isActive={isAvailable && isAppFocused && (photo ?? "").length === 0}
+        isActive={isAvailable && isAppFocused && !isAssetAvailable}
         onInitialized={() => setIsAvailable(true)}
         ref={cameraRef}
         torch={isTorchOn}
@@ -101,13 +116,14 @@ const CameraView = ({ previewFrame }: CameraViewProps) => {
       {mode === "textToSign" && <PictureBbox ref={bboxRef} />}
 
       <CameraOverlay
-        onCameraClick={onCameraClick}
+        onCameraClick={requestCameraAsset}
+        onGalleryClick={requestGalleryAssetUri}
         switchTorch={switchTorch}
         switchDevice={switchDevice}
         switchDeviceEnabled={isCameraSwitchEnabled}
       />
 
-      <ModalWindow isOpen={!hasPermission && !isAvailable}>
+      <ModalWindow isOpen={!hasPermission}>
         <CameraAccessRequestModal
           handler={() => {
             const tryToAskForPermission = async () => {
@@ -124,8 +140,8 @@ const CameraView = ({ previewFrame }: CameraViewProps) => {
 
       {mode === "textToSign" ? (
         <TextTranslation
-          photo={photo ?? ""}
-          resetPhoto={resetPhoto}
+          photo={currentSourceData.assetUri}
+          resetPhoto={currentSourceData.resetAssetUri}
           getTranslationKey={getTranslationKey}
         />
       ) : (

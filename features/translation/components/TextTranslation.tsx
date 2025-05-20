@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import {
   useLocalization,
   UseLocalizationFunction,
@@ -19,18 +17,29 @@ const TextTranslation = ({
   resetPhoto,
   getTranslationKey,
 }: TextTranslationProps) => {
-  const [translate] = useTextTranslation(photo);
   getTranslationKey = useLocalization(getTranslationKey("textToVideo"));
+  const [translate, isFetching, controller] = useTextTranslation(
+    photo,
+    getTranslationKey,
+  );
 
   return (
     <>
       <TranslationConfirmation
         fileUri={photo}
         translationKey={getTranslationKey("translationConfirm")}
-        cancelCallback={resetPhoto}
-        acceptCallback={() => {
-          translate();
+        cancelCallback={() => {
+          if (isFetching) controller.current?.abort("Request aborted.");
           resetPhoto();
+        }}
+        acceptCallback={() => {
+          const callback = async () => {
+            if (isFetching) return;
+
+            await translate();
+            resetPhoto();
+          };
+          callback();
         }}
       />
     </>

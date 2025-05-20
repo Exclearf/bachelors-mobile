@@ -28,7 +28,7 @@ const TranslationLanguageToggle = ({ getTranslationKey, textStyle }: Props) => {
   );
   const changeTranslationLanguage = (language: ToggleItemType) => {
     setCurrentLanguage(language);
-    log.debug("Changing translation language to:", language.id);
+    log.info("Changing translation language to:", language.id);
   };
 
   return (
