@@ -7,7 +7,7 @@ import { useCameraOptionsStore } from "@/features/camera/stores/useCameraOptions
 import { useFontSize } from "@/features/shared/hooks/useFontSize";
 import { useTheme } from "@/features/shared/hooks/useTheme";
 import { globalTheme } from "@/features/shared/utils/themes";
-import { useTranslationStore } from "@/features/translation/stores/translationStore";
+import { useTranslationStore } from "@/features/translation/stores/useTranslationStore";
 
 import SelectionGroupItem from "./SelectGroundItem";
 

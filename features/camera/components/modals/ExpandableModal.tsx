@@ -17,8 +17,9 @@ import CollapseAnimated from "@/features/shared/components/primitive/CollapseAni
 import TranslatedText from "@/features/shared/components/text/TranslatedText";
 import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
 import { useBottomSheet } from "@/features/shared/hooks/useBottomSheet";
+import ClearTranslationButton from "@/features/translation/components/input/ClearTranslationButton";
 import TextToVoiceButton from "@/features/translation/components/input/TextToVoiceButton";
-import { useTranslationStore } from "@/features/translation/stores/translationStore";
+import { useTranslationStore } from "@/features/translation/stores/useTranslationStore";
 
 type Props = PropsWithChildren<{
   initialHeight: number;
@@ -40,6 +41,9 @@ const ExpandableModal = ({
   const { height, width } = useContext(AppDimensionsContext);
   const { bottomSheet } = useBottomSheet();
   const mode = useTranslationStore((state) => state.mode);
+  const activeVideo = useTranslationStore(
+    (state) => state.activeVideoTranslationResult,
+  );
 
   const animateStyle = useAnimatedStyle(() => {
     return {
@@ -83,8 +87,12 @@ const ExpandableModal = ({
             { height: iconSize * 2 },
           ]}
         >
+          {/* TODO: Extract into a prop! */}
           {mode === "signToText" && (
-            <TextToVoiceButton size={24} color="white" />
+            <>
+              {activeVideo && <ClearTranslationButton />}
+              <TextToVoiceButton size={24} color="white" />
+            </>
           )}
         </View>
         <Pressable
@@ -130,5 +138,6 @@ export const expandableModalStyles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-end",
+    gap: 10,
   },
 });

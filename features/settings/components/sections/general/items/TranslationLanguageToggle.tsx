@@ -7,7 +7,7 @@ import ToggleGroup, {
   ToggleItemType,
 } from "@/features/shared/components/input/ToggleGroup";
 import log from "@/features/shared/utils/log";
-import { useTranslationStore } from "@/features/translation/stores/translationStore";
+import { useTranslationStore } from "@/features/translation/stores/useTranslationStore";
 
 import SettingsMenuEntryText from "../../shared/SettingsMenuEntryText";
 

@@ -8,7 +8,7 @@ import TranslatedText from "@/features/shared/components/text/TranslatedText";
 import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
 import { useLocalization } from "@/features/shared/hooks/useLocalization";
 import { useTheme } from "@/features/shared/hooks/useTheme";
-import { useTranslationStore } from "@/features/translation/stores/translationStore";
+import { useTranslationStore } from "@/features/translation/stores/useTranslationStore";
 
 type Props = {
   padding: number;
@@ -29,6 +29,11 @@ const History = ({ padding, containerStyle, height }: Props) => {
       width: width - padding * 2,
     };
   });
+
+  const videoTranslationHistory = useTranslationStore(
+    (state) => state.videoTranslionResults,
+  );
+
   const theme = useTheme();
 
   return (

@@ -1,12 +1,12 @@
-export const fetchWithTimoutWrapper = async (
+export const fetchWithTimoutWrapper = (
   url: string,
   options: RequestInit,
-  timeout: number,
+  timeout: number = 3000,
   controller?: AbortController,
 ) => {
-  setTimeout(() => controller?.abort("The request has timed out."), timeout);
+  // setTimeout(() => controller?.abort("The request has timed out."), timeout);
 
-  const resp = await fetch(url, { signal: controller?.signal, ...options });
+  const resp = fetch(url, { signal: controller?.signal, ...options });
 
   return resp;
 };

@@ -1,5 +1,5 @@
 import { Path } from "@shopify/react-native-skia";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet } from "react-native";
 import { DerivedValue } from "react-native-reanimated";
 
 import useAnimatedCorner from "../../hooks/useAnimatedCorner";
@@ -54,5 +54,3 @@ const CornerPath = ({
 };
 
 export default CornerPath;
-
-const styles = StyleSheet.create({});

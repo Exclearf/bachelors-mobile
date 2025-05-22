@@ -1,9 +1,13 @@
-import React, { PropsWithChildren, useMemo, useRef } from "react";
+import React, { PropsWithChildren, useMemo } from "react";
 import { StyleSheet, TouchableOpacity, ViewStyle } from "react-native";
 
 import { useTheme } from "../../hooks/useTheme";
 
-export type ButtonVariant = "primary" | "secondary" | "destructive";
+export type ButtonVariant =
+  | "primary"
+  | "secondary"
+  | "destructive"
+  | "transparent";
 
 type ButtonProps = {
   onPress?: () => any;
@@ -25,11 +29,14 @@ const Button = ({
 }: PropsWithChildren<ButtonProps>) => {
   const theme = useTheme();
 
-  const colorPallete = useMemo<Record<ButtonVariant, string | undefined>>(
+  const backgroundColorPallete = useMemo<
+    Record<ButtonVariant, string | undefined>
+  >(
     () => ({
       primary: theme?.mutedForeground,
       secondary: theme?.mutedBackground,
       destructive: theme?.destructive,
+      transparent: "",
     }),
     [theme],
   );
@@ -42,7 +49,7 @@ const Button = ({
       style={[
         styles.container,
         {
-          backgroundColor: colorPallete[variant],
+          backgroundColor: backgroundColorPallete[variant],
           borderColor: theme?.mutedForeground,
           width,
           height,

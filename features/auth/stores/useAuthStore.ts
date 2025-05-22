@@ -54,7 +54,7 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
     storage: AsyncStorage,
     autoRefreshToken: true,
     persistSession: true,
-    detectSessionInUrl: true,
+    detectSessionInUrl: false,
   },
 });
 
@@ -100,6 +100,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
       refreshToken: null,
       isLoggedIn: () => {
         const { accessToken } = get();
+        log.debug(accessToken);
         const exp = accessToken ? getTokenExp(accessToken) : null;
         log.debug(`Token expires in ${exp}`);
         return !!exp && exp * 1000 > Date.now();

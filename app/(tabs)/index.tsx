@@ -13,7 +13,7 @@ import { useTheme } from "@/features/shared/hooks/useTheme";
 import TextTranslationPlayer from "@/features/translation/components/feedback/TextTranslationPlayer";
 import History from "@/features/translation/components/layout/History";
 import SignTranslation from "@/features/translation/components/layout/SignTranslation";
-import { useTranslationStore } from "@/features/translation/stores/translationStore";
+import { useTranslationStore } from "@/features/translation/stores/useTranslationStore";
 
 const IndexTab = () => {
   const getTranslationKey = useLocalization("indexPage");

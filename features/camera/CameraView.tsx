@@ -18,9 +18,9 @@ import { useAppDimensions } from "../shared/hooks/useAppDimensions";
 import { ComponentSize } from "../shared/hooks/useComponentSize";
 import useIsAppFocused from "../shared/hooks/useIsAppFocused";
 import { useLocalization } from "../shared/hooks/useLocalization";
-import { useTranslationStore } from "../translation/stores/translationStore";
+import { useTranslationStore } from "../translation/stores/useTranslationStore";
 import CameraAccessRequestModal from "./components/modals/CameraAccessRequest";
-import TextTranslation from "../translation/components/TextTranslation";
+import AssetTranslation from "../translation/components/AssetTranslation";
 
 type CameraViewProps = {
   previewFrame: ComponentSize | null;
@@ -138,15 +138,11 @@ const CameraView = ({ previewFrame }: CameraViewProps) => {
         />
       </ModalWindow>
 
-      {mode === "textToSign" ? (
-        <TextTranslation
-          photo={currentSourceData.assetUri}
-          resetPhoto={currentSourceData.resetAssetUri}
-          getTranslationKey={getTranslationKey}
-        />
-      ) : (
-        <></>
-      )}
+      <AssetTranslation
+        assetUri={currentSourceData.assetUri}
+        resetAssetUri={currentSourceData.resetAssetUri}
+        getTranslationKey={getTranslationKey}
+      />
     </>
   );
 };

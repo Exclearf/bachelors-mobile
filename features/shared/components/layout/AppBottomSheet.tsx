@@ -2,7 +2,7 @@ import { BottomSheetView } from "@gorhom/bottom-sheet";
 import { PropsWithChildren } from "react";
 
 import BottomSheetWrapper from "./BottomSheetWrapper";
-import { maxBottomPath, minBottomPath } from "../../utils/roundedPathCreators";
+import { maxBottomPath, minBottomPath } from "../../utils/svgPathCreators";
 import AppRoundedPath from "../primitive/AppRoundedPath";
 
 type Props = PropsWithChildren<{

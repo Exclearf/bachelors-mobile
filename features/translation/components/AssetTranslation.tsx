@@ -1,43 +1,39 @@
-import {
-  useLocalization,
-  UseLocalizationFunction,
-} from "@/features/shared/hooks/useLocalization";
+import { UseLocalizationFunction } from "@/features/shared/hooks/useLocalization";
 
 import TranslationConfirmation from "./layout/TranslationConfirmation";
-import useTextTranslation from "../hooks/useTextTranslation";
+import useAssetTranslation from "../hooks/useAssetTranslation";
 
 type TextTranslationProps = {
-  photo: string;
-  resetPhoto: () => void;
+  assetUri: string;
+  resetAssetUri: () => void;
   getTranslationKey: UseLocalizationFunction;
 };
 
-const TextTranslation = ({
-  photo,
-  resetPhoto,
+const AssetTranslation = ({
+  assetUri,
+  resetAssetUri,
   getTranslationKey,
 }: TextTranslationProps) => {
-  getTranslationKey = useLocalization(getTranslationKey("textToVideo"));
-  const [translate, isFetching, controller] = useTextTranslation(
-    photo,
+  const [translate, isFetching, controller] = useAssetTranslation(
+    assetUri,
     getTranslationKey,
   );
 
   return (
     <>
       <TranslationConfirmation
-        fileUri={photo}
-        translationKey={getTranslationKey("translationConfirm")}
+        fileUri={assetUri}
+        getTranslationKey={getTranslationKey}
         cancelCallback={() => {
           if (isFetching) controller.current?.abort("Request aborted.");
-          resetPhoto();
+          resetAssetUri();
         }}
         acceptCallback={() => {
           const callback = async () => {
             if (isFetching) return;
 
             await translate();
-            resetPhoto();
+            resetAssetUri();
           };
           callback();
         }}
@@ -46,4 +42,4 @@ const TextTranslation = ({
   );
 };
 
-export default TextTranslation;
+export default AssetTranslation;

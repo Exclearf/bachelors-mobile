@@ -2,37 +2,50 @@ import { Image, View } from "react-native";
 
 import ModalWindow from "@/features/shared/components/layout/ModalWindow";
 import { useAppDimensions } from "@/features/shared/hooks/useAppDimensions";
+import {
+  useLocalization,
+  UseLocalizationFunction,
+} from "@/features/shared/hooks/useLocalization";
+
+import { useTranslationStore } from "../../stores/useTranslationStore";
+import VideoTranslationPlayer from "../feedback/VideoTranslationPlayer";
 
 type TranslationConfirmationProps = {
   fileUri: string;
-  translationKey: string;
+  getTranslationKey: UseLocalizationFunction;
   cancelCallback?: () => void;
   acceptCallback?: () => void;
 };
 
 const TranslationConfirmation = ({
   fileUri,
-  translationKey,
+  getTranslationKey,
   acceptCallback,
   cancelCallback,
 }: TranslationConfirmationProps) => {
   const { width, height } = useAppDimensions();
+  const mode = useTranslationStore((state) => state.mode);
+  getTranslationKey = useLocalization(getTranslationKey(mode));
 
   return (
     <ModalWindow isOpen={fileUri?.length !== 0}>
       <ModalWindow.Header
-        translationKey={translationKey}
+        translationKey={getTranslationKey("translationConfirm")}
         closeCallback={cancelCallback}
       />
       <View style={{ paddingVertical: 5 }}>
-        <Image
-          source={{ uri: fileUri! }}
-          style={{
-            width: width * 0.85,
-            height: height * 0.2,
-            resizeMode: "contain",
-          }}
-        />
+        {mode === "textToSign" ? (
+          <Image
+            source={{ uri: fileUri! }}
+            style={{
+              width: width * 0.85,
+              height: height * 0.2,
+              resizeMode: "contain",
+            }}
+          />
+        ) : (
+          <VideoTranslationPlayer videoSource={fileUri!} />
+        )}
       </View>
       <ModalWindow.Footer
         closeCallback={cancelCallback}

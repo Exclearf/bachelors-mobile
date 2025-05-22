@@ -16,7 +16,7 @@ import useComponentSize from "@/features/shared/hooks/useComponentSize";
 import {
   maxTopPath,
   minTopPath,
-} from "@/features/shared/utils/roundedPathCreators";
+} from "@/features/shared/utils/svgPathCreators";
 import initiateLocalization from "@/features/translation/i18n/i18n"; // Side-effect import
 
 initiateLocalization();

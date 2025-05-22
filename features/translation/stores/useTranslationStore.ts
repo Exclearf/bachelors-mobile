@@ -2,6 +2,9 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
 import { ToggleItemType } from "@/features/shared/components/input/ToggleGroup";
+import log from "@/features/shared/utils/log";
+
+import { Gloss } from "../utils/types";
 
 type Modes = "signToText" | "textToSign";
 
@@ -30,20 +33,26 @@ type TranslationStoreState = {
   model: Model;
   currentLanguage: LanguageItem;
   availableLanguages: typeof availableLanguages;
+  activeVideoTranslationResult: Gloss[] | null;
+  videoTranslionResults: Gloss[][] | null;
 };
 
 type TranslationStoreActions = {
   setMode: (newState: Modes) => void;
   setModel: (newModel: Model) => void;
   setCurrentLanguage: (newLanguage: LanguageItem) => void;
+  clearActiveVideoTranslationResult: () => void;
+  addVideoTranslationResult: (result: Gloss[]) => void;
 };
 
 export const useTranslationStore = create<
   TranslationStoreState & TranslationStoreActions
 >()(
-  immer((set) => ({
+  immer((set, get) => ({
     mode: "signToText",
     model: null,
+    videoTranslionResults: null,
+    activeVideoTranslationResult: null,
     availableLanguages,
     currentLanguage: availableLanguages[0],
     setCurrentLanguage: (newLanguage: LanguageItem) => {
@@ -59,6 +68,33 @@ export const useTranslationStore = create<
     setMode: (newMode: Modes) => {
       set((state) => {
         state.mode = newMode;
+      });
+    },
+    addVideoTranslationResult: (result) => {
+      const {
+        activeVideoTranslationResult,
+        clearActiveVideoTranslationResult,
+      } = get();
+
+      if (activeVideoTranslationResult != null)
+        clearActiveVideoTranslationResult();
+
+      set((state) => {
+        state.activeVideoTranslationResult = result;
+      });
+    },
+    clearActiveVideoTranslationResult: () => {
+      const { activeVideoTranslationResult } = get();
+
+      set((state) => {
+        state.videoTranslionResults = [
+          activeVideoTranslationResult!,
+          ...(state.videoTranslionResults ?? []),
+        ];
+      });
+
+      set((state) => {
+        state.activeVideoTranslationResult = null;
       });
     },
   })),

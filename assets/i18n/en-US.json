@@ -58,11 +58,17 @@
     "cancel": "Cancel"
   },
   "translation": {
-    "textToVideo": {
-      "translationConfirm": "Confirm the crop region.",
-      "noText": "No text detected.",
-      "tryAgain": "Please, try again."
+    "textToSign": {
+      "translationConfirm": "Confirm the crop region."
     },
-    "videoToText": {}
+    "signToText": {
+      "translationConfirm": "Confirm the video selection."
+    },
+    "shared": {
+      "noText": "No text detected.",
+      "tryAgain": "Please, try again.",
+      "confidence": "Confidence:",
+      "gloss": "Gloss:"
+    }
   }
 }

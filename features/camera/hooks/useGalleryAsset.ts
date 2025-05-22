@@ -1,7 +1,7 @@
 import * as ImagePicker from "expo-image-picker";
 import { useState } from "react";
 
-import { useTranslationStore } from "@/features/translation/stores/translationStore";
+import { useTranslationStore } from "@/features/translation/stores/useTranslationStore";
 
 import { UseAssetFetcher } from "../misc/types";
 

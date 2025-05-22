@@ -5,7 +5,7 @@ import { useShallow } from "zustand/react/shallow";
 
 import { defaultPicture } from "@/features/auth/hooks/useAuthFlow";
 import { useTimeTranslationKey } from "@/features/shared/hooks/useTimeTranslationKey";
-import { useTranslationStore } from "@/features/translation/stores/translationStore";
+import { useTranslationStore } from "@/features/translation/stores/useTranslationStore";
 
 import { useAuthStore } from "../auth/stores/useAuthStore";
 import Popup from "../shared/components/feedback/Popup";

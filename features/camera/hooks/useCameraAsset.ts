@@ -4,7 +4,7 @@ import { Camera } from "react-native-vision-camera";
 
 import { ComponentSize } from "@/features/shared/hooks/useComponentSize";
 import log from "@/features/shared/utils/log";
-import { useTranslationStore } from "@/features/translation/stores/translationStore";
+import { useTranslationStore } from "@/features/translation/stores/useTranslationStore";
 
 import { UseAssetFetcher } from "../misc/types";
 import { PictureBboxRef } from "../PictureBbox";
@@ -62,7 +62,7 @@ const useCameraAsset = (
       const uri = pic.path.startsWith("file:")
         ? pic.path
         : `file://${pic.path}`;
-      const actions = needsRotate ? [{ crop }] : [{ crop }];
+      const actions = needsRotate ? [{ rotate: 90 }, { crop }] : [{ crop }];
 
       const result = await ImageManipulator.manipulateAsync(uri, actions, {
         compress: 1,

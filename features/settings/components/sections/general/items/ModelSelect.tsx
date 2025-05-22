@@ -10,7 +10,7 @@ import {
   AvailableModels,
   Model,
   useTranslationStore,
-} from "@/features/translation/stores/translationStore";
+} from "@/features/translation/stores/useTranslationStore";
 
 import SettingsMenuEntryText from "../../shared/SettingsMenuEntryText";
 
