@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Image, View } from "react-native";
 
 import ModalWindow from "@/features/shared/components/layout/ModalWindow";
@@ -36,7 +37,7 @@ const TranslationConfirmation = ({
       <View style={{ paddingVertical: 5 }}>
         {mode === "textToSign" ? (
           <Image
-            source={{ uri: fileUri! }}
+            source={{ uri: fileUri }}
             style={{
               width: width * 0.85,
               height: height * 0.2,
@@ -44,7 +45,7 @@ const TranslationConfirmation = ({
             }}
           />
         ) : (
-          <VideoTranslationPlayer videoSource={fileUri!} />
+          <VideoTranslationPlayer videoSource={fileUri} />
         )}
       </View>
       <ModalWindow.Footer

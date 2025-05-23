@@ -53,6 +53,7 @@
     "expo-status-bar": "~2.2.3",
     "expo-symbols": "~0.4.4",
     "expo-system-ui": "~5.0.7",
+    "expo-video": "~2.1.9",
     "expo-web-browser": "~14.1.6",
     "i18next": "^24.2.0",
     "immer": "^10.1.1",
@@ -67,13 +68,13 @@
     "react-native-reanimated": "~3.17.4",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.10.0",
+    "react-native-url-polyfill": "^2.0.0",
     "react-native-view-shot": "~4.0.3",
     "react-native-vision-camera": "^4.6.4",
     "react-native-web": "^0.20.0",
     "react-native-webview": "13.13.5",
     "reanimated-color-picker": "^3.0.6",
-    "zustand": "^5.0.2",
-    "expo-video": "~2.1.9"
+    "zustand": "^5.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

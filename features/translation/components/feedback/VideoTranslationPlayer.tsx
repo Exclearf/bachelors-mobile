@@ -1,4 +1,5 @@
 import { useVideoPlayer, VideoView } from "expo-video";
+import { Suspense } from "react";
 import { StyleSheet } from "react-native";
 
 type VideoTranslationPlayerProps = {
@@ -14,14 +15,7 @@ const VideoTranslationPlayer = ({
     player.play();
   });
 
-  return (
-    <VideoView
-      style={styles.video}
-      player={player}
-      allowsFullscreen
-      allowsPictureInPicture
-    />
-  );
+  return <VideoView style={styles.video} player={player} />;
 };
 
 const styles = StyleSheet.create({

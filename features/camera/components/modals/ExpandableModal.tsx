@@ -18,7 +18,6 @@ import TranslatedText from "@/features/shared/components/text/TranslatedText";
 import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
 import { useBottomSheet } from "@/features/shared/hooks/useBottomSheet";
 import ClearTranslationButton from "@/features/translation/components/input/ClearTranslationButton";
-import TextToVoiceButton from "@/features/translation/components/input/TextToVoiceButton";
 import { useTranslationStore } from "@/features/translation/stores/useTranslationStore";
 
 type Props = PropsWithChildren<{
@@ -89,10 +88,7 @@ const ExpandableModal = ({
         >
           {/* TODO: Extract into a prop! */}
           {mode === "signToText" && (
-            <>
-              {activeVideo && <ClearTranslationButton />}
-              <TextToVoiceButton size={24} color="white" />
-            </>
+            <>{activeVideo && <ClearTranslationButton />}</>
           )}
         </View>
         <Pressable

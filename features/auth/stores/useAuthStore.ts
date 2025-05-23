@@ -4,10 +4,13 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
+import "react-native-url-polyfill/auto";
 import log from "@/features/shared/utils/log";
 
 import { User } from "../types/types";
 import { extractUser, getTokenExp } from "../utils/utils";
+
+import { AppState } from "react-native";
 
 type AuthState = {
   loggedIn: boolean;
@@ -58,9 +61,18 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   },
 });
 
+AppState.addEventListener("change", (state) => {
+  if (state === "active") {
+    supabase.auth.startAutoRefresh();
+  } else {
+    supabase.auth.stopAutoRefresh();
+  }
+});
+
 supabase.auth.onAuthStateChange((_event, session) => {
   switch (_event) {
     case "TOKEN_REFRESHED":
+    case "INITIAL_SESSION":
     case "SIGNED_IN":
       if (session) {
         useAuthStore.setState({

@@ -1,6 +1,6 @@
 import * as ImageManipulator from "expo-image-manipulator";
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
-import { Camera } from "react-native-vision-camera";
+import { Camera, Orientation } from "react-native-vision-camera";
 
 import { ComponentSize } from "@/features/shared/hooks/useComponentSize";
 import log from "@/features/shared/utils/log";
@@ -40,10 +40,8 @@ const useCameraAsset = (
 
       const pic = await cameraRef.current!.takePhoto();
 
-      const needsRotate = pic.width > pic.height;
-
-      const ratioX = (needsRotate ? pic.height : pic.width) / pW;
-      const ratioY = (needsRotate ? pic.width : pic.height) / pH;
+      const ratioX = pic.height / pW;
+      const ratioY = pic.width / pH;
 
       const focusBox = {
         x: topLeft.x.get(),
@@ -62,14 +60,36 @@ const useCameraAsset = (
       const uri = pic.path.startsWith("file:")
         ? pic.path
         : `file://${pic.path}`;
-      const actions = needsRotate ? [{ rotate: 90 }, { crop }] : [{ crop }];
+
+      const needsRotate = pic.orientation !== "portrait";
+
+      const rotateByOrientation = (orientation: Orientation) => {
+        switch (orientation) {
+          case "landscape-right":
+            return -90;
+          case "landscape-left":
+            return 90;
+          case "portrait-upside-down":
+            return 180;
+          default:
+            return 0;
+        }
+      };
+
+      const actions = needsRotate
+        ? [
+            { rotate: -rotateByOrientation(pic.orientation) },
+            { crop },
+            { rotate: rotateByOrientation(pic.orientation) },
+          ]
+        : [{ crop }];
 
       const result = await ImageManipulator.manipulateAsync(uri, actions, {
         compress: 1,
         format: ImageManipulator.SaveFormat.JPEG,
       });
 
-      setAssetUri(result.uri);
+      setAssetUri(result.uri + `?t=${Date.now()}`);
     } catch (e) {
       log.error("Error in takePhoto:", e);
     } finally {
