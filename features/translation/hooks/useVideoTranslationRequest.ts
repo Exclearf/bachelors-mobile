@@ -1,3 +1,5 @@
+import uuid from "react-native-uuid";
+
 import { UseLocalizationFunction } from "@/features/shared/hooks/useLocalization";
 import { fetchWithTimoutWrapper } from "@/features/shared/utils/fetch";
 import log from "@/features/shared/utils/log";
@@ -38,7 +40,10 @@ const useVideoTranslationRequest = (
 
     return Object.entries(json.glosses)
       .filter(([key]) => key !== "length")
-      .map(([, value]) => value as Gloss);
+      .map(([, value]) => {
+        (value as Gloss).id = uuid.v4();
+        return value;
+      });
   };
 
   return [makeRequest];

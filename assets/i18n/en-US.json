@@ -68,7 +68,8 @@
       "noText": "No text detected.",
       "tryAgain": "Please, try again.",
       "confidence": "Confidence:",
-      "gloss": "Gloss:"
+      "gloss": "Gloss:",
+      "info": "Information"
     }
   }
 }

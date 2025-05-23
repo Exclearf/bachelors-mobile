@@ -1,11 +1,13 @@
-import { Image, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 
+import Spinner from "@/features/shared/components/feedback/Spinner";
 import ModalWindow from "@/features/shared/components/layout/ModalWindow";
 import { useAppDimensions } from "@/features/shared/hooks/useAppDimensions";
 import {
   useLocalization,
   UseLocalizationFunction,
 } from "@/features/shared/hooks/useLocalization";
+import { useTheme } from "@/features/shared/hooks/useTheme";
 import { useTranslationStore } from "@/features/translation/stores/useTranslationStore";
 
 import VideoTranslationPlayer from "../../videoToText/feedback/VideoTranslationPlayer";
@@ -13,6 +15,7 @@ import VideoTranslationPlayer from "../../videoToText/feedback/VideoTranslationP
 type TranslationConfirmationProps = {
   fileUri: string;
   getTranslationKey: UseLocalizationFunction;
+  isFetching: boolean;
   cancelCallback?: () => void;
   acceptCallback?: () => void;
 };
@@ -20,11 +23,13 @@ type TranslationConfirmationProps = {
 const TranslationConfirmation = ({
   fileUri,
   getTranslationKey,
+  isFetching,
   acceptCallback,
   cancelCallback,
 }: TranslationConfirmationProps) => {
   const { width, height } = useAppDimensions();
   const mode = useTranslationStore((state) => state.mode);
+  const theme = useTheme();
   getTranslationKey = useLocalization(getTranslationKey(mode));
 
   return (
@@ -33,7 +38,7 @@ const TranslationConfirmation = ({
         translationKey={getTranslationKey("translationConfirm")}
         closeCallback={cancelCallback}
       />
-      <View style={{ paddingVertical: 5 }}>
+      <View style={styles.container}>
         {mode === "textToSign" ? (
           <Image
             source={{ uri: fileUri }}
@@ -46,6 +51,16 @@ const TranslationConfirmation = ({
         ) : (
           <VideoTranslationPlayer videoSource={fileUri} />
         )}
+        {isFetching && (
+          <View
+            style={[
+              styles.spinnerContainer,
+              { backgroundColor: theme?.background + "CC" },
+            ]}
+          >
+            <Spinner size={32} color={theme?.primaryForeground!} />
+          </View>
+        )}
       </View>
       <ModalWindow.Footer
         closeCallback={cancelCallback}
@@ -56,3 +71,15 @@ const TranslationConfirmation = ({
 };
 
 export default TranslationConfirmation;
+
+const styles = StyleSheet.create({
+  container: {
+    position: "relative",
+    paddingVertical: 5,
+  },
+  spinnerContainer: {
+    position: "absolute",
+    height: "100%",
+    width: "100%",
+  },
+});

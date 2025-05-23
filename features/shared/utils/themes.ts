@@ -70,7 +70,7 @@ const generateDarkTheme = (palette: Theme, isHighContrast: boolean) => {
       7 * backgroundMultiplier,
     ),
     mutedForeground: palette.palettes.secondary.tone(50 * foregroundMultipler),
-    destructive: palette.palettes.error.tone(10 * backgroundMultiplier),
+    destructive: palette.palettes.error.tone(50 * backgroundMultiplier),
   };
 };
 

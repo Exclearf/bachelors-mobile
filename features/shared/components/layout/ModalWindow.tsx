@@ -1,6 +1,6 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
 import React from "react";
-import { StyleSheet, Modal, View } from "react-native";
+import { StyleSheet, Modal, View, ViewStyle } from "react-native";
 
 import { useLocalization } from "../../hooks/useLocalization";
 import { useTheme } from "../../hooks/useTheme";
@@ -20,10 +20,11 @@ type ModalWindowHeaderProps = {
   closeCallback?: () => void;
 };
 
-type ModalWindowFooterProps = {
+type ModalWindowFooterProps = React.PropsWithChildren<{
   acceptCallback?: () => void;
   closeCallback?: () => void;
-};
+  buttonStyle?: ViewStyle;
+}>;
 
 const ModalHeader = ({
   translationKey,
@@ -54,15 +55,18 @@ const ModalHeader = ({
 const ModalFooter = ({
   acceptCallback,
   closeCallback,
+  buttonStyle = {},
+  children,
 }: ModalWindowFooterProps) => {
   const getTranslationKey = useLocalization("misc");
 
   return (
     <View style={styles.modalFooter}>
+      {children}
       {closeCallback && (
         <Button
           onPress={closeCallback}
-          style={styles.modalFooterButtons}
+          style={[styles.modalFooterButtons, buttonStyle]}
           variant="secondary"
         >
           <TranslatedText translationKey={getTranslationKey("cancel")} />
@@ -71,7 +75,7 @@ const ModalFooter = ({
       {acceptCallback && (
         <Button
           onPress={acceptCallback}
-          style={styles.modalFooterButtons}
+          style={[styles.modalFooterButtons, buttonStyle]}
           variant="primary"
         >
           <TranslatedText translationKey={getTranslationKey("accept")} />

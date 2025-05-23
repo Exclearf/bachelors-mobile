@@ -9,6 +9,7 @@ export type UseTranslation = (
 ) => UseTranslationReturn;
 
 export type Gloss = {
+  id: string;
   rank: number;
   confidence: number;
   value: string;

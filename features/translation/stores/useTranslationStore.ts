@@ -41,6 +41,7 @@ type TranslationStoreActions = {
   setModel: (newModel: Model) => void;
   setCurrentLanguage: (newLanguage: LanguageItem) => void;
   clearActiveVideoTranslationResult: () => void;
+  removeVideoFromHistory: (video: Gloss[]) => void;
   addVideoTranslationResult: (result: Gloss[]) => void;
 };
 
@@ -80,6 +81,14 @@ export const useTranslationStore = create<
 
       set((state) => {
         state.activeVideoTranslationResult = result;
+      });
+    },
+    removeVideoFromHistory(video) {
+      set((state) => {
+        state.videoTranslationResults =
+          state.videoTranslationResults?.filter(
+            (item) => item[0].id !== video[0].id,
+          ) ?? null;
       });
     },
     clearActiveVideoTranslationResult: () => {

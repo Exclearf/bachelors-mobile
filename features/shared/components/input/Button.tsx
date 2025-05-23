@@ -14,7 +14,7 @@ type ButtonProps = {
   width?: number;
   height?: number;
   padding?: number;
-  style?: ViewStyle;
+  style?: ViewStyle | ViewStyle[];
   variant?: ButtonVariant;
 };
 

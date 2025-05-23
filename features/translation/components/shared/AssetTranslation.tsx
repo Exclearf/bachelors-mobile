@@ -15,7 +15,7 @@ const AssetTranslation = ({
   resetAssetUri,
   getTranslationKey,
 }: TextTranslationProps) => {
-  const [translate, isFetching, controller] = useAssetTranslation(
+  const [translate, isFetching, controller, isAborted] = useAssetTranslation(
     assetUri,
     getTranslationKey,
   );
@@ -27,6 +27,7 @@ const AssetTranslation = ({
       <TranslationConfirmation
         fileUri={assetUri}
         getTranslationKey={getTranslationKey}
+        isFetching={isFetching}
         cancelCallback={() => {
           if (isFetching) controller.current?.abort("Request aborted.");
           resetAssetUri();
@@ -36,7 +37,9 @@ const AssetTranslation = ({
             if (isFetching) return;
 
             await translate();
-            bottomSheet?.snapToIndex(1);
+
+            if (!isAborted) bottomSheet?.snapToIndex(1);
+
             resetAssetUri();
           };
           callback();

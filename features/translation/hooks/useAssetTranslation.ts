@@ -27,6 +27,7 @@ const useAssetTranslation = (
     accessToken!,
     getTranslationKey,
   );
+  const [isAborted, setIsAborted] = useState(false);
 
   const addVideoTranslationResult = useTranslationStore(
     (state) => state.addVideoTranslationResult,
@@ -39,6 +40,7 @@ const useAssetTranslation = (
 
     log.debug(`Processing the file "${fileUri}".`);
 
+    setIsAborted(false);
     setIsFetching(true);
 
     try {
@@ -65,17 +67,19 @@ const useAssetTranslation = (
       file.delete();
     } catch (err) {
       log.error(err);
+
       if (err instanceof Error) {
         showToast(err.message);
       }
     } finally {
       setIsFetching(false);
+      setIsAborted(controller.current.signal.aborted);
       controller.current = undefined;
       log.debug("End of the translation request for the file.");
     }
   };
 
-  return [translate, isFetching, controller] as const;
+  return [translate, isFetching, controller, isAborted] as const;
 };
 
 export default useAssetTranslation;
