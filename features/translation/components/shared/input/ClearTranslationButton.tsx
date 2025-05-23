@@ -2,8 +2,7 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 
 import Button from "@/features/shared/components/input/Button";
 import { useTheme } from "@/features/shared/hooks/useTheme";
-
-import { useTranslationStore } from "../../stores/useTranslationStore";
+import { useTranslationStore } from "@/features/translation/stores/useTranslationStore";
 
 type Props = object;
 

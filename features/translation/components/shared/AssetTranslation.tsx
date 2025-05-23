@@ -1,7 +1,8 @@
+import { useBottomSheet } from "@/features/shared/hooks/useBottomSheet";
 import { UseLocalizationFunction } from "@/features/shared/hooks/useLocalization";
 
 import TranslationConfirmation from "./layout/TranslationConfirmation";
-import useAssetTranslation from "../hooks/useAssetTranslation";
+import useAssetTranslation from "../../hooks/useAssetTranslation";
 
 type TextTranslationProps = {
   assetUri: string;
@@ -19,6 +20,8 @@ const AssetTranslation = ({
     getTranslationKey,
   );
 
+  const { bottomSheet } = useBottomSheet();
+
   return (
     <>
       <TranslationConfirmation
@@ -33,6 +36,7 @@ const AssetTranslation = ({
             if (isFetching) return;
 
             await translate();
+            bottomSheet?.snapToIndex(1);
             resetAssetUri();
           };
           callback();

@@ -1,12 +1,10 @@
 import { TouchableOpacity } from "@gorhom/bottom-sheet";
-import { center } from "@shopify/react-native-skia";
 import { StyleSheet, View } from "react-native";
 
 import CircleIndicator from "@/features/shared/components/layout/CircleIndicator";
 import TranslatedText from "@/features/shared/components/text/TranslatedText";
 import useShowToast from "@/features/shared/utils/showToast";
-
-import { Gloss } from "../../utils/types";
+import { Gloss } from "@/features/translation/utils/types";
 
 type Props = {
   gloss: Gloss;
@@ -21,7 +19,7 @@ const VideoTranslationResult = ({ gloss }: Props) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        onPressOut={() => showToast(gloss.confidence.toFixed(2))}
+        onPressOut={() => showToast(`${(gloss.confidence * 100).toFixed(2)}%`)}
       >
         <CircleIndicator fillValue={gloss.confidence} />
       </TouchableOpacity>

@@ -20,7 +20,7 @@ import useIsAppFocused from "../shared/hooks/useIsAppFocused";
 import { useLocalization } from "../shared/hooks/useLocalization";
 import { useTranslationStore } from "../translation/stores/useTranslationStore";
 import CameraAccessRequestModal from "./components/modals/CameraAccessRequest";
-import AssetTranslation from "../translation/components/AssetTranslation";
+import AssetTranslation from "../translation/components/shared/AssetTranslation";
 
 type CameraViewProps = {
   previewFrame: ComponentSize | null;

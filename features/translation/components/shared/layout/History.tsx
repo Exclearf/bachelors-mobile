@@ -1,6 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useContext } from "react";
-import { StyleProp, StyleSheet, Text, View, ViewStyle } from "react-native";
+import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 
 import { expandableModalStyles } from "@/features/camera/components/modals/ExpandableModal";
@@ -9,6 +9,9 @@ import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
 import { useLocalization } from "@/features/shared/hooks/useLocalization";
 import { useTheme } from "@/features/shared/hooks/useTheme";
 import { useTranslationStore } from "@/features/translation/stores/useTranslationStore";
+
+import TextTranslationHistory from "../../textToVideo/layout/TextTranslationHistory";
+import VideoTranslationHistory from "../../videoToText/layout/VideoTranslationHistory";
 
 type Props = {
   padding: number;
@@ -20,6 +23,7 @@ const History = ({ padding, containerStyle, height }: Props) => {
   const { width } = useContext(AppDimensionsContext);
   const mode = useTranslationStore((state) => state.mode);
   const getTranslationKey = useLocalization("indexPage");
+  const theme = useTheme();
 
   const style = useAnimatedStyle(() => {
     return {
@@ -29,12 +33,6 @@ const History = ({ padding, containerStyle, height }: Props) => {
       width: width - padding * 2,
     };
   });
-
-  const videoTranslationHistory = useTranslationStore(
-    (state) => state.videoTranslionResults,
-  );
-
-  const theme = useTheme();
 
   return (
     <Animated.View style={[...containerStyle, style, styles.container]}>
@@ -58,7 +56,11 @@ const History = ({ padding, containerStyle, height }: Props) => {
             translationKey={getTranslationKey("translationHistory")}
           />
         </View>
-        <Text>{mode === "textToSign" ? "Text History" : "Sign History"}</Text>
+        {mode === "textToSign" ? (
+          <TextTranslationHistory />
+        ) : (
+          <VideoTranslationHistory />
+        )}
       </LinearGradient>
     </Animated.View>
   );

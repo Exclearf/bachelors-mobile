@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { Image, View } from "react-native";
 
 import ModalWindow from "@/features/shared/components/layout/ModalWindow";
@@ -7,9 +6,9 @@ import {
   useLocalization,
   UseLocalizationFunction,
 } from "@/features/shared/hooks/useLocalization";
+import { useTranslationStore } from "@/features/translation/stores/useTranslationStore";
 
-import { useTranslationStore } from "../../stores/useTranslationStore";
-import VideoTranslationPlayer from "../feedback/VideoTranslationPlayer";
+import VideoTranslationPlayer from "../../videoToText/feedback/VideoTranslationPlayer";
 
 type TranslationConfirmationProps = {
   fileUri: string;

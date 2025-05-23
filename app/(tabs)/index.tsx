@@ -10,9 +10,9 @@ import SelectGroup, {
 import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
 import { useLocalization } from "@/features/shared/hooks/useLocalization";
 import { useTheme } from "@/features/shared/hooks/useTheme";
-import TextTranslationPlayer from "@/features/translation/components/feedback/TextTranslationPlayer";
-import History from "@/features/translation/components/layout/History";
-import SignTranslation from "@/features/translation/components/layout/SignTranslation";
+import History from "@/features/translation/components/shared/layout/History";
+import TextTranslationPlayer from "@/features/translation/components/textToVideo/feedback/TextTranslationPlayer";
+import SignTranslation from "@/features/translation/components/textToVideo/layout/SignTranslation";
 import { useTranslationStore } from "@/features/translation/stores/useTranslationStore";
 
 const IndexTab = () => {

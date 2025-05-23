@@ -2,7 +2,6 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
 import { ToggleItemType } from "@/features/shared/components/input/ToggleGroup";
-import log from "@/features/shared/utils/log";
 
 import { Gloss } from "../utils/types";
 
@@ -34,7 +33,7 @@ type TranslationStoreState = {
   currentLanguage: LanguageItem;
   availableLanguages: typeof availableLanguages;
   activeVideoTranslationResult: Gloss[] | null;
-  videoTranslionResults: Gloss[][] | null;
+  videoTranslationResults: Gloss[][] | null;
 };
 
 type TranslationStoreActions = {
@@ -51,7 +50,7 @@ export const useTranslationStore = create<
   immer((set, get) => ({
     mode: "signToText",
     model: null,
-    videoTranslionResults: null,
+    videoTranslationResults: null,
     activeVideoTranslationResult: null,
     availableLanguages,
     currentLanguage: availableLanguages[0],
@@ -87,9 +86,9 @@ export const useTranslationStore = create<
       const { activeVideoTranslationResult } = get();
 
       set((state) => {
-        state.videoTranslionResults = [
+        state.videoTranslationResults = [
           activeVideoTranslationResult!,
-          ...(state.videoTranslionResults ?? []),
+          ...(state.videoTranslationResults ?? []),
         ];
       });
 

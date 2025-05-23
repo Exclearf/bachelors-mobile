@@ -17,7 +17,7 @@ import CollapseAnimated from "@/features/shared/components/primitive/CollapseAni
 import TranslatedText from "@/features/shared/components/text/TranslatedText";
 import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
 import { useBottomSheet } from "@/features/shared/hooks/useBottomSheet";
-import ClearTranslationButton from "@/features/translation/components/input/ClearTranslationButton";
+import ClearTranslationButton from "@/features/translation/components/shared/input/ClearTranslationButton";
 import { useTranslationStore } from "@/features/translation/stores/useTranslationStore";
 
 type Props = PropsWithChildren<{
@@ -60,10 +60,10 @@ const ExpandableModal = ({
         [
           initialHeight,
           Math.max(
-            height * 0.55 - height * 0.11 - 36,
+            height * 0.55 - height * 0.11 - 20,
             height -
               (bottomSheet?.animatedPosition.get() ?? 0) -
-              height * 0.157 -
+              height * 0.155 -
               padding / 2,
           ),
         ],
@@ -119,14 +119,15 @@ export const expandableModalStyles = StyleSheet.create({
     width: "100%",
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     alignItems: "center",
   },
   headerText: {
     marginVertical: 10,
     marginHorizontal: 15,
-    color: "white",
-    fontSize: 20,
+    flex: 1,
+    textAlign: "left",
+    alignSelf: "flex-start",
   },
   customSectionStyle: {
     flex: 1,

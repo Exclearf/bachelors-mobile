@@ -83,12 +83,12 @@ const generateLightTheme = (palette: Theme, isHighContrast: boolean) => {
     primaryBackground: palette.palettes.neutralVariant.tone(
       85 * foregroundMultipler,
     ),
-    primaryForeground: palette.palettes.primary.tone(7.5 * foregroundMultipler),
+    primaryForeground: palette.palettes.primary.tone(15 * foregroundMultipler),
     secondaryBackground: palette.palettes.neutralVariant.tone(
       7 * foregroundMultipler,
     ),
     secondaryForeground: palette.palettes.secondary.tone(
-      14 * foregroundMultipler,
+      20 * foregroundMultipler,
     ),
     mutedBackground: palette.palettes.neutralVariant.tone(
       90 * backgroundMultiplier,

@@ -1,10 +1,11 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 
-import VideoTranslationResult from "./VideoTranslationResult";
-import { useTranslationStore } from "../../stores/useTranslationStore";
+import { useTranslationStore } from "@/features/translation/stores/useTranslationStore";
 
-type SignTranslationProps = {};
+import VideoTranslationResult from "../../videoToText/layout/VideoTranslationResult";
+
+type SignTranslationProps = object;
 
 const SignTranslation = (props: SignTranslationProps) => {
   const activeVideoTranslationResult = useTranslationStore(

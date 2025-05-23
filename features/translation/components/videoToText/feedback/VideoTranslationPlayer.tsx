@@ -1,5 +1,4 @@
 import { useVideoPlayer, VideoView } from "expo-video";
-import { Suspense } from "react";
 import { StyleSheet } from "react-native";
 
 type VideoTranslationPlayerProps = {
