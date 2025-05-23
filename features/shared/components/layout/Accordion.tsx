@@ -1,30 +1,33 @@
-import { StyleSheet, View } from "react-native";
 import React, { PropsWithChildren, useRef } from "react";
+import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
 } from "react-native-reanimated";
-import Expandable, { ExpandableRef } from "../layout/Expandable";
-import TranslatedText from "../text/TranslatedText";
+
 import { useFontSize } from "../../hooks/useFontSize";
 import { useTheme } from "../../hooks/useTheme";
-import ExpandArrow from "../animated/ExpandArrow";
+import Expandable, { ExpandableRef } from "../layout/Expandable";
+import ExpandArrow from "../primitive/ExpandArrow";
+import TranslatedText from "../text/TranslatedText";
 
 type AccordionProps = PropsWithChildren<{
   translationKey: string;
   maxHeight: number;
+  style?: StyleProp<ViewStyle>;
 }>;
 
 const Accordion = ({
   maxHeight = 200,
   translationKey,
   children,
+  style,
 }: AccordionProps) => {
   const expanded = useSharedValue(0);
   const borderRadius = 5;
   const fontSize = useFontSize();
-  const expandableRef = useRef<ExpandableRef>();
+  const expandableRef = useRef<ExpandableRef>(null);
   const theme = useTheme();
 
   const borderRadiusDerived = useDerivedValue(() => {
@@ -40,7 +43,7 @@ const Accordion = ({
 
   return (
     <Expandable ref={expandableRef} expanded={expanded} height={maxHeight}>
-      <Expandable.Trigger>
+      <Expandable.Trigger style={style}>
         <Animated.View
           style={[
             {
@@ -90,6 +93,7 @@ const Accordion = ({
               left: -1,
               width: 1,
               height: 1,
+              borderColor: theme?.mutedForeground,
               backgroundColor: theme?.mutedForeground,
             }}
           />

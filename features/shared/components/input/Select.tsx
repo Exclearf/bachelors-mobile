@@ -1,15 +1,16 @@
-import { Pressable, StyleSheet, View } from "react-native";
 import React, { useRef } from "react";
-import Expandable, { ExpandableRef } from "../layout/Expandable";
+import { Pressable, StyleSheet, View } from "react-native";
 import Animated, {
   SharedValue,
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
-import { useTheme } from "../../hooks/useTheme";
+
 import { useFontSize } from "../../hooks/useFontSize";
+import { useTheme } from "../../hooks/useTheme";
+import Expandable, { ExpandableRef } from "../layout/Expandable";
+import ExpandArrow from "../primitive/ExpandArrow";
 import TranslatedText from "../text/TranslatedText";
-import ExpandArrow from "../animated/ExpandArrow";
 
 export type SelectItemType = {
   id: string | number;
@@ -91,7 +92,7 @@ const Select = ({ items, setCurrentItem, currentItem, width }: Props) => {
   const expanded = useSharedValue(0);
   const theme = useTheme();
   const fontSize = useFontSize();
-  const expandableRef = useRef<ExpandableRef>();
+  const expandableRef = useRef<ExpandableRef>(null);
   const validItems = items.filter((item) => !item.isPlaceholder);
 
   width ??=
@@ -105,20 +106,14 @@ const Select = ({ items, setCurrentItem, currentItem, width }: Props) => {
 
   const animatedContentStyle = useAnimatedStyle(() => {
     "worklet";
-    return {
-      borderWidth: expanded.get() === 0 ? 0 : 1,
-    };
+    return { borderWidth: expanded.get() === 0 ? 0 : 1 };
   });
 
   const maxHeight = 4 + validItems.length * fontSize["regular"] * 2;
 
   return (
     <Expandable ref={expandableRef} expanded={expanded} height={maxHeight}>
-      <Expandable.Trigger
-        style={{
-          flexDirection: "row",
-        }}
-      >
+      <Expandable.Trigger style={{ flexDirection: "row" }}>
         <SelectPicker
           expanded={expanded}
           maxHeight={maxHeight}

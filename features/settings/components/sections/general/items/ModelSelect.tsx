@@ -1,16 +1,18 @@
 import React, { useState } from "react";
+
+import { useSettingsItemWidth } from "@/features/settings/hooks/useSettingsItemWidth";
+import { SettingsSectionSubItemType } from "@/features/settings/SettingsSections";
 import Select, {
   SelectItemType,
 } from "@/features/shared/components/input/Select";
-import SettingsMenuEntryText from "../../shared/SettingsMenuEntryText";
-import { SettingsSectionSubItemType } from "@/features/settings/SettingsSections";
-import { useSettingsItemWidth } from "@/features/settings/hooks/useSettingsItemWidth";
 import { useLocalization } from "@/features/shared/hooks/useLocalization";
 import {
   AvailableModels,
   Model,
   useTranslationStore,
-} from "@/features/translation/stores/translationStore";
+} from "@/features/translation/stores/useTranslationStore";
+
+import SettingsMenuEntryText from "../../shared/SettingsMenuEntryText";
 
 type Props = SettingsSectionSubItemType;
 

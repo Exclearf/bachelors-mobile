@@ -1,7 +1,8 @@
+import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import React, { useContext } from "react";
+
 import Button from "@/features/shared/components/input/Button";
-import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
+import { useAppDimensions } from "@/features/shared/hooks/useAppDimensions";
 
 type Props = {
   handler: () => void;
@@ -13,18 +14,25 @@ const BUTTON_HEIGHT = 45;
 const BUTTON_WIDTH = 90;
 
 const CameraAccessRequestModal = ({ handler }: Props) => {
-  const { width, height } = useContext(AppDimensionsContext);
+  const { width, height } = useAppDimensions();
   return (
     <View
       style={[
         styles.centeredView,
-        { width, height, backgroundColor: "rgba(0,0,0,0.45)" },
+        {
+          width,
+          height,
+          backgroundColor: "rgba(0,0,0,0.45)",
+        },
       ]}
     >
       <View
         style={[
           styles.modalView,
-          { width: width - PADDING_OF_TOP_PANEL, marginBottom: width * 0.11 },
+          {
+            width: width - PADDING_OF_TOP_PANEL,
+            marginBottom: width * 0.11,
+          },
         ]}
       >
         <Text style={styles.accessHeader}>Allow access to the camera</Text>
@@ -34,7 +42,14 @@ const CameraAccessRequestModal = ({ handler }: Props) => {
             height={BUTTON_HEIGHT}
             backgroundColor={"rgba(75,75,75,0.9)"}
           >
-            <Text style={{ textAlign: "center", color: "white" }}>Allow</Text>
+            <Text
+              style={{
+                textAlign: "center",
+                color: "white",
+              }}
+            >
+              Allow
+            </Text>
           </Button>
         </Pressable>
       </View>

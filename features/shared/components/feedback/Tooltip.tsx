@@ -1,6 +1,7 @@
-import { DimensionValue, StyleSheet, View } from "react-native";
-import React, { PropsWithChildren, useState } from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import React, { PropsWithChildren, useState } from "react";
+import { DimensionValue, StyleSheet, View } from "react-native";
+
 import Popup from "./Popup";
 import { useTheme } from "../../hooks/useTheme";
 

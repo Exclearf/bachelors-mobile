@@ -1,11 +1,14 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+
+import { useSettingsItemWidth } from "@/features/settings/hooks/useSettingsItemWidth";
 import { SettingsSectionSubItemType } from "@/features/settings/SettingsSections";
 import ToggleGroup, {
   ToggleItemType,
 } from "@/features/shared/components/input/ToggleGroup";
-import { useTranslation } from "react-i18next";
+import log from "@/features/shared/utils/log";
 import { locales } from "@/features/translation/i18n/i18n";
-import { useSettingsItemWidth } from "@/features/settings/hooks/useSettingsItemWidth";
+
 import SettingsMenuEntry from "../../shared/SettingsMenuEntryText";
 
 type Props = SettingsSectionSubItemType;
@@ -28,7 +31,7 @@ const AppLanguageToggle = ({ getTranslationKey, textStyle }: Props) => {
   const changeAppLanguage = (language: ToggleItemType) => {
     setSelectedLanguageCode(language.id);
     i18n.changeLanguage(language.id);
-    console.log("Changing app language to:", language.id);
+    log.info("Changing the app language to:", language.id);
   };
 
   return (

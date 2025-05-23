@@ -1,14 +1,17 @@
+import BottomSheet, { BottomSheetProps } from "@gorhom/bottom-sheet";
 import React, {
   forwardRef,
-  useRef,
-  useState,
   PropsWithChildren,
   useEffect,
   useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
 } from "react";
-import BottomSheet, { BottomSheetProps } from "@gorhom/bottom-sheet";
 import { SharedValue, useSharedValue } from "react-native-reanimated";
+
 import { useBottomSheet } from "@/features/shared/hooks/useBottomSheet";
+
 import { useIsFullScreenRoute } from "../../hooks/useIsFullScreenRoute";
 
 type Props = {
@@ -35,18 +38,22 @@ const BottomSheetWrapper = forwardRef<
   const animatedPosition = useSharedValue(0);
   const isFullScrenRoute = useIsFullScreenRoute();
 
-  const bottomSheetWrapperImplementation = {
-    ...bottomSheetRef.current,
-    index,
-    height,
-    animatedPosition,
-  } as BottomSheetWrapperRef;
+  const bottomSheetWrapperImplementation = useMemo(
+    () =>
+      ({
+        ...bottomSheetRef.current,
+        index,
+        height,
+        animatedPosition,
+      }) as BottomSheetWrapperRef,
+    [animatedPosition, height, index],
+  );
 
   useImperativeHandle(ref, () => bottomSheetWrapperImplementation);
 
   useEffect(() => {
     context.registerBottomSheet({ ...bottomSheetWrapperImplementation });
-  }, [bottomSheetRef.current]);
+  }, [bottomSheetWrapperImplementation, context]);
 
   return (
     <BottomSheet
@@ -65,5 +72,7 @@ const BottomSheetWrapper = forwardRef<
     </BottomSheet>
   );
 });
+
+BottomSheetWrapper.displayName = "BottomSheetWrapper";
 
 export default BottomSheetWrapper;

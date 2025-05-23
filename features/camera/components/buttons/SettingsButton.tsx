@@ -1,13 +1,14 @@
-import { Pressable } from "react-native";
+import { Canvas, Path } from "@shopify/react-native-skia";
 import React from "react";
-import { CameraOverlayButtonProps } from "../../CameraOverlay";
+import { Pressable } from "react-native";
 import {
   interpolate,
   useDerivedValue,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { Canvas, Path } from "@shopify/react-native-skia";
+
+import { CameraOverlayButtonProps } from "../../CameraOverlay";
 
 const SettingsButton = ({
   color,

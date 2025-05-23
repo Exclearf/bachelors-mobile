@@ -1,4 +1,3 @@
-import { Pressable, StyleSheet, View } from "react-native";
 import React, {
   createContext,
   Dispatch,
@@ -9,7 +8,8 @@ import React, {
   useRef,
   useState,
 } from "react";
-//import { useAppDimensions } from "../../hooks/useAppDimensions";
+import { Pressable, StyleSheet, View } from "react-native";
+
 import { percentageToDecimal } from "../../utils/helper";
 
 type TriggerPosition = {
@@ -39,7 +39,7 @@ const usePopupContext = () => {
   return context;
 };
 
-type PopupTriggerProps = PropsWithChildren<{}>;
+type PopupTriggerProps = PropsWithChildren<object>;
 type PopupContentProps = PropsWithChildren<{
   position: "top" | "bottom";
   height: number | string;
@@ -59,29 +59,44 @@ type PopupProps = {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 } & PopupComposition;
 
+type PopupComponent = React.FC<PopupProps> & {
+  Trigger: React.FC<PopupTriggerProps>;
+  Content: React.FC<PopupContentProps>;
+};
+
 // TODO: Add position checking in onLayout (at least for horizontal)
 
-const Popup = ({ isOpen, setIsOpen, children }: PopupProps) => {
+const Popup: PopupComponent = ({ isOpen, setIsOpen, children }: PopupProps) => {
   const [triggerLayout, setTriggerLayout] = useState<TriggerPosition | null>(
     null,
   );
 
   return (
     <PopupContext.Provider
-      value={{ isOpen, setIsOpen, triggerLayout, setTriggerLayout }}
+      value={{
+        isOpen,
+        setIsOpen,
+        triggerLayout,
+        setTriggerLayout,
+      }}
     >
       {children}
     </PopupContext.Provider>
   );
 };
 
-Popup.Trigger = ({ children }: PopupTriggerProps) => {
+const Trigger = ({ children }: PopupTriggerProps) => {
   const { setIsOpen, setTriggerLayout } = usePopupContext();
   const triggerRef = useRef<View>(null);
 
   const onLayout = () => {
     triggerRef.current?.measure((x, y, width, height) => {
-      setTriggerLayout({ x, y, width, height });
+      setTriggerLayout({
+        x,
+        y,
+        width,
+        height,
+      });
     });
   };
 
@@ -92,7 +107,12 @@ Popup.Trigger = ({ children }: PopupTriggerProps) => {
   return (
     <Pressable
       hitSlop={10}
-      pressRetentionOffset={{ top: 10, left: 10, right: 10, bottom: 10 }}
+      pressRetentionOffset={{
+        top: 10,
+        left: 10,
+        right: 10,
+        bottom: 10,
+      }}
       onPress={onPress}
       onLayout={onLayout}
       ref={triggerRef}
@@ -126,7 +146,7 @@ const createBottomPosition = (
   return [top, left];
 };
 
-Popup.Content = ({
+const Content = ({
   children,
   position,
   width,
@@ -215,6 +235,9 @@ Popup.Content = ({
     </Pressable>
   );
 };
+
+Popup.Content = Content;
+Popup.Trigger = Trigger;
 
 export default Popup;
 

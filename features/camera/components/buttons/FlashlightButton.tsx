@@ -1,17 +1,19 @@
-import { TouchableOpacity } from "react-native";
-import React from "react";
 import Entypo from "@expo/vector-icons/Entypo";
+import { Canvas, Path } from "@shopify/react-native-skia";
+import React from "react";
+import { TouchableOpacity } from "react-native";
 import {
   interpolate,
   useDerivedValue,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { Canvas, Path } from "@shopify/react-native-skia";
+
 import { CameraOverlayButtonProps } from "../../CameraOverlay";
 
 const FlashlightButton = ({
   color,
+  secondaryColor,
   size,
   onClick,
 }: CameraOverlayButtonProps) => {
@@ -43,6 +45,7 @@ const FlashlightButton = ({
       }}
       activeOpacity={1}
     >
+      <Entypo name="flash" size={size} color={color} />
       <Canvas
         style={{
           width: size,
@@ -52,13 +55,13 @@ const FlashlightButton = ({
       >
         <Path
           path={derivedPath}
-          color={color}
+          color={secondaryColor ?? color}
+          opacity={0.75}
           strokeWidth={3}
           strokeCap={derivedStrokeCap}
           style={"stroke"}
         />
       </Canvas>
-      <Entypo name="flash" size={size} color={color} />
     </TouchableOpacity>
   );
 };

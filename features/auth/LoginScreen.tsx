@@ -1,11 +1,13 @@
 import React, { useContext, useEffect } from "react";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
+
 import google_logo from "@/assets/images/google_logo.png";
-import TranslatedText from "../shared/components/text/TranslatedText";
-import Button from "../shared/components/input/Button";
 import { useAuthFlow } from "@/features/auth/hooks/useAuthFlow";
 import { useLocalization } from "@/features/shared/hooks/useLocalization";
+
+import Button from "../shared/components/input/Button";
+import TranslatedText from "../shared/components/text/TranslatedText";
 import { AppDimensionsContext } from "../shared/contexts/appDimensions";
 import { useBottomSheet } from "../shared/hooks/useBottomSheet";
 import { useTheme } from "../shared/hooks/useTheme";
@@ -46,9 +48,7 @@ const LoginScreen = () => {
         style={[
           styles.wrapper,
           containerStyle,
-          {
-            backgroundColor: theme?.background,
-          },
+          { backgroundColor: theme?.background },
         ]}
       >
         <Animated.View style={[styles.header, headerStyle]}>
@@ -104,9 +104,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: "100%",
   },
-  headerText: {
-    textAlign: "center",
-  },
+  headerText: { textAlign: "center" },
   content: {
     width: "100%",
     paddingBottom: 35,
@@ -122,7 +120,5 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
   },
-  buttonText: {
-    width: "75%",
-  },
+  buttonText: { width: "75%" },
 });

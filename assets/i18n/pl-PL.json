@@ -51,5 +51,18 @@
   "loginPage": {
     "signInTitle": "Zaloguj się",
     "signInWithGoogle": "Zaloguj się przez Google"
+  },
+  "misc": {
+    "notLoggedInInfo": "Proszę się zalogować!",
+    "accept": "Akceptuj",
+    "cancel": "Anuluj"
+  },
+  "translation": {
+    "textToVideo": {
+      "translationConfirm": "Potwierdź obszar przycięcia.",
+      "noText": "Nie rozpoznano tekstu.",
+      "tryAgain": "Proszę spróbować ponownie."
+    },
+    "videoToText": {}
   }
 }

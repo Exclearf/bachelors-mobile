@@ -1,11 +1,13 @@
-import { View } from "react-native";
 import React from "react";
+import { View } from "react-native";
+import { useShallow } from "zustand/react/shallow";
+
+import { useSettingsItemWidth } from "@/features/settings/hooks/useSettingsItemWidth";
+import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
 import Slider from "@/features/shared/components/input/Slider";
 import TranslatedText from "@/features/shared/components/text/TranslatedText";
+
 import { AccessibilityItemProps } from "../AccessibilitySection";
-import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
-import { useShallow } from "zustand/react/shallow";
-import { useSettingsItemWidth } from "@/features/settings/hooks/useSettingsItemWidth";
 
 type Props = AccessibilityItemProps;
 

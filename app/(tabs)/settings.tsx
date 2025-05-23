@@ -1,9 +1,10 @@
-import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
-import { useLocalization } from "@/features/shared/hooks/useLocalization";
 import React, { lazy, Suspense, useContext } from "react";
 import { StyleSheet, View } from "react-native";
+
 import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
 import Skeleton from "@/features/shared/components/feedback/Skeleton";
+import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
+import { useLocalization } from "@/features/shared/hooks/useLocalization";
 
 const SettingsSections = lazy(
   () => import("@/features/settings/SettingsSections"),
@@ -18,7 +19,14 @@ const SettingsTab = () => {
   return (
     <View style={[styles.container, { backgroundColor: theme?.background }]}>
       <Suspense
-        fallback={<Skeleton style={{ height: height * 0.05, width: "100%" }} />}
+        fallback={
+          <Skeleton
+            style={{
+              height: height * 0.05,
+              width: "100%",
+            }}
+          />
+        }
       >
         <UserInfo getTranslationKey={getTranslationKey} height={height} />
       </Suspense>

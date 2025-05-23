@@ -1,5 +1,7 @@
 import React, { PropsWithChildren } from "react";
+
 import { useAppDimensions } from "@/features/shared/hooks/useAppDimensions";
+
 import { SettingsItemWidthContext } from "../../contexts/settingsItemWidth";
 
 type Props = PropsWithChildren<{}>;

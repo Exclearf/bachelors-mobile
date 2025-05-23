@@ -1,4 +1,5 @@
 import { useContext } from "react";
+
 import { SettingsItemWidthContext } from "../contexts/settingsItemWidth";
 
 export const useSettingsItemWidth = () => {

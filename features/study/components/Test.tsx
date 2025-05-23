@@ -1,11 +1,12 @@
-import { StyleSheet, useWindowDimensions, View } from "react-native";
 import React from "react";
+import { StyleSheet, useWindowDimensions, View } from "react-native";
+
 import Accordion from "@/features/shared/components/layout/Accordion";
 
 type Props = {};
 
 const Test = (props: Props) => {
-  const { height } = useWindowDimensions();
+  const { height, width } = useWindowDimensions();
   const maxHeight = height - height * 0.19;
 
   return (
@@ -17,7 +18,11 @@ const Test = (props: Props) => {
         alignItems: "center",
       }}
     >
-      <Accordion translationKey="Test" maxHeight={maxHeight * 0.33} />
+      <Accordion
+        translationKey="Test"
+        maxHeight={maxHeight * 0.33}
+        style={{ width }}
+      />
     </View>
   );
 };

@@ -1,12 +1,12 @@
-import { StyleSheet, View } from "react-native";
+import AntDesign from "@expo/vector-icons/AntDesign";
 import React, { useEffect } from "react";
+import { StyleSheet, View } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withRepeat,
   withTiming,
 } from "react-native-reanimated";
-import AntDesign from "@expo/vector-icons/AntDesign";
 
 type Props = {
   size: number;
@@ -21,9 +21,7 @@ const Spinner = ({ size, color }: Props) => {
   }, [rotation]);
 
   const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{ rotate: `${rotation.value}deg` }],
-    };
+    return { transform: [{ rotate: `${rotation.value}deg` }] };
   });
 
   return (

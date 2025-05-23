@@ -1,23 +1,24 @@
-import { Pressable, StyleSheet } from "react-native";
-import React from "react";
-import { Tabs } from "expo-router";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import Feather from "@expo/vector-icons/Feather";
 import Entypo from "@expo/vector-icons/Entypo";
+import Feather from "@expo/vector-icons/Feather";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { Tabs } from "expo-router";
+import React from "react";
+import { Pressable, StyleSheet } from "react-native";
+
 import LoginScreen from "@/features/auth/LoginScreen";
-import { useAuthStore } from "@/features/auth/stores/authStore";
+import { useAuthStore } from "@/features/auth/stores/useAuthStore";
 import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
 import { useAppSetup } from "@/features/shared/hooks/useAppSetup";
 
 const RootLayout = () => {
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const loggedIn = useAuthStore((state) => state.loggedIn);
   const theme = usePersonalizationStore((state) => state.theme);
 
   // This hook is used to prevent the splash screen from hiding before the app is fully loaded
   // It is placed here in order not to re-render the app
   useAppSetup();
 
-  if (!isLoggedIn && false) {
+  if (!loggedIn) {
     return <LoginScreen />;
   }
 
@@ -85,5 +86,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  tabBarButton: { flex: 1, width: "100%" },
+  tabBarButton: {
+    flex: 1,
+    width: "100%",
+  },
 });

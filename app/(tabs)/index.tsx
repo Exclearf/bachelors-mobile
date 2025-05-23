@@ -1,18 +1,19 @@
-import { StyleSheet, View } from "react-native";
-import React, { useContext } from "react";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import React, { useContext } from "react";
+import { StyleSheet, View } from "react-native";
+
+import ExpandableModal from "@/features/camera/components/modals/ExpandableModal";
 import SelectGroup, {
   SelectionGroupItemConfig,
 } from "@/features/shared/components/input/selectGroup/SelectGroup";
-import { useTranslationStore } from "@/features/translation/stores/translationStore";
-import ExpandableModal from "@/features/camera/components/modals/ExpandableModal";
-import History from "@/features/translation/components/History";
-import SignTranslation from "@/features/translation/components/SignTranslation";
-import TextTranslation from "@/features/translation/components/TextTranslationPlayer";
-import { useLocalization } from "@/features/shared/hooks/useLocalization";
 import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
+import { useLocalization } from "@/features/shared/hooks/useLocalization";
 import { useTheme } from "@/features/shared/hooks/useTheme";
+import History from "@/features/translation/components/shared/layout/History";
+import TextTranslationPlayer from "@/features/translation/components/textToVideo/feedback/TextTranslationPlayer";
+import SignTranslation from "@/features/translation/components/textToVideo/layout/SignTranslation";
+import { useTranslationStore } from "@/features/translation/stores/useTranslationStore";
 
 const IndexTab = () => {
   const getTranslationKey = useLocalization("indexPage");
@@ -39,14 +40,19 @@ const IndexTab = () => {
   const initialHeight = height - height * 0.11 - height * 0.07 - height * 0.06;
 
   return (
-    <View style={{ ...styles.container, backgroundColor: theme?.background }}>
+    <View
+      style={{
+        ...styles.container,
+        backgroundColor: theme?.background,
+      }}
+    >
       <SelectGroup
         items={availableFunctions}
-        containerHeight={height * 0.11 - 39}
+        containerHeight={height * 0.068}
       />
       <View style={styles.innerContainer}>
         <ExpandableModal
-          initialHeight={initialHeight / 2}
+          initialHeight={initialHeight / 1.93}
           padding={height * 0.02}
           containerStyle={[
             styles.indexSection,
@@ -57,11 +63,15 @@ const IndexTab = () => {
           ]}
           titleTranslationKey={getTranslationKey("translation")}
         >
-          {mode === "signToText" ? <SignTranslation /> : <TextTranslation />}
+          {mode === "signToText" ? (
+            <SignTranslation />
+          ) : (
+            <TextTranslationPlayer />
+          )}
         </ExpandableModal>
         <History
           padding={height * 0.02}
-          height={initialHeight / 2}
+          height={initialHeight / 1.93}
           containerStyle={[
             styles.indexSection,
             {

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { View } from "react-native";
 import ColorPicker, { Panel2 } from "reanimated-color-picker";
+import { useShallow } from "zustand/react/shallow";
+
+import { useSettingsItemWidth } from "@/features/settings/hooks/useSettingsItemWidth";
 import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
 import Skeleton from "@/features/shared/components/feedback/Skeleton";
-import { View } from "react-native";
-import { useShallow } from "zustand/react/shallow";
 import { useTheme } from "@/features/shared/hooks/useTheme";
-import { useSettingsItemWidth } from "@/features/settings/hooks/useSettingsItemWidth";
 
 const ColorPanel = () => {
   const [isRendered, setIsRendered] = useState(true);

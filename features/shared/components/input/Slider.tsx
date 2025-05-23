@@ -1,12 +1,13 @@
-import { StyleSheet, View } from "react-native";
 import React from "react";
+import { StyleSheet, View } from "react-native";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
   runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { Gesture, GestureDetector } from "react-native-gesture-handler";
+
 import { useTheme } from "../../hooks/useTheme";
 
 type Props = {
@@ -88,12 +89,21 @@ const Slider = ({
   return (
     <GestureDetector gesture={composed}>
       <View
-        style={[styles.container, { width: trackWidth, height: height * 4 }]}
+        style={[
+          styles.container,
+          {
+            width: trackWidth,
+            height: height * 4,
+          },
+        ]}
       >
         <View
           style={[
             styles.track,
-            { backgroundColor: theme?.mutedForeground, height },
+            {
+              backgroundColor: theme?.mutedForeground,
+              height,
+            },
           ]}
         >
           <Animated.View

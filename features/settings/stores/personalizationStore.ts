@@ -1,16 +1,18 @@
+import { hexFromArgb } from "@material/material-color-utilities";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ColorSchemeName } from "react-native";
+import { colorKit } from "reanimated-color-picker";
 import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
+
+import log from "@/features/shared/utils/log";
+
 import {
   generateTheme,
   getSaturation,
   setSaturation,
 } from "../../shared/utils/themes";
-import { hexFromArgb } from "@material/material-color-utilities";
-import { colorKit } from "reanimated-color-picker";
-import { persist, createJSONStorage } from "zustand/middleware";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { createPersistedStore } from "@/features/shared/utils/createPersistStore";
 
 export type FontSize = {
   regular: number;
@@ -86,7 +88,7 @@ export const usePersonalizationStore = create<
       setThemeType: (newTheme) => {
         let newAccentColor = get().accentColor;
         if (newTheme === "dark") {
-          console.log("Dark theme");
+          log.debug("Dark theme");
           const saturation = getSaturation(newAccentColor);
           newAccentColor = setSaturation(newAccentColor, 100);
           newAccentColor = colorKit
@@ -94,7 +96,7 @@ export const usePersonalizationStore = create<
             .hsv()
             .string();
         } else {
-          console.log("Light theme");
+          log.debug("Light theme");
           const brightness = colorKit.getBrightness(newAccentColor);
           newAccentColor = colorKit
             .setBrightness(newAccentColor, 100)

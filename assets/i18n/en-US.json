@@ -51,5 +51,25 @@
   "loginPage": {
     "signInTitle": "Log in",
     "signInWithGoogle": "Log in with Google"
+  },
+  "misc": {
+    "notLoggedInInfo": "Please, Log In!",
+    "accept": "Accept",
+    "cancel": "Cancel"
+  },
+  "translation": {
+    "textToSign": {
+      "translationConfirm": "Confirm the crop region."
+    },
+    "signToText": {
+      "translationConfirm": "Confirm the video selection."
+    },
+    "shared": {
+      "noText": "No text detected.",
+      "tryAgain": "Please, try again.",
+      "confidence": "Confidence:",
+      "gloss": "Gloss:",
+      "info": "Information"
+    }
   }
 }

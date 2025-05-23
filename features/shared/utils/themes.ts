@@ -16,11 +16,9 @@ export const generateTheme = (
   hexColor: string,
 ) => {
   if (hexColor === "#000000") {
-    console.log("Black theme");
     //return generateBlackTheme(isHighContrast);
   }
   if (hexColor === "#ffffff") {
-    console.log("White theme");
     //return generateWhiteTheme(isHighContrast);
   }
   return themeType === "dark"
@@ -55,7 +53,7 @@ const generateDarkTheme = (palette: Theme, isHighContrast: boolean) => {
   const backgroundMultiplier = isHighContrast ? 0.25 : 1;
 
   return {
-    background: palette.palettes.neutral.tone(1 * backgroundMultiplier),
+    background: palette.palettes.neutral.tone(5 * backgroundMultiplier),
     primaryBackground: palette.palettes.neutralVariant.tone(
       13 * backgroundMultiplier,
     ),
@@ -72,6 +70,7 @@ const generateDarkTheme = (palette: Theme, isHighContrast: boolean) => {
       7 * backgroundMultiplier,
     ),
     mutedForeground: palette.palettes.secondary.tone(50 * foregroundMultipler),
+    destructive: palette.palettes.error.tone(50 * backgroundMultiplier),
   };
 };
 
@@ -84,17 +83,18 @@ const generateLightTheme = (palette: Theme, isHighContrast: boolean) => {
     primaryBackground: palette.palettes.neutralVariant.tone(
       85 * foregroundMultipler,
     ),
-    primaryForeground: palette.palettes.primary.tone(7.5 * foregroundMultipler),
+    primaryForeground: palette.palettes.primary.tone(15 * foregroundMultipler),
     secondaryBackground: palette.palettes.neutralVariant.tone(
       7 * foregroundMultipler,
     ),
     secondaryForeground: palette.palettes.secondary.tone(
-      14 * foregroundMultipler,
+      20 * foregroundMultipler,
     ),
     mutedBackground: palette.palettes.neutralVariant.tone(
       90 * backgroundMultiplier,
     ),
     mutedForeground: palette.palettes.tertiary.tone(50 * foregroundMultipler),
+    destructive: palette.palettes.error.tone(80 * backgroundMultiplier),
   };
 };
 

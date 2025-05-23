@@ -1,11 +1,11 @@
 import { AVPlaybackStatusSuccess } from "expo-av";
 import { useEffect, useState } from "react";
 
+import log from "@/features/shared/utils/log";
+
 const you = require("@/assets/signs/you-anim.mp4");
 
-const animations = {
-  you,
-};
+const animations = { you };
 
 export const useAnimationPlayer = (
   status: AVPlaybackStatusSuccess,
@@ -21,16 +21,14 @@ export const useAnimationPlayer = (
   useEffect(() => {
     if (status?.didJustFinish && !hasFinished) {
       if (currentAnimationIndex + 1 >= animationsList.length) {
-        console.log(`RESETTING PLAYBACK`);
         return setHasFinished(true);
       }
-      console.log(`Setting Current animation  ${currentAnimationIndex + 1}`);
+      log.debug(`Setting Current animation  ${currentAnimationIndex + 1}`);
       setCurrentAnimationIndex(currentAnimationIndex + 1);
     }
-  }, [status]);
+  }, [status, animationsList.length, currentAnimationIndex, hasFinished]);
 
   const resetPlayback = () => {
-    console.log("RESET PLAYBACK");
     setHasFinished(false);
     setCurrentAnimationIndex(0);
   };

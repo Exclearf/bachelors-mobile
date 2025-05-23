@@ -1,10 +1,12 @@
-import { View } from "react-native";
 import React from "react";
-import { SettingsSectionsItemType } from "../../../SettingsSections";
+import { View } from "react-native";
+
 import { useLocalization } from "@/features/shared/hooks/useLocalization";
+
 import AppLanguageToggle from "./items/AppLanguageToggle";
-import TranslationLanguageToggle from "./items/TranslationLanguageToggle";
 import ModelSelect from "./items/ModelSelect";
+import TranslationLanguageToggle from "./items/TranslationLanguageToggle";
+import { SettingsSectionsItemType } from "../../../SettingsSections";
 
 type Props = SettingsSectionsItemType;
 

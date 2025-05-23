@@ -1,9 +1,12 @@
-import { useEffect } from "react";
+import * as AuthSession from "expo-auth-session";
 import * as Linking from "expo-linking";
 import { router } from "expo-router";
+import { useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";
+
 import defaultPicture from "@/assets/images/default_user_avatar.png";
-import { supabase, useAuthStore } from "@/features/auth/stores/authStore";
+import { supabase, useAuthStore } from "@/features/auth/stores/useAuthStore";
+import log from "@/features/shared/utils/log";
 
 export { defaultPicture };
 
@@ -14,25 +17,28 @@ export const useAuthFlow = () => {
         state.setUser,
         state.setAccessToken,
         state.setRefreshToken,
-        state.setIsLoggedIn,
+        state.setLoggedIn,
       ]),
     );
 
   const signInWithGoogle = async () => {
     try {
-      console.log("Signing in with Google...");
-      const redirectUrl = Linking.createURL("auth/callback");
+      log.info("Signing in with Google...");
+      const redirectUrl = AuthSession.makeRedirectUri({
+        scheme: "myapp",
+        path: "auth/callback",
+      });
 
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
           redirectTo: redirectUrl,
-          skipBrowserRedirect: false,
+          skipBrowserRedirect: true,
         },
       });
 
       if (error) {
-        console.error("Error during Google Sign-In:", error.message);
+        log.error("Error during Google Sign-In:", error.message);
         return;
       }
 
@@ -40,48 +46,50 @@ export const useAuthFlow = () => {
         await Linking.openURL(data.url);
       }
     } catch (error) {
-      console.error("Unexpected error:", error);
-    }
-  };
-
-  const handleDeepLink = async (url: string) => {
-    console.log("Deep link received: " + url);
-    try {
-      const { access_token, refresh_token } = Object.fromEntries(
-        new URLSearchParams(url.split("#")[1]),
-      );
-
-      if (access_token && refresh_token) {
-        const decodedToken = JSON.parse(atob(access_token.split(".")[1]));
-        const userMetadata = decodedToken.user_metadata;
-
-        if (userMetadata) {
-          setUser({
-            name: userMetadata.full_name,
-            email: userMetadata.email || "Unknown",
-            picture: userMetadata.picture
-              ? { uri: userMetadata.picture }
-              : defaultPicture,
-          });
-          setAccessToken(access_token);
-          setRefreshToken(refresh_token);
-          setIsLoggedIn(true);
-
-          router.replace("/");
-        } else {
-          console.error("User metadata is missing in the decoded token");
-        }
-      }
-    } catch (error) {
-      console.error("Error handling deep link:", error);
+      log.error("Unexpected error:", error);
     }
   };
 
   useEffect(() => {
+    const handleDeepLink = async (url: string) => {
+      log.debug("Deep link received.");
+      try {
+        const { access_token, refresh_token } = Object.fromEntries(
+          new URLSearchParams(url.split("#")[1]),
+        );
+
+        if (access_token && refresh_token) {
+          const decodedToken = JSON.parse(atob(access_token.split(".")[1]));
+          const userMetadata = decodedToken.user_metadata;
+
+          if (userMetadata) {
+            setUser({
+              name: userMetadata.full_name,
+              email: userMetadata.email || "Unknown",
+              picture: userMetadata.picture
+                ? { uri: userMetadata.picture }
+                : defaultPicture,
+            });
+            setAccessToken(access_token);
+            setRefreshToken(refresh_token);
+            setIsLoggedIn(true);
+
+            log.info("User logged in.");
+
+            router.replace("/");
+          } else {
+            log.error("User metadata is missing in the decoded token");
+          }
+        }
+      } catch (error) {
+        log.error("Error handling deep link:", error);
+      }
+    };
+
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log("Auth event:", event);
+      log.debug("Auth event:", event);
 
       if (session && (event === "SIGNED_IN" || event === "TOKEN_REFRESHED")) {
         setAccessToken(session.access_token);
@@ -122,9 +130,7 @@ export const useAuthFlow = () => {
       subscription.unsubscribe();
       linkingSubscription.remove();
     };
-  }, []);
+  }, [setAccessToken, setIsLoggedIn, setUser, setRefreshToken]);
 
-  return {
-    signInWithGoogle,
-  };
+  return { signInWithGoogle };
 };

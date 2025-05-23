@@ -1,13 +1,15 @@
-import { Pressable, StyleProp, StyleSheet, TextStyle } from "react-native";
 import React from "react";
+import { Pressable, StyleProp, StyleSheet, TextStyle } from "react-native";
 import Animated, {
+  AnimatedStyle,
+  BounceOutRight,
+  Easing,
+  interpolateColor,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
-  interpolateColor,
-  Easing,
-  AnimatedStyle,
 } from "react-native-reanimated";
+
 import { useTheme } from "../../hooks/useTheme";
 
 type SwitchColor = {
@@ -42,12 +44,15 @@ type Props = {
   thumbColor?: SwitchColor;
   trackColor?: SwitchColor;
   disabledColor?: SwitchDisabledColor;
+  checkedWhenAnimationEnd?: boolean;
+  checkedWhenAnimationEndsOffset?: number;
 };
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-const padding = 3;
-const borderWidth = 1;
+const PADDING = 3;
+const BORDER_WIDTH = 1;
+const ANIMATION_LENGTH = 150;
 
 const Switch = ({
   checked,
@@ -59,6 +64,8 @@ const Switch = ({
   thumbColor,
   trackColor,
   disabledColor,
+  checkedWhenAnimationEnd = true,
+  checkedWhenAnimationEndsOffset = ANIMATION_LENGTH,
 }: Props) => {
   const theme = useTheme();
   thumbColor = {
@@ -103,11 +110,17 @@ const Switch = ({
 
     isChecked.set(
       withTiming(isChecked.value === 0 ? 1 : 0, {
-        duration: 150,
+        duration: ANIMATION_LENGTH,
         easing: Easing.inOut(Easing.quad),
       }),
     );
-    setChecked(!checked);
+    handleToggleStateChange(() => setChecked(!checked));
+  };
+
+  const handleToggleStateChange = (callback: () => void) => {
+    checkedWhenAnimationEnd
+      ? setTimeout(callback, checkedWhenAnimationEndsOffset)
+      : callback();
   };
 
   const customFalseThumbStyle = useAnimatedStyle(() => {
@@ -138,11 +151,11 @@ const Switch = ({
           : trackAnimatedStyle,
         styles.trackContainer,
         {
-          width: diameter * 2 + padding * 2,
-          height: diameter + padding * 2 + borderWidth * 2,
-          borderRadius: diameter / 2 + padding * 2,
+          width: diameter * 2 + PADDING * 2,
+          height: diameter + PADDING * 2 + BORDER_WIDTH * 2,
+          borderRadius: diameter / 2 + PADDING * 2,
           borderColor: theme?.mutedForeground,
-          borderWidth,
+          borderWidth: BORDER_WIDTH,
         },
       ]}
       onPress={handleToggle}
@@ -155,7 +168,7 @@ const Switch = ({
             styles.customThumb,
             {
               left: diameter / 4,
-              top: diameter / 4 + padding / 2,
+              top: diameter / 4 + PADDING / 2,
             },
           ]}
         />
@@ -181,7 +194,7 @@ const Switch = ({
             styles.customThumb,
             {
               right: diameter / 4,
-              top: diameter / 4 + padding / 2,
+              top: diameter / 4 + PADDING / 2,
             },
           ]}
         />
@@ -193,10 +206,6 @@ const Switch = ({
 export default Switch;
 
 const styles = StyleSheet.create({
-  trackContainer: {
-    padding,
-  },
-  customThumb: {
-    position: "absolute",
-  },
+  trackContainer: { padding: PADDING },
+  customThumb: { position: "absolute" },
 });

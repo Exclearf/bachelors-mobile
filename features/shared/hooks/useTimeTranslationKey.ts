@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { AppState } from "react-native";
 
+import log from "../utils/log";
+
 const getTimeBasedKey = ([morning, afternoon, evening, night]: string[]) => {
   const currentHour = new Date().getHours();
 
@@ -21,20 +23,20 @@ export const useTimeTranslationKey = (
   const [translationKey, setTranslationKey] = useState(getTimeBasedKey(keys));
 
   useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
+    let interval: number | null = null;
 
     const handleAppStateChange = (nextAppState: string) => {
       if (nextAppState === "active") {
-        console.log("Setting update translation key interval");
+        log.debug("Setting update translation key interval");
         interval = setInterval(() => {
-          console.log("Updating translation key");
+          log.debug("Updating translation key");
           const newGreetingKey = getTimeBasedKey(keys);
           setTranslationKey((prevKey) =>
             prevKey !== newGreetingKey ? newGreetingKey : prevKey,
           );
         }, 60000);
       } else if (interval) {
-        console.log("Clearing update translation key interval");
+        log.debug("Clearing update translation key interval");
         clearInterval(interval);
         interval = null;
       }
@@ -46,7 +48,7 @@ export const useTimeTranslationKey = (
       listener.remove();
       if (interval) clearInterval(interval);
     };
-  }, []);
+  }, [keys]);
 
   return translationKey;
 };

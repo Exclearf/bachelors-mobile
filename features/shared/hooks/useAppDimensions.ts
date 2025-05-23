@@ -1,4 +1,5 @@
 import { useContext } from "react";
+
 import { AppDimensionsContext } from "../contexts/appDimensions";
 
 export const useAppDimensions = () => {

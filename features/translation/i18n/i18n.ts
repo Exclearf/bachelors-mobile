@@ -1,6 +1,6 @@
+import * as Localization from "expo-localization";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import * as Localization from "expo-localization";
 
 import enUS from "@/assets/i18n/en-US.json";
 import plPL from "@/assets/i18n/pl-PL.json";
@@ -34,9 +34,7 @@ const initiateLocalization = async () => {
     resources: translations,
     lng: preferredLocale,
     fallbackLng: "en-US",
-    interpolation: {
-      escapeValue: false,
-    },
+    interpolation: { escapeValue: false },
   });
 
   i18n.services.formatter!.add("optionalName", (value) => {

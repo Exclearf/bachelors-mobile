@@ -2,7 +2,7 @@
   "expo": {
     "name": "Mimika",
     "slug": "mimika",
-    "owner": "nboholii",
+    "owner": "encape",
     "version": "1.0.0",
     "originalFullName": "@your_username/your_app_name",
     "orientation": "portrait",
@@ -15,6 +15,7 @@
       "bundleIdentifier": "com.encape.app"
     },
     "android": {
+      "edgeToEdgeEnabled": true,
       "package": "com.encape.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
@@ -47,7 +48,18 @@
           "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera"
         }
       ],
-      "expo-font"
+      [
+        "react-native-vision-camera",
+        {
+          "cameraPermissionText": "$(PRODUCT_NAME) needs access to your Camera."
+        }
+      ],
+      "expo-font",
+      "expo-build-properties",
+      "expo-localization",
+      "expo-web-browser",
+      "react-native-vision-camera",
+      "expo-video"
     ],
     "experiments": {
       "typedRoutes": true,
@@ -58,7 +70,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "1cba7733-1dee-412a-aefd-2ffa716a2112"
+        "projectId": "430024da-a517-4dde-9844-5bb0716a214f"
       }
     }
   }

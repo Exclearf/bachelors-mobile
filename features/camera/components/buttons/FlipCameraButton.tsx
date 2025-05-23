@@ -1,12 +1,13 @@
-import { Pressable } from "react-native";
-import React, { useRef } from "react";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { CameraOverlayButtonProps } from "../../CameraOverlay";
+import React, { useRef } from "react";
+import { Pressable } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+
+import { CameraOverlayButtonProps } from "../../CameraOverlay";
 
 const FlipCameraButton = ({
   color,
@@ -16,11 +17,7 @@ const FlipCameraButton = ({
   const isRotated = useRef(false);
   const rotation = useSharedValue(0);
   const style = useAnimatedStyle(() => ({
-    transform: [
-      {
-        rotateZ: `${rotation.get()}deg`,
-      },
-    ],
+    transform: [{ rotateZ: `${rotation.get()}deg` }],
   }));
 
   const switchRotation = (state: boolean) => {

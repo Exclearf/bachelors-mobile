@@ -1,5 +1,7 @@
 import React from "react";
+
 import { SettingsSectionSubItemType } from "@/features/settings/SettingsSections";
+
 import ColorPanel from "./ColorPanel";
 import SettingsMenuEntryText from "../../shared/SettingsMenuEntryText";
 

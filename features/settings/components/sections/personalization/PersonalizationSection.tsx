@@ -1,9 +1,11 @@
-import { StyleSheet, View } from "react-native";
 import React from "react";
+import { StyleSheet, View } from "react-native";
+
+import { useLocalization } from "@/features/shared/hooks/useLocalization";
+
 import AppThemeSwitch from "./items/AppThemeSwitch";
 import ThemeColorSlider from "./items/ThemeColorPanel";
 import { SettingsSectionsItemType } from "../../../SettingsSections";
-import { useLocalization } from "@/features/shared/hooks/useLocalization";
 
 type Props = SettingsSectionsItemType;
 
@@ -30,8 +32,4 @@ const PersonalizationSection = ({
 
 export default PersonalizationSection;
 
-const styles = StyleSheet.create({
-  containerItem: {
-    paddingVertical: 10,
-  },
-});
+const styles = StyleSheet.create({ containerItem: { paddingVertical: 10 } });

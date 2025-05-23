@@ -1,15 +1,17 @@
 import React, { PropsWithChildren, useContext, useEffect } from "react";
+import { ViewStyle } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
-import { ViewStyle } from "react-native";
-import { useBottomSheet } from "@/features/shared/hooks/useBottomSheet";
-import { IconParameters } from "../../CameraOverlay";
-import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
-import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
 import { colorKit } from "reanimated-color-picker";
+
+import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
+import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
+import { useBottomSheet } from "@/features/shared/hooks/useBottomSheet";
+
+import { IconParameters } from "../../CameraOverlay";
 
 type Props = PropsWithChildren<{
   iconParameters: IconParameters;
@@ -24,7 +26,7 @@ const CameraModal = ({ isVisible, iconParameters, children }: Props) => {
 
   useEffect(() => {
     openState.set(isVisible ? 1 : 0);
-  }, [isVisible]);
+  }, [isVisible, openState]);
 
   const animatedStyle = useAnimatedStyle(() => {
     const adjustedHeight =
@@ -33,9 +35,7 @@ const CameraModal = ({ isVisible, iconParameters, children }: Props) => {
     const targetHeight = 300 - Math.min(adjustedHeight, 125);
     return {
       height: targetHeight,
-      opacity: withSpring(openState.get(), {
-        duration: 150,
-      }),
+      opacity: withSpring(openState.get(), { duration: 150 }),
       display: openState.value === 0 ? "none" : "flex",
     };
   });

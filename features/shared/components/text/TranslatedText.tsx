@@ -1,10 +1,11 @@
-import { Text, TextStyle } from "react-native";
 import React, { Suspense } from "react";
 import { WithTranslation, withTranslation } from "react-i18next";
-import Skeleton from "../feedback/Skeleton";
+import { Text, TextStyle } from "react-native";
+
+import { useFontSize } from "../../hooks/useFontSize";
 import { useTheme } from "../../hooks/useTheme";
 import { globalTheme } from "../../utils/themes";
-import { useFontSize } from "../../hooks/useFontSize";
+import Skeleton from "../feedback/Skeleton";
 
 type TranslationParameter =
   | string
@@ -27,8 +28,6 @@ type ComponentProps = {
   children?: React.ReactNode;
   fontSizeOverride?: number;
 };
-
-//TODO: Seprate the children into TranslatedText.
 
 const TranslatedText = ({
   t,
@@ -60,7 +59,10 @@ const TranslatedText = ({
       <Text
         numberOfLines={numberOfLines}
         style={[
-          { textAlign: "center", position: "relative" },
+          {
+            textAlign: "center",
+            position: "relative",
+          },
           {
             fontFamily: isBold
               ? globalTheme.fontSemiBold

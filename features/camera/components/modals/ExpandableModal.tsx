@@ -1,18 +1,24 @@
-import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 import React, { PropsWithChildren, useContext, useRef } from "react";
+import {
+  Pressable,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from "react-native";
 import Animated, {
   interpolate,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import { useTranslationStore } from "@/features/translation/stores/translationStore";
-import { useBottomSheet } from "@/features/shared/hooks/useBottomSheet";
-import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
+
+import CollapseAnimated from "@/features/shared/components/primitive/CollapseAnimated";
 import TranslatedText from "@/features/shared/components/text/TranslatedText";
-import CollapseAnimated from "@/features/shared/components/animated/CollapseAnimated";
-import TextToVoiceButton from "@/features/translation/components/TextToVoiceButton";
+import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
+import { useBottomSheet } from "@/features/shared/hooks/useBottomSheet";
+import ClearTranslationButton from "@/features/translation/components/shared/input/ClearTranslationButton";
+import { useTranslationStore } from "@/features/translation/stores/useTranslationStore";
 
 type Props = PropsWithChildren<{
   initialHeight: number;
@@ -34,6 +40,9 @@ const ExpandableModal = ({
   const { height, width } = useContext(AppDimensionsContext);
   const { bottomSheet } = useBottomSheet();
   const mode = useTranslationStore((state) => state.mode);
+  const activeVideo = useTranslationStore(
+    (state) => state.activeVideoTranslationResult,
+  );
 
   const animateStyle = useAnimatedStyle(() => {
     return {
@@ -51,10 +60,10 @@ const ExpandableModal = ({
         [
           initialHeight,
           Math.max(
-            height * 0.55 - height * 0.11 - 36,
+            height * 0.55 - height * 0.11 - 20,
             height -
               (bottomSheet?.animatedPosition.get() ?? 0) -
-              height * 0.19 -
+              height * 0.155 -
               padding / 2,
           ),
         ],
@@ -74,16 +83,15 @@ const ExpandableModal = ({
         <View
           style={[
             expandableModalStyles.customSectionStyle,
-            {
-              height: iconSize * 2,
-            },
+            { height: iconSize * 2 },
           ]}
         >
+          {/* TODO: Extract into a prop! */}
           {mode === "signToText" && (
-            <TextToVoiceButton size={24} color="white" />
+            <>{activeVideo && <ClearTranslationButton />}</>
           )}
         </View>
-        <TouchableWithoutFeedback
+        <Pressable
           onPress={() => {
             expansionFactor.set(withTiming(isExpanding.current ? 0 : 1));
             isExpanding.current = !isExpanding.current;
@@ -97,7 +105,7 @@ const ExpandableModal = ({
           }}
         >
           <CollapseAnimated value={expansionFactor} color="white" size={24} />
-        </TouchableWithoutFeedback>
+        </Pressable>
       </View>
       {children}
     </Animated.View>
@@ -111,14 +119,15 @@ export const expandableModalStyles = StyleSheet.create({
     width: "100%",
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     alignItems: "center",
   },
   headerText: {
     marginVertical: 10,
     marginHorizontal: 15,
-    color: "white",
-    fontSize: 20,
+    flex: 1,
+    textAlign: "left",
+    alignSelf: "flex-start",
   },
   customSectionStyle: {
     flex: 1,
@@ -126,5 +135,6 @@ export const expandableModalStyles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-end",
+    gap: 10,
   },
 });

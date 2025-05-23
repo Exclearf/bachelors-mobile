@@ -1,5 +1,6 @@
-import { StyleSheet, View } from "react-native";
 import React from "react";
+import { StyleSheet, View } from "react-native";
+
 import TranslatedText from "@/features/shared/components/text/TranslatedText";
 import { useLocalization } from "@/features/shared/hooks/useLocalization";
 import { useTheme } from "@/features/shared/hooks/useTheme";
@@ -10,7 +11,12 @@ const StudyTab = () => {
   const theme = useTheme();
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme?.background }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: theme?.background,
+      }}
+    >
       <View style={styles.headerContainer}>
         <TranslatedText
           fontSize="large"

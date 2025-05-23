@@ -1,13 +1,15 @@
 import React from "react";
-import TranslatedText from "@/features/shared/components/text/TranslatedText";
+import { ColorSchemeName } from "react-native";
+import { useShallow } from "zustand/react/shallow";
+
+import { useSettingsItemWidth } from "@/features/settings/hooks/useSettingsItemWidth";
+import { SettingsSectionSubItemType } from "@/features/settings/SettingsSections";
+import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
 import ToggleGroup, {
   ToggleItemType,
 } from "@/features/shared/components/input/ToggleGroup";
-import { SettingsSectionSubItemType } from "@/features/settings/SettingsSections";
-import { ColorSchemeName } from "react-native";
-import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
-import { useShallow } from "zustand/react/shallow";
-import { useSettingsItemWidth } from "@/features/settings/hooks/useSettingsItemWidth";
+import TranslatedText from "@/features/shared/components/text/TranslatedText";
+import log from "@/features/shared/utils/log";
 
 type Props = SettingsSectionSubItemType;
 
@@ -32,7 +34,7 @@ const AppThemeSwitch = ({ getTranslationKey, textStyle }: Props) => {
   const changeTheme = (e: ToggleItemType) => {
     setThemeType(e.id as ColorSchemeName);
 
-    console.log(`Theme changed to ${e.id}`);
+    log.debug(`Theme changed to ${e.id}`);
   };
 
   return (

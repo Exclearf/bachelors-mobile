@@ -1,11 +1,14 @@
 import React from "react";
-import { useTranslationStore } from "@/features/translation/stores/translationStore";
 import { useShallow } from "zustand/react/shallow";
+
+import { useSettingsItemWidth } from "@/features/settings/hooks/useSettingsItemWidth";
+import { SettingsSectionSubItemType } from "@/features/settings/SettingsSections";
 import ToggleGroup, {
   ToggleItemType,
 } from "@/features/shared/components/input/ToggleGroup";
-import { SettingsSectionSubItemType } from "@/features/settings/SettingsSections";
-import { useSettingsItemWidth } from "@/features/settings/hooks/useSettingsItemWidth";
+import log from "@/features/shared/utils/log";
+import { useTranslationStore } from "@/features/translation/stores/useTranslationStore";
+
 import SettingsMenuEntryText from "../../shared/SettingsMenuEntryText";
 
 type Props = SettingsSectionSubItemType;
@@ -25,7 +28,7 @@ const TranslationLanguageToggle = ({ getTranslationKey, textStyle }: Props) => {
   );
   const changeTranslationLanguage = (language: ToggleItemType) => {
     setCurrentLanguage(language);
-    console.log("Changing translation language to:", language.id);
+    log.info("Changing translation language to:", language.id);
   };
 
   return (

@@ -1,34 +1,21 @@
-import {
-  StyleProp,
-  StyleSheet,
-  TextStyle,
-  TouchableWithoutFeedback,
-  View,
-  ViewStyle,
-} from "react-native";
 import React from "react";
+import { StyleSheet, ViewStyle } from "react-native";
 import Animated from "react-native-reanimated";
-import { useTranslationStore } from "@/features/translation/stores/translationStore";
 import { useShallow } from "zustand/react/shallow";
-import { useCameraOptionsStore } from "@/features/camera/stores/cameraOptions";
+
+import { useCameraOptionsStore } from "@/features/camera/stores/useCameraOptions";
+import { useFontSize } from "@/features/shared/hooks/useFontSize";
 import { useTheme } from "@/features/shared/hooks/useTheme";
 import { globalTheme } from "@/features/shared/utils/themes";
-import { useFontSize } from "@/features/shared/hooks/useFontSize";
-import TranslatedText from "../../text/TranslatedText";
+import { useTranslationStore } from "@/features/translation/stores/useTranslationStore";
+
+import SelectionGroupItem from "./SelectGroundItem";
 
 export type SelectionGroupItemConfig = {
   id: "signToText" | "textToSign";
   translationKey: string;
   onClick: () => void;
   icon: (props: any) => React.ReactNode;
-};
-
-export type SelectionGroupItemProps = {
-  translationKey: string;
-  onClick: () => void;
-  textStyle: StyleProp<TextStyle>;
-  itemStyle: ViewStyle;
-  Icon: React.ReactNode;
 };
 
 type Props = {
@@ -62,17 +49,22 @@ const SelectGroup = ({ items, containerHeight }: Props) => {
     <Animated.View
       style={[
         styles.container,
-        { height: containerHeight, position: "relative" },
+        {
+          height: containerHeight,
+          position: "relative",
+        },
       ]}
     >
       {items?.map((item) => (
         <SelectionGroupItem
           key={item.id}
           onClick={() => {
+            if (mode === item.id) return;
+
             item.onClick();
             setIsAvailable(false);
             setMode(item.id);
-            setTimeout(() => setIsAvailable(true), 500);
+            setTimeout(() => setIsAvailable(true), 100);
           }}
           translationKey={item.translationKey}
           Icon={
@@ -106,27 +98,6 @@ const SelectGroup = ({ items, containerHeight }: Props) => {
     </Animated.View>
   );
 };
-
-const SelectionGroupItem = ({
-  translationKey,
-  onClick,
-  itemStyle,
-  textStyle,
-  Icon,
-}: SelectionGroupItemProps) => {
-  return (
-    <TouchableWithoutFeedback onPress={onClick}>
-      <View style={[styles.itemContainer, itemStyle]}>
-        {Icon}
-        <TranslatedText
-          style={textStyle as TextStyle}
-          translationKey={translationKey}
-        />
-      </View>
-    </TouchableWithoutFeedback>
-  );
-};
-
 export default SelectGroup;
 
 const styles = StyleSheet.create({

@@ -1,14 +1,15 @@
-import { Pressable, StyleSheet, View } from "react-native";
 import React from "react";
+import { Pressable, StyleSheet, View } from "react-native";
 import Animated, {
   runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import TranslatedText from "../text/TranslatedText";
-import { useTheme } from "../../hooks/useTheme";
+
 import { FontSizeMultiplier, useFontSize } from "../../hooks/useFontSize";
+import { useTheme } from "../../hooks/useTheme";
+import TranslatedText from "../text/TranslatedText";
 
 type Props = {
   items: ToggleItemType[];
@@ -44,9 +45,7 @@ const ToggleGroup = ({
   const activeIndex = useSharedValue(selectedIndex);
 
   const switchActiveBackgroundPosition = useAnimatedStyle(() => {
-    return {
-      left: itemWidth * activeIndex.value,
-    };
+    return { left: itemWidth * activeIndex.value };
   });
 
   const clickHandler = (item: ToggleItemType) => {
@@ -92,7 +91,10 @@ const ToggleGroup = ({
       <View
         style={[
           styles.switchContainer,
-          { height, borderColor: theme?.mutedForeground },
+          {
+            height,
+            borderColor: theme?.mutedForeground,
+          },
         ]}
       >
         {items.map((item, index) => {

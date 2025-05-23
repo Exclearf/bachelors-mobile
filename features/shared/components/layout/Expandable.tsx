@@ -1,4 +1,3 @@
-import { Pressable, StyleProp, View, ViewStyle } from "react-native";
 import React, {
   createContext,
   Dispatch,
@@ -10,6 +9,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { Pressable, StyleProp, View, ViewStyle } from "react-native";
 import Animated, {
   SharedValue,
   useAnimatedStyle,
@@ -93,11 +93,22 @@ const ExpandableComponent = forwardRef(
           setTriggerLayout,
         }}
       >
-        <View style={{ position: "relative" }}>{children}</View>
+        <View style={{ position: "relative" }}>
+          {children}
+          <View
+            style={{
+              borderBottomColor: "transparent",
+              borderBottomWidth: 1,
+              bottom: -1,
+            }}
+          ></View>
+        </View>
       </ExpandableContext.Provider>
     );
   },
 );
+
+ExpandableComponent.displayName = "ExpandableComponent";
 
 const Trigger = ({ children, style }: ExpandableTriggerProps) => {
   const context = useExpandableContext();
@@ -110,7 +121,12 @@ const Trigger = ({ children, style }: ExpandableTriggerProps) => {
 
   const onLayout = () => {
     triggerRef.current?.measure((x, y, width, height) => {
-      setTriggerLayout({ x, y, width, height });
+      setTriggerLayout({
+        x,
+        y,
+        width,
+        height,
+      });
     });
   };
 
@@ -135,7 +151,7 @@ const Content = ({
   const context = useExpandableContext();
 
   if (!context) {
-    return null;
+    throw new Error("Expandable Content must be used inside the Content!");
   }
 
   const { triggerLayout, expanded } = context;
@@ -156,6 +172,7 @@ const Content = ({
       width: triggerLayout?.width,
       height: expanded.value,
       overflow: "hidden",
+      zIndex: 2,
     };
   });
 

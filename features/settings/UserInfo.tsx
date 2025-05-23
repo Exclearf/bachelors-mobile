@@ -1,19 +1,21 @@
-import { Image, StyleSheet, View } from "react-native";
-import React, { useState } from "react";
-import { useShallow } from "zustand/react/shallow";
 import { router } from "expo-router";
-import { useTranslationStore } from "@/features/translation/stores/translationStore";
-import { useTimeTranslationKey } from "@/features/shared/hooks/useTimeTranslationKey";
-import TranslatedText from "../shared/components/text/TranslatedText";
+import React, { useState } from "react";
+import { Image, StyleSheet, View } from "react-native";
+import { useShallow } from "zustand/react/shallow";
+
 import { defaultPicture } from "@/features/auth/hooks/useAuthFlow";
+import { useTimeTranslationKey } from "@/features/shared/hooks/useTimeTranslationKey";
+import { useTranslationStore } from "@/features/translation/stores/useTranslationStore";
+
+import { useAuthStore } from "../auth/stores/useAuthStore";
+import Popup from "../shared/components/feedback/Popup";
 import Button from "../shared/components/input/Button";
-import { useAuthStore } from "../auth/stores/authStore";
+import TranslatedText from "../shared/components/text/TranslatedText";
 import {
   useLocalization,
   UseLocalizationFunction,
 } from "../shared/hooks/useLocalization";
 import { useTheme } from "../shared/hooks/useTheme";
-import Popup from "../shared/components/feedback/Popup";
 
 type Props = {
   getTranslationKey: UseLocalizationFunction;
@@ -27,7 +29,7 @@ const popupPadding = 5;
 const UserInfo = ({ getTranslationKey, height }: Props) => {
   getTranslationKey = useLocalization(getTranslationKey("userInfo"));
   const [setIsSignedIn, user] = useAuthStore(
-    useShallow((state) => [state.setIsLoggedIn, state.user]),
+    useShallow((state) => [state.setLoggedIn, state.user]),
   );
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const setMode = useTranslationStore((state) => state.setMode);
@@ -95,8 +97,8 @@ const UserInfo = ({ getTranslationKey, height }: Props) => {
               <Button
                 width={popupWidth - popupPadding * 2}
                 height={popupHeight - popupPadding * 2}
-                backgroundColor="#551616"
                 style={{ borderRadius: 5 }}
+                variant="destructive"
                 onPress={() => {
                   setMode("signToText");
                   router.replace("/");

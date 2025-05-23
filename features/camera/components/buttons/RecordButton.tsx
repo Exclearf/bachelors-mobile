@@ -1,6 +1,7 @@
-import { TouchableOpacity } from "react-native";
-import React from "react";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import React from "react";
+import { TouchableOpacity } from "react-native";
+
 import { CameraOverlayButtonProps } from "../../CameraOverlay";
 
 const RecordButton = ({ size, color, onClick }: CameraOverlayButtonProps) => {

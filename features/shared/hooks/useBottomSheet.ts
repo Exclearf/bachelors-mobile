@@ -1,6 +1,7 @@
 import { useContext } from "react";
-import { BottomSheetContext } from "../contexts/bottomSheetContext";
+
 import { BottomSheetWrapperRef } from "../components/layout/BottomSheetWrapper";
+import { BottomSheetContext } from "../contexts/bottomSheetContext";
 
 export const useBottomSheet = () => {
   const context = useContext(BottomSheetContext);
@@ -17,7 +18,6 @@ export const useBottomSheet = () => {
     if (isRegistered || !ref) {
       return;
     }
-
     setBottomSheetRef(ref);
   };
 
