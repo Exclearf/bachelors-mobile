@@ -33,5 +33,15 @@ allprojects {
   }
 }
 
+def sdkVersion     = project.findProperty('android.compileSdkVersion')?.toInteger()
+def targetVersion  = project.findProperty('android.targetSdkVersion')?.toInteger()
+def toolsVersion   = project.findProperty('android.buildToolsVersion')
+
+ext {
+  compileSdkVersion = sdkVersion     ?: 35
+  targetSdkVersion  = targetVersion  ?: 35
+  buildToolsVersion = toolsVersion   ?: "35.0.0"
+}
+
 apply plugin: "expo-root-project"
 apply plugin: "com.facebook.react.rootproject"
