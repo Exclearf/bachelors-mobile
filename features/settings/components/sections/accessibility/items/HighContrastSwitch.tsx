@@ -5,7 +5,7 @@ import Animated from "react-native-reanimated";
 import { useShallow } from "zustand/react/shallow";
 
 import { useSettingsItemWidth } from "@/features/settings/hooks/useSettingsItemWidth";
-import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
+import { usePersonalizationStore } from "@/features/settings/stores/usePersonalizationStore";
 import Switch from "@/features/shared/components/input/Switch";
 import { WithForwardRef } from "@/features/shared/components/misc/WithForwardRef";
 import TranslatedText from "@/features/shared/components/text/TranslatedText";

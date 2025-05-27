@@ -36,6 +36,3 @@ yarn-error.*
 *.tsbuildinfo
 
 app-example
-
-android/build.gradle
-android/gradle.properties

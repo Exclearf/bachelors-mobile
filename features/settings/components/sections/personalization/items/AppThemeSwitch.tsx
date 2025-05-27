@@ -4,7 +4,7 @@ import { useShallow } from "zustand/react/shallow";
 
 import { useSettingsItemWidth } from "@/features/settings/hooks/useSettingsItemWidth";
 import { SettingsSectionSubItemType } from "@/features/settings/SettingsSections";
-import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
+import { usePersonalizationStore } from "@/features/settings/stores/usePersonalizationStore";
 import ToggleGroup, {
   ToggleItemType,
 } from "@/features/shared/components/input/ToggleGroup";

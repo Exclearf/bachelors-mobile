@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { useShallow } from "zustand/react/shallow";
 
 import { useSettingsItemWidth } from "@/features/settings/hooks/useSettingsItemWidth";
-import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
+import { usePersonalizationStore } from "@/features/settings/stores/usePersonalizationStore";
 import Slider from "@/features/shared/components/input/Slider";
 import TranslatedText from "@/features/shared/components/text/TranslatedText";
 

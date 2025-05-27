@@ -2,7 +2,6 @@ import React from "react";
 import { Pressable, StyleProp, StyleSheet, TextStyle } from "react-native";
 import Animated, {
   AnimatedStyle,
-  BounceOutRight,
   Easing,
   interpolateColor,
   useAnimatedStyle,
@@ -30,7 +29,7 @@ type CustomSwitchThumbProps = {
 type CustomSwitchThumb = ({
   size,
   style,
-}: CustomSwitchThumbProps) => React.ReactNode;
+}: CustomSwitchThumbProps) => React.ReactNode | Promise<React.ReactNode>;
 
 type Props = {
   checked: boolean;

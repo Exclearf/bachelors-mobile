@@ -4,7 +4,7 @@ import ColorPicker, { Panel2 } from "reanimated-color-picker";
 import { useShallow } from "zustand/react/shallow";
 
 import { useSettingsItemWidth } from "@/features/settings/hooks/useSettingsItemWidth";
-import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
+import { usePersonalizationStore } from "@/features/settings/stores/usePersonalizationStore";
 import Skeleton from "@/features/shared/components/feedback/Skeleton";
 import { useTheme } from "@/features/shared/hooks/useTheme";
 
