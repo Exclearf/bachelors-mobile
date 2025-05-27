@@ -1,7 +1,7 @@
 import React, { lazy, Suspense, useContext } from "react";
 import { StyleSheet, View } from "react-native";
 
-import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
+import { usePersonalizationStore } from "@/features/settings/stores/usePersonalizationStore";
 import Skeleton from "@/features/shared/components/feedback/Skeleton";
 import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
 import { useLocalization } from "@/features/shared/hooks/useLocalization";

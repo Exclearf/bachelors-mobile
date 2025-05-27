@@ -7,10 +7,10 @@ import { useColorScheme } from "react-native";
 import { colorKit } from "reanimated-color-picker";
 import { useShallow } from "zustand/react/shallow";
 
-import { usePersonalizationStore } from "../../../settings/stores/personalizationStore";
+import { usePersonalizationStore } from "../../../settings/stores/usePersonalizationStore";
 import { generateTheme } from "../../utils/themes";
 
-type Props = PropsWithChildren<{}>;
+type Props = PropsWithChildren<object>;
 
 // TODO: Extract the logic from this component into a custom hook
 const ThemeProvider = ({ children }: Props) => {
@@ -31,7 +31,7 @@ const ThemeProvider = ({ children }: Props) => {
     if (themeType == null) {
       setThemeType(colorScheme);
     }
-  }, []);
+  }, [colorScheme, setThemeType, themeType]);
 
   useEffect(() => {
     const theme = themeFromSourceColor(argbFromHex(colorKit.HEX(accentColor)));
@@ -43,7 +43,7 @@ const ThemeProvider = ({ children }: Props) => {
     );
 
     setTheme(newTheme);
-  }, [themeType, isHighContrast, accentColor]);
+  }, [themeType, isHighContrast, accentColor, setTheme]);
 
   return <>{children}</>;
 };

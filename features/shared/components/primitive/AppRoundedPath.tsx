@@ -6,10 +6,10 @@ import { useSharedValue } from "react-native-reanimated";
 
 import { useBottomSheet } from "@/features/shared/hooks/useBottomSheet";
 
-import { usePersonalizationStore } from "../../../settings/stores/personalizationStore";
 import { useAppDimensions } from "../../hooks/useAppDimensions";
 import { useIsFullScreenRoute } from "../../hooks/useIsFullScreenRoute";
 import { useSkiaPath, UseSkiaPathProps } from "../../hooks/useSkiaPath";
+import { useTheme } from "../../hooks/useTheme";
 
 type Props = {
   barHeight: number;
@@ -32,10 +32,9 @@ const AppRoundedPath = ({
   const [parentWidth, setParentWidth] = useState(0);
   const { bottomSheet } = useBottomSheet();
   const isFullScreenRoute = useIsFullScreenRoute();
+  const theme = useTheme();
 
-  let handlePadColor = usePersonalizationStore(
-    (state) => state.theme,
-  )?.secondaryForeground!;
+  let handlePadColor = theme?.secondaryForeground!;
 
   if (handlePadColorOverride) handlePadColor = handlePadColorOverride;
 
@@ -48,8 +47,6 @@ const AppRoundedPath = ({
       setParentWidth(newWidth);
     }
   };
-
-  const theme = usePersonalizationStore((state) => state.theme);
 
   const { width } = useAppDimensions();
 

@@ -3,7 +3,7 @@ import { StyleSheet, ViewStyle } from "react-native";
 import Animated from "react-native-reanimated";
 import { useShallow } from "zustand/react/shallow";
 
-import { useCameraOptionsStore } from "@/features/camera/stores/useCameraOptions";
+import { useCameraOptionsStore } from "@/features/camera/stores/useCameraOptionsStore";
 import { useFontSize } from "@/features/shared/hooks/useFontSize";
 import { useTheme } from "@/features/shared/hooks/useTheme";
 import { globalTheme } from "@/features/shared/utils/themes";

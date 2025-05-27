@@ -12,7 +12,7 @@ import useCamera from "./hooks/useCamera";
 import useCameraAsset from "./hooks/useCameraAsset";
 import useGalleryAsset from "./hooks/useGalleryAsset";
 import PictureBbox, { PictureBboxRef } from "./PictureBbox";
-import { useCameraOptionsStore } from "./stores/useCameraOptions";
+import { useCameraOptionsStore } from "./stores/useCameraOptionsStore";
 import ModalWindow from "../shared/components/layout/ModalWindow";
 import { useAppDimensions } from "../shared/hooks/useAppDimensions";
 import { ComponentSize } from "../shared/hooks/useComponentSize";

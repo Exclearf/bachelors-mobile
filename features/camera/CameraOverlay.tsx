@@ -5,7 +5,7 @@ import Animated, {
   useDerivedValue,
 } from "react-native-reanimated";
 
-import { useCameraOptionsStore } from "@/features/camera/stores/useCameraOptions";
+import { useCameraOptionsStore } from "@/features/camera/stores/useCameraOptionsStore";
 import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
 import { useBottomSheet } from "@/features/shared/hooks/useBottomSheet";
 
@@ -18,21 +18,25 @@ import CameraBottomContainer from "./components/containers/CameraBottomContainer
 import CameraSettingsContainer from "./components/containers/CameraSettingsContainer";
 import CameraTopContainer from "./components/containers/CameraTopContainer";
 import SettingsModal from "./components/modals/SettingsModal";
-import { usePersonalizationStore } from "../settings/stores/personalizationStore";
 import Spinner from "../shared/components/feedback/Spinner";
+import { useTheme } from "../shared/hooks/useTheme";
 import useWrapAuth from "../shared/hooks/useWrapAuth";
+import RecordingTime from "./components/feedback/RecordingTime";
+import { useTranslationStore } from "../translation/stores/useTranslationStore";
+import PhotoRecordButton from "./components/buttons/PhotoRecordButton";
+import VideoRecordButton from "./components/buttons/VideoRecordButton";
 
 type CameraOverlayProps = {
   switchTorch: () => void;
   switchDevice: () => void;
   switchDeviceEnabled: boolean;
-
   onCameraClick: () => void;
   onGalleryClick: () => void;
 };
 
 export type CameraOverlayButtonProps = React.PropsWithChildren<{
   onClick?: () => void;
+  iconName?: string;
 }> &
   IconParameters &
   ButtonParameters;
@@ -58,7 +62,8 @@ const CameraOverlay = ({
   const { bottomSheet } = useBottomSheet();
   const [settingsModalExpanded, setSettingsModalExpanded] = useState(false);
   const isAvailable = useCameraOptionsStore((state) => state.isAvailable);
-  const theme = usePersonalizationStore((state) => state.theme);
+  const theme = useTheme();
+  const mode = useTranslationStore((state) => state.mode);
   const wrapAuth = useWrapAuth();
 
   const buttonParameters: ButtonParameters = { buttonStyle: { padding: 10 } };
@@ -75,6 +80,11 @@ const CameraOverlay = ({
       onClick: () => setSettingsModalExpanded((prev) => !prev),
     },
     {
+      item: RecordingTime,
+      onClick: () => {},
+      enabled: true,
+    },
+    {
       item: FlashlightButton,
       onClick: switchTorch,
     },
@@ -88,7 +98,7 @@ const CameraOverlay = ({
         enabled: true,
       },
       {
-        item: RecordButton,
+        item: mode === "textToSign" ? PhotoRecordButton : VideoRecordButton,
         onClick: onCameraClick,
         enabled: true,
       },
@@ -98,7 +108,7 @@ const CameraOverlay = ({
         enabled: switchDeviceEnabled,
       },
     ],
-    [switchDevice, switchDeviceEnabled, onCameraClick, onGalleryClick],
+    [switchDevice, switchDeviceEnabled, onCameraClick, onGalleryClick, mode],
   );
 
   const containersScale = useDerivedValue(() => {

@@ -7,12 +7,12 @@ import { Pressable, StyleSheet } from "react-native";
 
 import LoginScreen from "@/features/auth/LoginScreen";
 import { useAuthStore } from "@/features/auth/stores/useAuthStore";
-import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
 import { useAppSetup } from "@/features/shared/hooks/useAppSetup";
+import { useTheme } from "@/features/shared/hooks/useTheme";
 
 const RootLayout = () => {
   const loggedIn = useAuthStore((state) => state.loggedIn);
-  const theme = usePersonalizationStore((state) => state.theme);
+  const theme = useTheme();
 
   // This hook is used to prevent the splash screen from hiding before the app is fully loaded
   // It is placed here in order not to re-render the app

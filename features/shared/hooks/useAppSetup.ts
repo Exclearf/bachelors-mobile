@@ -6,15 +6,15 @@ import {
 import { SplashScreen } from "expo-router";
 import { useEffect } from "react";
 
-import { useCameraOptionsStore } from "@/features/camera/stores/useCameraOptions";
-import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
+import { useCameraOptionsStore } from "@/features/camera/stores/useCameraOptionsStore";
 
 import { useBottomSheet } from "./useBottomSheet";
+import { useTheme } from "./useTheme";
 
 export const useAppSetup = () => {
   const isCameraAvailable = useCameraOptionsStore((state) => state.isAvailable);
   const isBottomSheetRegistered = useBottomSheet().isRegistered;
-  const theme = usePersonalizationStore((state) => state.theme);
+  const theme = useTheme();
   const [isFontLoaded] = useFonts({
     OpenSans_400Regular,
     OpenSans_600SemiBold,

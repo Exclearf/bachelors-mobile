@@ -2,7 +2,7 @@ import { Canvas, Circle, Path } from "@shopify/react-native-skia";
 import { StyleSheet } from "react-native";
 import { useShallow } from "zustand/react/shallow";
 
-import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
+import { usePersonalizationStore } from "@/features/settings/stores/usePersonalizationStore";
 
 import { useTheme } from "../../hooks/useTheme";
 import { useConfidenceIndicatorPath } from "../../utils/svgPathCreators";

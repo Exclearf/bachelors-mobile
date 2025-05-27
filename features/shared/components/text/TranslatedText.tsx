@@ -27,8 +27,13 @@ type ComponentProps = {
   numberOfLines?: number;
   children?: React.ReactNode;
   fontSizeOverride?: number;
+  translate?: boolean;
 };
 
+// TODO:
+// Improve component semantic meaning
+// by changing name from "TranslatedText"
+// to "Text"
 const TranslatedText = ({
   t,
   translationKey,
@@ -40,6 +45,7 @@ const TranslatedText = ({
   numberOfLines = 1,
   children,
   fontSizeOverride,
+  translate = true,
 }: WithTranslation & ComponentProps) => {
   const theme = useTheme();
   const currentFontSize = useFontSize();
@@ -76,7 +82,7 @@ const TranslatedText = ({
           { fontSize: fontSizeOverride ?? currentFontSize[fontSize] },
         ]}
       >
-        {t(translationKey, translationParameters)}
+        {translate ? t(translationKey, translationParameters) : translationKey}
       </Text>
       {children}
     </Suspense>

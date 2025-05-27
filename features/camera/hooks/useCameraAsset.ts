@@ -1,6 +1,7 @@
 import * as ImageManipulator from "expo-image-manipulator";
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 import { Camera, Orientation } from "react-native-vision-camera";
+import { useShallow } from "zustand/react/shallow";
 
 import { ComponentSize } from "@/features/shared/hooks/useComponentSize";
 import log from "@/features/shared/utils/log";
@@ -8,6 +9,7 @@ import { useTranslationStore } from "@/features/translation/stores/useTranslatio
 
 import { UseAssetFetcher } from "../misc/types";
 import { PictureBboxRef } from "../PictureBbox";
+import { useCameraOptionsStore } from "../stores/useCameraOptionsStore";
 
 const useCameraAsset = (
   pictureBboxRef: RefObject<PictureBboxRef | null>,
@@ -17,7 +19,9 @@ const useCameraAsset = (
   const [assetUri, setAssetUri] = useState<string>("");
   const isTakingPhoto = useRef(false);
   const mode = useTranslationStore((state) => state.mode);
-
+  const [isFetching, setIsFetching] = useCameraOptionsStore(
+    useShallow((state) => [state.isFetching, state.setIsFetching]),
+  );
   const frameRef = useRef<ComponentSize | null>(null);
 
   useEffect(() => {
@@ -97,7 +101,32 @@ const useCameraAsset = (
     }
   }, [cameraRef, pictureBboxRef, assetUri.length]);
 
-  const takeVideo = () => log.debug("Taking video");
+  const takeVideo = () => {
+    if (isFetching) {
+      cameraRef?.current?.stopRecording();
+    } else {
+      cameraRef.current!.startRecording({
+        fileType: "mp4",
+        videoCodec: "h265",
+        onRecordingFinished: (video) => {
+          setAssetUri(video.path);
+        },
+        onRecordingError(error) {
+          log.warn(error);
+        },
+      });
+    }
+
+    setIsFetching(!isFetching);
+  };
+
+  useEffect(() => {
+    setIsFetching(false);
+
+    const cancelRecording = async () => {
+      await cameraRef?.current?.cancelRecording();
+    };
+  }, [mode]);
 
   const requestAsset = mode === "textToSign" ? takePhoto : takeVideo;
 

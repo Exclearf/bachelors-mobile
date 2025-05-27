@@ -6,7 +6,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { useAuthStore } from "@/features/auth/stores/useAuthStore";
 import CameraView from "@/features/camera/CameraView";
-import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
+import { usePersonalizationStore } from "@/features/settings/stores/usePersonalizationStore";
 import AppBottomSheet from "@/features/shared/components/layout/AppBottomSheet";
 import AppRoundedPath from "@/features/shared/components/primitive/AppRoundedPath";
 import AppDimensionsProvider from "@/features/shared/components/provider/AppDimensionsProvider";

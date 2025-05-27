@@ -7,9 +7,9 @@ import Animated, {
 } from "react-native-reanimated";
 import { colorKit } from "reanimated-color-picker";
 
-import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
 import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
 import { useBottomSheet } from "@/features/shared/hooks/useBottomSheet";
+import { useTheme } from "@/features/shared/hooks/useTheme";
 
 import { IconParameters } from "../../CameraOverlay";
 
@@ -22,7 +22,7 @@ const CameraModal = ({ isVisible, iconParameters, children }: Props) => {
   const { width, height } = useContext(AppDimensionsContext);
   const openState = useSharedValue(0);
   const { bottomSheet } = useBottomSheet();
-  const theme = usePersonalizationStore((state) => state.theme);
+  const theme = useTheme();
 
   useEffect(() => {
     openState.set(isVisible ? 1 : 0);

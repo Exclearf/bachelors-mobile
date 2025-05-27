@@ -3,7 +3,7 @@ import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { useShallow } from "zustand/react/shallow";
 
-import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
+import { usePersonalizationStore } from "@/features/settings/stores/usePersonalizationStore";
 import Button from "@/features/shared/components/input/Button";
 import CircleIndicator from "@/features/shared/components/layout/CircleIndicator";
 import ModalWindow from "@/features/shared/components/layout/ModalWindow";

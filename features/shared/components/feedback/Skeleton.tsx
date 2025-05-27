@@ -8,7 +8,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { colorKit } from "reanimated-color-picker";
 
-import { usePersonalizationStore } from "@/features/settings/stores/personalizationStore";
+import { useTheme } from "../../hooks/useTheme";
 
 type Props = {
   style: ViewStyle;
@@ -16,7 +16,7 @@ type Props = {
 
 const Skeleton = ({ style }: Props) => {
   const opacity = useSharedValue(0.75);
-  const theme = usePersonalizationStore((state) => state.theme);
+  const theme = useTheme();
   const color = useMemo(
     () => colorKit.RGB(theme?.mutedForeground ?? "#000000").array(),
     [theme],
