@@ -9,8 +9,9 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "test": "jest --watchAll",
-    "lint": "expo lint",
-    "lint1": "npx eslint --ext .js,.jsx,.ts,.tsx ."
+    "lint": "npx eslint --ext .js,.jsx,.ts,.tsx .",
+    "dev": "IS_RELEASE=false npx expo start --tunnel",
+    "build": "IS_RELEASE=false npx expo run:android"
   },
   "jest": {
     "preset": "jest-expo"
