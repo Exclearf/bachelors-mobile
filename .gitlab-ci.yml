@@ -1,0 +1,35 @@
+image: docker:24.0.5
+
+services:
+  - docker:24.0.5-dind
+
+stages:
+  - build
+
+cache:
+  key: npm
+  policy: pull-push
+  paths:
+    - .npm/
+
+build:
+  stage: build
+  before_script:
+    - export IS_RELEASE=true
+  script:
+    - docker pull encape/react-native-arm64:1.0.6
+    - docker buildx build --platform linux/arm64 --load --build-arg EXPO_TOKEN="$EXPO_TOKEN" --build-arg KEYSTORE_PASSWORD="$KEYSTORE_PASS" --build-arg KEY_PASSWORD="$KEY_PASS" --build-arg KEY_ALIAS="$KEY_ALIAS" -t my-image:latest .
+    - mkdir artifacts
+    - CONTAINER_ID=$(docker create my-image:latest)
+    - docker cp "$CONTAINER_ID":/usr/app/artifacts/app.aab artifacts/
+    - ls -la artifacts/
+    - docker rm "$CONTAINER_ID"
+    - docker rmi my-image:latest || true
+  artifacts:
+    paths:
+      - artifacts
+    untracked: false
+    when: on_success
+    access: developer
+    expire_in: "30 days"
+
