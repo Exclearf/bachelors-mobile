@@ -3,7 +3,7 @@ import { immer } from "zustand/middleware/immer";
 
 import { ToggleItemType } from "@/features/shared/components/input/ToggleGroup";
 
-import { Gloss } from "../utils/types";
+import { Gloss, TranslatedVideo } from "../utils/types";
 
 type Modes = "signToText" | "textToSign";
 
@@ -33,7 +33,9 @@ type TranslationStoreState = {
   currentLanguage: LanguageItem;
   availableLanguages: typeof availableLanguages;
   activeVideoTranslationResult: Gloss[] | null;
+  activeTextTranslationResult: TranslatedVideo[] | null;
   videoTranslationResults: Gloss[][] | null;
+  textTranslationResults: TranslatedVideo[][] | null;
 };
 
 type TranslationStoreActions = {
@@ -41,10 +43,14 @@ type TranslationStoreActions = {
   setModel: (newModel: Model) => void;
   setCurrentLanguage: (newLanguage: LanguageItem) => void;
   clearActiveVideoTranslationResult: () => void;
-  removeVideoFromHistory: (video: Gloss[]) => void;
+  removeVideoTranslationFromHistory: (video: Gloss[]) => void;
   addVideoTranslationResult: (result: Gloss[]) => void;
+  clearActiveTextTranslationResult: () => void;
+  removeTextTranslationFromHistory: (text: TranslatedVideo[]) => void;
+  addTextTranslationResult: (result: TranslatedVideo[]) => void;
 };
 
+//TODO: Extract into 2 stores and merge here
 export const useTranslationStore = create<
   TranslationStoreState & TranslationStoreActions
 >()(
@@ -52,7 +58,9 @@ export const useTranslationStore = create<
     mode: "signToText",
     model: null,
     videoTranslationResults: null,
+    textTranslationResults: null,
     activeVideoTranslationResult: null,
+    activeTextTranslationResult: null,
     availableLanguages,
     currentLanguage: availableLanguages[0],
     setCurrentLanguage: (newLanguage: LanguageItem) => {
@@ -83,7 +91,7 @@ export const useTranslationStore = create<
         state.activeVideoTranslationResult = result;
       });
     },
-    removeVideoFromHistory(video) {
+    removeVideoTranslationFromHistory(video) {
       set((state) => {
         state.videoTranslationResults =
           state.videoTranslationResults?.filter(
@@ -103,6 +111,40 @@ export const useTranslationStore = create<
 
       set((state) => {
         state.activeVideoTranslationResult = null;
+      });
+    },
+    addTextTranslationResult: (result) => {
+      const { activeTextTranslationResult, clearActiveTextTranslationResult } =
+        get();
+
+      if (activeTextTranslationResult != null) {
+        clearActiveTextTranslationResult();
+      }
+
+      set((state) => {
+        state.activeTextTranslationResult = result;
+      });
+    },
+    removeTextTranslationFromHistory(text) {
+      set((state) => {
+        state.textTranslationResults =
+          state.textTranslationResults?.filter(
+            (item) => item[0].id !== text[0].id,
+          ) ?? null;
+      });
+    },
+    clearActiveTextTranslationResult: () => {
+      const { activeTextTranslationResult } = get();
+
+      set((state) => {
+        state.textTranslationResults = [
+          activeTextTranslationResult!,
+          ...(state.textTranslationResults ?? []),
+        ];
+      });
+
+      set((state) => {
+        state.activeTextTranslationResult = null;
       });
     },
   })),

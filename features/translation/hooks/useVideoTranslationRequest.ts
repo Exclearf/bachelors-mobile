@@ -19,7 +19,7 @@ const useVideoTranslationRequest = (
       type: "video/mp4",
     } as any);
 
-    formData.append("top_k", "5");
+    formData.append("topK", "15");
 
     const response = await fetchWithTimoutWrapper(
       "https://bachelors.encape.me/api/translate/video-to-text",
@@ -34,8 +34,10 @@ const useVideoTranslationRequest = (
       controller.current,
     );
 
-    if (!response.ok) log.debug(`Response code: ${response.status}`);
-
+    if (!response.ok) {
+      log.debug(`Response code: ${response.status}`);
+      log.debug(response);
+    }
     const json = await response.json();
 
     return Object.entries(json.glosses)

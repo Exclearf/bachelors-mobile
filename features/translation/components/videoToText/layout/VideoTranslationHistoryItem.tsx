@@ -1,6 +1,6 @@
 import Feather from "@expo/vector-icons/Feather";
 import { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { useShallow } from "zustand/react/shallow";
 
 import { usePersonalizationStore } from "@/features/settings/stores/usePersonalizationStore";
@@ -8,7 +8,10 @@ import Button from "@/features/shared/components/input/Button";
 import CircleIndicator from "@/features/shared/components/layout/CircleIndicator";
 import ModalWindow from "@/features/shared/components/layout/ModalWindow";
 import TranslatedText from "@/features/shared/components/text/TranslatedText";
-import { useLocalization } from "@/features/shared/hooks/useLocalization";
+import {
+  useLocalization,
+  UseLocalizationFunction,
+} from "@/features/shared/hooks/useLocalization";
 import { useTheme } from "@/features/shared/hooks/useTheme";
 import { useTranslationStore } from "@/features/translation/stores/useTranslationStore";
 import { Gloss } from "@/features/translation/utils/types";
@@ -17,18 +20,20 @@ import VideoTranslationResult from "./VideoTranslationResult";
 
 type VideoTranslationHistoryItemProps = {
   gloss: Gloss[];
+  getTranslationKey: UseLocalizationFunction;
 };
 
 const VideoTranslationHistoryItem = ({
   gloss,
+  getTranslationKey,
 }: VideoTranslationHistoryItemProps) => {
   const [fontSize, fontScale] = usePersonalizationStore(
     useShallow((state) => [state.fontSize, state.fontScale]),
   );
-  const getTranslationKey = useLocalization("shared");
+  getTranslationKey = useLocalization(getTranslationKey("shared"));
   const theme = useTheme();
-  const removeVideoFromHistory = useTranslationStore(
-    (state) => state.removeVideoFromHistory,
+  const removeVideoTranslationFromHistory = useTranslationStore(
+    (state) => state.removeVideoTranslationFromHistory,
   );
   const [isItemSettingsOpen, setIsItemSettingsOpen] = useState(false);
 
@@ -63,11 +68,15 @@ const VideoTranslationHistoryItem = ({
       <ModalWindow
         isOpen={isItemSettingsOpen}
         closeCallback={() => setIsItemSettingsOpen(false)}
+        style={{ maxHeight: "50%" }}
       >
         <ModalWindow.Header translationKey={getTranslationKey("info")} />
-        {gloss.map((item) => (
-          <VideoTranslationResult gloss={item} key={item.rank} />
-        ))}
+        <ScrollView style={{ flexGrow: 0, marginVertical: 15 }}>
+          {gloss.map((item) => (
+            <VideoTranslationResult gloss={item} key={item.rank} />
+          ))}
+        </ScrollView>
+
         <ModalWindow.Footer
           closeCallback={() => setIsItemSettingsOpen(false)}
           buttonStyle={styles.modalButton}
@@ -75,7 +84,7 @@ const VideoTranslationHistoryItem = ({
           <Button
             style={styles.modalButton}
             variant="destructive"
-            onPress={() => removeVideoFromHistory(gloss)}
+            onPress={() => removeVideoTranslationFromHistory(gloss)}
           >
             <TranslatedText translationKey="Delete"></TranslatedText>
           </Button>

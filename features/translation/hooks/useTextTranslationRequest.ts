@@ -48,11 +48,7 @@ const useTextTranslationRequest = (
 
     const json = await response.json();
 
-    log.debug(`Extracted text: ${json.extractedText}`);
-
-    log.debug("Removing temporary files.");
-
-    return json;
+    return json.extractedText;
   };
 
   return [makeRequest];

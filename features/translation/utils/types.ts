@@ -14,3 +14,9 @@ export type Gloss = {
   confidence: number;
   value: string;
 };
+
+export type TranslatedVideo = {
+  id: string;
+  url: string;
+  glossValue: string;
+};

@@ -1,5 +1,4 @@
-import { TouchableOpacity } from "@gorhom/bottom-sheet";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 import CircleIndicator from "@/features/shared/components/layout/CircleIndicator";
 import TranslatedText from "@/features/shared/components/text/TranslatedText";
@@ -13,13 +12,10 @@ type Props = {
 const VideoTranslationResult = ({ gloss }: Props) => {
   const showToast = useShowToast();
 
-  // TODO:
-  // Add a popup with exact %
-
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        onPressOut={() => showToast(`${(gloss.confidence * 100).toFixed(2)}%`)}
+        onPress={() => showToast(`${(gloss.confidence * 100).toFixed(2)}%`)}
       >
         <CircleIndicator fillValue={gloss.confidence} />
       </TouchableOpacity>

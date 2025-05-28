@@ -13,6 +13,7 @@ export type ModalWindowProps = React.PropsWithChildren<{
   closeCallback?: () => void;
   acceptCallback?: () => void;
   title?: string;
+  style?: ViewStyle;
 }>;
 
 type ModalWindowHeaderProps = {
@@ -89,6 +90,7 @@ const ModalWindow = ({
   isOpen,
   closeCallback,
   acceptCallback,
+  style,
   children,
 }: ModalWindowProps) => {
   const theme = useTheme();
@@ -100,7 +102,7 @@ const ModalWindow = ({
       backdropColor={"transparent"}
       visible={isOpen}
     >
-      <View style={styles.modalContainer}>
+      <View style={[styles.modalContainer]}>
         <View
           style={[
             styles.modalBody,
@@ -109,6 +111,7 @@ const ModalWindow = ({
               borderColor: theme?.mutedForeground,
               borderWidth: 1,
             },
+            style,
           ]}
         >
           {children}

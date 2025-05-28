@@ -1,5 +1,6 @@
 import { File } from "expo-file-system/next";
 import { useRef, useState } from "react";
+import { useShallow } from "zustand/react/shallow";
 
 import { useAuthStore } from "@/features/auth/stores/useAuthStore";
 import { UseLocalizationFunction } from "@/features/shared/hooks/useLocalization";
@@ -29,9 +30,13 @@ const useAssetTranslation = (
   );
   const [isAborted, setIsAborted] = useState(false);
 
-  const addVideoTranslationResult = useTranslationStore(
-    (state) => state.addVideoTranslationResult,
-  );
+  const [addTextTranslationResult, addVideoTranslationResult] =
+    useTranslationStore(
+      useShallow((state) => [
+        state.addTextTranslationResult,
+        state.addVideoTranslationResult,
+      ]),
+    );
 
   const translate = async () => {
     if (isFetching) return;
@@ -56,11 +61,12 @@ const useAssetTranslation = (
 
       switch (mode) {
         case "textToSign":
-          await makePhotoRequest(file, controller);
+          const photoResult = await makePhotoRequest(file, controller);
+          addTextTranslationResult(photoResult);
           break;
         case "signToText":
-          const result = await makeVideoRequest(file, controller);
-          addVideoTranslationResult(result);
+          const videoResult = await makeVideoRequest(file, controller);
+          addVideoTranslationResult(videoResult);
           break;
       }
 

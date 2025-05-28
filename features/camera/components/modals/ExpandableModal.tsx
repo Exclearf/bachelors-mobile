@@ -6,6 +6,7 @@ import {
   View,
   ViewStyle,
 } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import Animated, {
   interpolate,
   useAnimatedStyle,
@@ -60,7 +61,7 @@ const ExpandableModal = ({
         [
           initialHeight,
           Math.max(
-            height * 0.55 - height * 0.11 - 20,
+            height * 0.55 - height * 0.11 - 22,
             height -
               (bottomSheet?.animatedPosition.get() ?? 0) -
               height * 0.155 -
@@ -107,7 +108,7 @@ const ExpandableModal = ({
           <CollapseAnimated value={expansionFactor} color="white" size={24} />
         </Pressable>
       </View>
-      {children}
+      <ScrollView>{children}</ScrollView>
     </Animated.View>
   );
 };
