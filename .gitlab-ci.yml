@@ -26,6 +26,7 @@ build:
     - docker rm "$CONTAINER_ID"
     - docker rmi my-image:latest || true
     - docker image prune -f
+    - docker volume prune -f -a
   artifacts:
     paths:
       - artifacts
