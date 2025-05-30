@@ -3,7 +3,7 @@ import { immer } from "zustand/middleware/immer";
 
 import { ToggleItemType } from "@/features/shared/components/input/ToggleGroup";
 
-import { Gloss, TranslatedVideo } from "../utils/types";
+import { Gloss, TranslatedText, TranslatedVideo } from "../utils/types";
 
 type Modes = "signToText" | "textToSign";
 
@@ -33,9 +33,9 @@ type TranslationStoreState = {
   currentLanguage: LanguageItem;
   availableLanguages: typeof availableLanguages;
   activeVideoTranslationResult: Gloss[] | null;
-  activeTextTranslationResult: TranslatedVideo[] | null;
+  activeTextTranslationResult: TranslatedText | null;
   videoTranslationResults: Gloss[][] | null;
-  textTranslationResults: TranslatedVideo[][] | null;
+  textTranslationResults: TranslatedText[] | null;
 };
 
 type TranslationStoreActions = {
@@ -46,8 +46,8 @@ type TranslationStoreActions = {
   removeVideoTranslationFromHistory: (video: Gloss[]) => void;
   addVideoTranslationResult: (result: Gloss[]) => void;
   clearActiveTextTranslationResult: () => void;
-  removeTextTranslationFromHistory: (text: TranslatedVideo[]) => void;
-  addTextTranslationResult: (result: TranslatedVideo[]) => void;
+  removeTextTranslationFromHistory: (text: TranslatedText) => void;
+  addTextTranslationResult: (result: TranslatedText) => void;
 };
 
 //TODO: Extract into 2 stores and merge here
@@ -128,9 +128,8 @@ export const useTranslationStore = create<
     removeTextTranslationFromHistory(text) {
       set((state) => {
         state.textTranslationResults =
-          state.textTranslationResults?.filter(
-            (item) => item[0].id !== text[0].id,
-          ) ?? null;
+          state.textTranslationResults?.filter((item) => item.id !== text.id) ??
+          null;
       });
     },
     clearActiveTextTranslationResult: () => {

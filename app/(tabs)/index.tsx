@@ -11,8 +11,8 @@ import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
 import { useLocalization } from "@/features/shared/hooks/useLocalization";
 import { useTheme } from "@/features/shared/hooks/useTheme";
 import History from "@/features/translation/components/shared/layout/History";
-import TextTranslationPlayer from "@/features/translation/components/textToVideo/feedback/TextTranslationPlayer";
-import SignTranslation from "@/features/translation/components/textToVideo/layout/SignTranslation";
+import TextSignTranslation from "@/features/translation/components/textToVideo/feedback/TextSignTranslation";
+import VideoSignTranslation from "@/features/translation/components/videoToText/feedback/VideoSignTranslation";
 import { useTranslationStore } from "@/features/translation/stores/useTranslationStore";
 
 const IndexTab = () => {
@@ -64,9 +64,9 @@ const IndexTab = () => {
           titleTranslationKey={getTranslationKey("translation")}
         >
           {mode === "signToText" ? (
-            <SignTranslation />
+            <VideoSignTranslation />
           ) : (
-            <TextTranslationPlayer />
+            <TextSignTranslation />
           )}
         </ExpandableModal>
         <History

@@ -1,3 +1,5 @@
+import uuid from "react-native-uuid";
+
 import { UseLocalizationFunction } from "@/features/shared/hooks/useLocalization";
 import { fetchWithTimoutWrapper } from "@/features/shared/utils/fetch";
 import log from "@/features/shared/utils/log";
@@ -48,7 +50,9 @@ const useTextTranslationRequest = (
 
     const json = await response.json();
 
-    return json.extractedText;
+    json.id = uuid.v4();
+
+    return json;
   };
 
   return [makeRequest];

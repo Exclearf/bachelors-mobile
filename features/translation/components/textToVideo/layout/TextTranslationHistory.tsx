@@ -1,10 +1,11 @@
 import { StyleSheet, Text, View } from "react-native";
-type Props = {};
+
+type Props = object;
 
 const TextTranslationHistory = (props: Props) => {
   return (
     <View>
-      <Text>Text Translatin</Text>
+      <Text>Text Translating</Text>
     </View>
   );
 };

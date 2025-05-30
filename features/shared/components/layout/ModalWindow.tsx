@@ -105,12 +105,11 @@ const ModalWindow = ({
       <View style={[styles.modalContainer]}>
         <View
           style={[
-            styles.modalBody,
             {
               backgroundColor: theme?.background,
               borderColor: theme?.mutedForeground,
-              borderWidth: 1,
             },
+            styles.modalBody,
             style,
           ]}
         >
@@ -137,13 +136,17 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "space-between",
     flexDirection: "row",
-    padding: 10,
+    paddingHorizontal: 5,
     paddingBottom: 5,
   },
   modalBody: {
     padding: 5,
+    gap: 20,
     borderRadius: 10,
+    borderWidth: 1,
     overflow: "hidden",
+    display: "flex",
+    justifyContent: "center",
   },
   modalFooter: {
     flexDirection: "row",

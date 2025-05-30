@@ -38,7 +38,7 @@ const LoginScreen = () => {
     "worklet";
     const bottomSheetHeight = bottomSheet?.animatedPosition.get() ?? 0;
     return {
-      top: (0.9 - bottomSheetHeight / height) * bottomSheetHeight * 0.5,
+      top: (0.93 - bottomSheetHeight / height) * bottomSheetHeight * 0.5,
     };
   });
 
@@ -66,14 +66,9 @@ const LoginScreen = () => {
           </Pressable>
         </Animated.View>
         <View style={styles.content}>
-          <Button
-            width={300}
-            height={70}
-            backgroundColor="rgba(255,255,255,0.1)"
-            onPress={() => signInWithGoogle()}
-          >
+          <Button width={300} height={70} onPress={() => signInWithGoogle()}>
             <View style={styles.buttonContainer}>
-              <Image source={google_logo} style={styles.googleLogo}></Image>
+              <Image source={google_logo} style={styles.googleLogo} />
               <TranslatedText
                 fontSize="medium"
                 style={[styles.buttonText, { color: theme?.primaryForeground }]}

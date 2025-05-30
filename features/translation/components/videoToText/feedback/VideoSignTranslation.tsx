@@ -1,27 +1,28 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
 import { useTranslationStore } from "@/features/translation/stores/useTranslationStore";
 
 import VideoTranslationResult from "../../videoToText/layout/VideoTranslationResult";
 
-type SignTranslationProps = object;
+type VideoSignTranslationProps = object;
 
-const SignTranslation = (props: SignTranslationProps) => {
+const VideoSignTranslation = (props: VideoSignTranslationProps) => {
   const activeVideoTranslationResult = useTranslationStore(
     (state) => state.activeVideoTranslationResult,
   );
 
   return (
-    <View style={styles.contrainer}>
+    <ScrollView style={styles.contrainer}>
       {activeVideoTranslationResult?.map((entry, index) => (
         <VideoTranslationResult gloss={entry} key={entry.rank} />
       ))}
-    </View>
+    </ScrollView>
   );
 };
 
-export default SignTranslation;
+export default VideoSignTranslation;
 
 const styles = StyleSheet.create({
   contrainer: {

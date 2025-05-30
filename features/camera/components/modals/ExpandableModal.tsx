@@ -87,10 +87,7 @@ const ExpandableModal = ({
             { height: iconSize * 2 },
           ]}
         >
-          {/* TODO: Extract into a prop! */}
-          {mode === "signToText" && (
-            <>{activeVideo && <ClearTranslationButton />}</>
-          )}
+          <ClearTranslationButton />
         </View>
         <Pressable
           onPress={() => {
@@ -108,7 +105,7 @@ const ExpandableModal = ({
           <CollapseAnimated value={expansionFactor} color="white" size={24} />
         </Pressable>
       </View>
-      <ScrollView>{children}</ScrollView>
+      {children}
     </Animated.View>
   );
 };

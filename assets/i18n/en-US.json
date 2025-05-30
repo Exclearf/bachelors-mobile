@@ -55,7 +55,9 @@
   "misc": {
     "notLoggedInInfo": "Please, Log In!",
     "accept": "Accept",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "allowCameraAccess": "Allow access to the camera",
+    "allowCameraAccessAction": "Allow"
   },
   "translation": {
     "textToSign": {

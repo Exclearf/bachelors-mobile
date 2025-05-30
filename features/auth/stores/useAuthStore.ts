@@ -1,5 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { createClient } from "@supabase/supabase-js";
+//@ts-ignore Fix types, @supabase!
+import { createClient, processLock } from "@supabase/supabase-js";
+import { AppState } from "react-native";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
@@ -9,8 +11,6 @@ import log from "@/features/shared/utils/log";
 
 import { User } from "../types/types";
 import { extractUser, getTokenExp } from "../utils/utils";
-
-import { AppState } from "react-native";
 
 type AuthState = {
   loggedIn: boolean;
@@ -58,6 +58,7 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: false,
+    lock: processLock,
   },
 });
 

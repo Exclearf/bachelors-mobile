@@ -13,13 +13,13 @@ import useCameraAsset from "./hooks/useCameraAsset";
 import useGalleryAsset from "./hooks/useGalleryAsset";
 import PictureBbox, { PictureBboxRef } from "./PictureBbox";
 import { useCameraOptionsStore } from "./stores/useCameraOptionsStore";
-import ModalWindow from "../shared/components/layout/ModalWindow";
 import { useAppDimensions } from "../shared/hooks/useAppDimensions";
 import { ComponentSize } from "../shared/hooks/useComponentSize";
 import useIsAppFocused from "../shared/hooks/useIsAppFocused";
 import { useLocalization } from "../shared/hooks/useLocalization";
+import log from "../shared/utils/log";
 import { useTranslationStore } from "../translation/stores/useTranslationStore";
-import CameraAccessRequestModal from "./components/modals/CameraAccessRequest";
+import CameraAccessRequestModal from "./components/modals/CameraAccessRequestModal";
 import AssetTranslation from "../translation/components/shared/AssetTranslation";
 
 type CameraViewProps = {
@@ -66,6 +66,7 @@ const CameraView = ({ previewFrame }: CameraViewProps) => {
 
   useEffect(() => {
     if (!hasPermission) {
+      log.debug("Requesting camera permission");
       requestPermission();
     }
   }, [hasPermission, requestPermission]);
@@ -123,20 +124,19 @@ const CameraView = ({ previewFrame }: CameraViewProps) => {
         switchDeviceEnabled={isCameraSwitchEnabled}
       />
 
-      <ModalWindow isOpen={!hasPermission}>
-        <CameraAccessRequestModal
-          handler={() => {
-            const tryToAskForPermission = async () => {
-              const response = await requestPermission();
+      <CameraAccessRequestModal
+        handler={() => {
+          const tryToAskForPermission = async () => {
+            const response = await requestPermission();
 
-              if (!response) {
-                Linking.openSettings();
-              }
-            };
-            tryToAskForPermission();
-          }}
-        />
-      </ModalWindow>
+            if (!response) {
+              Linking.openSettings();
+            }
+          };
+          tryToAskForPermission();
+        }}
+        isVisible={!hasPermission}
+      />
 
       <AssetTranslation
         assetUri={currentSourceData.assetUri}

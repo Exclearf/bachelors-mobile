@@ -71,7 +71,7 @@
       "expo-localization",
       "expo-web-browser",
       "react-native-vision-camera",
-      "expo-video"
+      "react-native-video"
     ],
     "experiments": {
       "typedRoutes": true,

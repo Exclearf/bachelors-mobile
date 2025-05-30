@@ -11,11 +11,11 @@ import { colorKit } from "reanimated-color-picker";
 import { useTheme } from "../../hooks/useTheme";
 
 type Props = {
-  style: ViewStyle;
+  style: ViewStyle | ViewStyle[];
 };
 
 const Skeleton = ({ style }: Props) => {
-  const opacity = useSharedValue(0.75);
+  const opacity = useSharedValue(0.5);
   const theme = useTheme();
   const color = useMemo(
     () => colorKit.RGB(theme?.mutedForeground ?? "#000000").array(),
@@ -23,7 +23,7 @@ const Skeleton = ({ style }: Props) => {
   );
   useEffect(() => {
     opacity.set(withRepeat(withTiming(1, { duration: 1000 }), -1, true));
-  }, []);
+  }, [opacity]);
 
   const animatedStyle = useAnimatedStyle(() => {
     const currentOpacity = opacity.get();

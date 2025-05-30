@@ -1,5 +1,5 @@
-import { useVideoPlayer, VideoView } from "expo-video";
 import { StyleSheet } from "react-native";
+import Video from "react-native-video";
 
 type VideoTranslationPlayerProps = {
   videoSource: string;
@@ -8,13 +8,14 @@ type VideoTranslationPlayerProps = {
 const VideoTranslationPlayer = ({
   videoSource,
 }: VideoTranslationPlayerProps) => {
-  const player = useVideoPlayer(videoSource, (player) => {
-    player.loop = true;
-    player.muted = true;
-    player.play();
-  });
-
-  return <VideoView style={styles.video} player={player} />;
+  return (
+    <Video
+      volume={0.0}
+      style={styles.video}
+      source={{ uri: videoSource }}
+      controls
+    />
+  );
 };
 
 const styles = StyleSheet.create({

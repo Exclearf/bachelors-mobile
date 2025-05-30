@@ -73,6 +73,10 @@ export const useAuthFlow = () => {
             setAccessToken(access_token);
             setRefreshToken(refresh_token);
             setIsLoggedIn(true);
+            supabase.auth.setSession({
+              access_token,
+              refresh_token,
+            });
 
             log.info("User logged in.");
 

@@ -20,3 +20,28 @@ export type TranslatedVideo = {
   url: string;
   glossValue: string;
 };
+
+export type VideoInstance = {
+  videoFile: string;
+  signType: string;
+  dominantStartHandshape: string;
+  nonDominantStartHandshape: string;
+  dominantEndHandshape: string;
+  nonDominantEndHandshape: string;
+};
+
+export type GlossTranslation = {
+  gloss: string;
+  videoInstances: VideoInstance[];
+  isTime: boolean;
+  special: boolean;
+};
+
+export type TranslatedText = {
+  id: string;
+  extractedText: string;
+  translatedVideos: {
+    glossTranslations: GlossTranslation[];
+    languageCode: string;
+  };
+};
