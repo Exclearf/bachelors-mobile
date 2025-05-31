@@ -18,6 +18,7 @@ type AccordionProps = PropsWithChildren<{
   style?: StyleProp<ViewStyle>;
 }>;
 
+// TODO: Fix the bottom border not being shown, possible reqrite the underlying Expandable component
 const Accordion = ({
   maxHeight = 200,
   translationKey,

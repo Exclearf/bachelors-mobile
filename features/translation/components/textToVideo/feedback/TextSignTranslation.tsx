@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Animated, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Video, { VideoRef } from "react-native-video";
 
@@ -11,8 +11,6 @@ import { useTranslationStore } from "@/features/translation/stores/useTranslatio
 import { VideoInstance } from "@/features/translation/utils/types";
 
 import TextSignTranslationControls from "../layout/TextSignTranslationControls";
-
-const AnimatedVideo = Animated.createAnimatedComponent(Video);
 
 type Props = object;
 
@@ -42,10 +40,14 @@ const TextSignTranslation = (props: Props) => {
     setVideoFile(currentVideo?.videoInstances[0] ?? null);
   }, [currentVideo]);
 
+  if (!activeTextTranslationResult) return <></>;
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <AnimatedVideo
+      <Video
         ref={videoRef}
+        muted={true}
+        volume={0.0}
         style={[
           styles.glossVideo,
           {

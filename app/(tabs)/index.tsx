@@ -2,6 +2,7 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React, { useContext } from "react";
 import { StyleSheet, View } from "react-native";
+import { useShallow } from "zustand/react/shallow";
 
 import ExpandableModal from "@/features/camera/components/modals/ExpandableModal";
 import SelectGroup, {
@@ -17,7 +18,6 @@ import { useTranslationStore } from "@/features/translation/stores/useTranslatio
 
 const IndexTab = () => {
   const getTranslationKey = useLocalization("indexPage");
-  const mode = useTranslationStore((state) => state.mode);
   const { height } = useContext(AppDimensionsContext);
   const theme = useTheme();
   const availableFunctions: SelectionGroupItemConfig[] = [
@@ -36,6 +36,19 @@ const IndexTab = () => {
       icon: (props: any) => <Ionicons name="text" {...props} />,
     },
   ];
+  const [mode, activeVideoTranslationResult, activeTestTranslationResult] =
+    useTranslationStore(
+      useShallow((state) => [
+        state.mode,
+        state.activeVideoTranslationResult,
+        state.activeTextTranslationResult,
+      ]),
+    );
+
+  const isActiveTranslation =
+    mode === "textToSign"
+      ? activeTestTranslationResult != null
+      : activeVideoTranslationResult != null;
 
   const initialHeight = height - height * 0.11 - height * 0.07 - height * 0.06;
 
@@ -54,6 +67,7 @@ const IndexTab = () => {
         <ExpandableModal
           initialHeight={initialHeight / 1.93}
           padding={height * 0.02}
+          clearButtonActive={isActiveTranslation}
           containerStyle={[
             styles.indexSection,
             {

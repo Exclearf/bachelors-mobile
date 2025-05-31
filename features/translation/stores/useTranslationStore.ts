@@ -3,7 +3,7 @@ import { immer } from "zustand/middleware/immer";
 
 import { ToggleItemType } from "@/features/shared/components/input/ToggleGroup";
 
-import { Gloss, TranslatedText, TranslatedVideo } from "../utils/types";
+import { Gloss, TranslatedText } from "../utils/types";
 
 type Modes = "signToText" | "textToSign";
 

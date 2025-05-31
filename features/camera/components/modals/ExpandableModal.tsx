@@ -6,13 +6,13 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
 import Animated, {
   interpolate,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+import { useShallow } from "zustand/react/shallow";
 
 import CollapseAnimated from "@/features/shared/components/primitive/CollapseAnimated";
 import TranslatedText from "@/features/shared/components/text/TranslatedText";
@@ -25,6 +25,7 @@ type Props = PropsWithChildren<{
   initialHeight: number;
   padding: number;
   titleTranslationKey: string;
+  clearButtonActive: boolean;
   containerStyle: StyleProp<ViewStyle>[];
 }>;
 
@@ -33,6 +34,7 @@ const ExpandableModal = ({
   initialHeight,
   padding,
   titleTranslationKey,
+  clearButtonActive,
   children,
 }: Props) => {
   const expansionFactor = useSharedValue(0);
@@ -40,10 +42,6 @@ const ExpandableModal = ({
   const isExpanding = useRef(false);
   const { height, width } = useContext(AppDimensionsContext);
   const { bottomSheet } = useBottomSheet();
-  const mode = useTranslationStore((state) => state.mode);
-  const activeVideo = useTranslationStore(
-    (state) => state.activeVideoTranslationResult,
-  );
 
   const animateStyle = useAnimatedStyle(() => {
     return {
@@ -87,7 +85,7 @@ const ExpandableModal = ({
             { height: iconSize * 2 },
           ]}
         >
-          <ClearTranslationButton />
+          {clearButtonActive && <ClearTranslationButton />}
         </View>
         <Pressable
           onPress={() => {

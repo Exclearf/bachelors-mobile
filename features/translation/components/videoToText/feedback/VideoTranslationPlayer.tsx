@@ -11,6 +11,7 @@ const VideoTranslationPlayer = ({
   return (
     <Video
       volume={0.0}
+      muted={true}
       style={styles.video}
       source={{ uri: videoSource }}
       controls
