@@ -33,9 +33,9 @@ const Button = ({
     Record<ButtonVariant, string | undefined>
   >(
     () => ({
-      primary: theme!.mutedForeground,
-      secondary: theme!.primaryBackground,
-      destructive: theme!.destructive,
+      primary: theme?.mutedForeground,
+      secondary: theme?.primaryBackground,
+      destructive: theme?.destructive,
       transparent: "",
     }),
     [theme],
