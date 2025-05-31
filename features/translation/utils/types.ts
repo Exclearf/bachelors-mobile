@@ -1,6 +1,8 @@
 import { File } from "expo-file-system/next";
 import { RefObject } from "react";
 
+import { GlossTranslation } from "@/features/shared/types/types";
+
 type UseTranslationReturn = any;
 
 export type UseTranslation = (
@@ -21,23 +23,7 @@ export type TranslatedVideo = {
   glossValue: string;
 };
 
-export type VideoInstance = {
-  videoFile: string;
-  signType: string;
-  dominantStartHandshape: string;
-  nonDominantStartHandshape: string;
-  dominantEndHandshape: string;
-  nonDominantEndHandshape: string;
-};
-
-export type GlossTranslation = {
-  gloss: string;
-  videoInstances: VideoInstance[];
-  isTime: boolean;
-  special: boolean;
-};
-
-export type TranslatedText = {
+export type TranslatedTextResponse = {
   id: string;
   extractedText: string;
   translatedVideos: {

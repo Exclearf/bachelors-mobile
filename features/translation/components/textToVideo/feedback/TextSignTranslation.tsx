@@ -1,23 +1,29 @@
 import { useEffect, useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import Video, { VideoRef } from "react-native-video";
+import { StyleProps } from "react-native-reanimated";
+import Video, { ResizeMode, VideoRef } from "react-native-video";
 
 import { useAuthStore } from "@/features/auth/stores/useAuthStore";
 import Skeleton from "@/features/shared/components/feedback/Skeleton";
 import Button from "@/features/shared/components/input/Button";
 import TranslatedText from "@/features/shared/components/text/TranslatedText";
-import { useTranslationStore } from "@/features/translation/stores/useTranslationStore";
-import { VideoInstance } from "@/features/translation/utils/types";
+import { VideoInstance } from "@/features/shared/types/types";
+import { TranslatedTextResponse } from "@/features/translation/utils/types";
 
 import TextSignTranslationControls from "../layout/TextSignTranslationControls";
 
-type Props = object;
+type Props = {
+  activeTextTranslationResult: TranslatedTextResponse;
+  style?: StyleProps;
+  resizeMode?: ResizeMode;
+};
 
-const TextSignTranslation = (props: Props) => {
-  const activeTextTranslationResult = useTranslationStore(
-    (state) => state.activeTextTranslationResult,
-  );
+const TextSignTranslation = ({
+  activeTextTranslationResult,
+  style,
+  resizeMode,
+}: Props) => {
   const accessToken = useAuthStore((state) => state.accessToken);
   const [currentVideo, setCurrentVideo] = useState(
     activeTextTranslationResult?.translatedVideos.glossTranslations[0],
@@ -43,7 +49,7 @@ const TextSignTranslation = (props: Props) => {
   if (!activeTextTranslationResult) return <></>;
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView contentContainerStyle={[styles.container, style]}>
       <Video
         ref={videoRef}
         muted={true}
@@ -55,7 +61,7 @@ const TextSignTranslation = (props: Props) => {
           },
         ]}
         controls
-        resizeMode="cover"
+        resizeMode={resizeMode ?? "contain"}
         renderLoader=<Skeleton style={{ height: "100%", width: "100%" }} />
       />
       <View style={styles.glossControls}>

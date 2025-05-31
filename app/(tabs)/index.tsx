@@ -36,7 +36,7 @@ const IndexTab = () => {
       icon: (props: any) => <Ionicons name="text" {...props} />,
     },
   ];
-  const [mode, activeVideoTranslationResult, activeTestTranslationResult] =
+  const [mode, activeVideoTranslationResult, activeTextTranslationResult] =
     useTranslationStore(
       useShallow((state) => [
         state.mode,
@@ -47,7 +47,7 @@ const IndexTab = () => {
 
   const isActiveTranslation =
     mode === "textToSign"
-      ? activeTestTranslationResult != null
+      ? activeTextTranslationResult != null
       : activeVideoTranslationResult != null;
 
   const initialHeight = height - height * 0.11 - height * 0.07 - height * 0.06;
@@ -80,7 +80,9 @@ const IndexTab = () => {
           {mode === "signToText" ? (
             <VideoSignTranslation />
           ) : (
-            <TextSignTranslation />
+            <TextSignTranslation
+              activeTextTranslationResult={activeTextTranslationResult}
+            />
           )}
         </ExpandableModal>
         <History

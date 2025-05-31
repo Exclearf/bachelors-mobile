@@ -3,10 +3,7 @@ import { ScrollView } from "react-native-gesture-handler";
 
 import Button from "@/features/shared/components/input/Button";
 import TranslatedText from "@/features/shared/components/text/TranslatedText";
-import {
-  GlossTranslation,
-  VideoInstance,
-} from "@/features/translation/utils/types";
+import { GlossTranslation, VideoInstance } from "@/features/shared/types/types";
 
 type Props = {
   currentVideo: GlossTranslation | undefined;

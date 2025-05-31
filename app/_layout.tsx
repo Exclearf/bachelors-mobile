@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Constants from "expo-constants";
 import { Slot, SplashScreen } from "expo-router";
 import { useEffect, useRef } from "react";
@@ -28,7 +29,14 @@ export default function RootLayout() {
   const statusBarHeight = Constants.statusBarHeight;
   const previewRef = useRef<View>(null);
   const previewFrame = useComponentSize(previewRef);
-
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 1000 * 60 * 5,
+        gcTime: 1000 * 60 * 10,
+      },
+    },
+  });
   const syncAuth = useAuthStore((state) => state.syncAuth);
 
   useEffect(() => {
@@ -37,38 +45,40 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView>
-      <AppDimensionsProvider>
-        <ThemeProvider>
-          <BottomSheetProvider>
-            <View
-              style={{
-                backgroundColor: theme?.background,
-                height: statusBarHeight,
-                width: "100%",
-              }}
-            />
-            <View ref={previewRef} style={[styles.container]}>
-              <AppRoundedPath
-                zIndex={1}
+      <QueryClientProvider client={queryClient}>
+        <AppDimensionsProvider>
+          <ThemeProvider>
+            <BottomSheetProvider>
+              <View
                 style={{
-                  top: -10,
-                  position: "absolute",
+                  backgroundColor: theme?.background,
+                  height: statusBarHeight,
+                  width: "100%",
                 }}
-                barHeight={30}
-                handlePadColorOverride="transparent"
-                maxPathCreator={maxTopPath}
-                minPathCreator={minTopPath}
               />
+              <View ref={previewRef} style={[styles.container]}>
+                <AppRoundedPath
+                  zIndex={1}
+                  style={{
+                    top: -10,
+                    position: "absolute",
+                  }}
+                  barHeight={30}
+                  handlePadColorOverride="transparent"
+                  maxPathCreator={maxTopPath}
+                  minPathCreator={minTopPath}
+                />
 
-              <CameraView previewFrame={previewFrame} />
+                <CameraView previewFrame={previewFrame} />
 
-              <AppBottomSheet snapPoints={["11", "53", "100%"]}>
-                <Slot />
-              </AppBottomSheet>
-            </View>
-          </BottomSheetProvider>
-        </ThemeProvider>
-      </AppDimensionsProvider>
+                <AppBottomSheet snapPoints={["11", "53", "100%"]}>
+                  <Slot />
+                </AppBottomSheet>
+              </View>
+            </BottomSheetProvider>
+          </ThemeProvider>
+        </AppDimensionsProvider>
+      </QueryClientProvider>
     </GestureHandlerRootView>
   );
 }

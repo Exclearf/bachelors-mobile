@@ -28,6 +28,7 @@
     "@react-navigation/native": "^7.0.0",
     "@shopify/react-native-skia": "v2.0.0-next.4",
     "@supabase/supabase-js": "^2.47.10",
+    "@tanstack/react-query": "^5.79.0",
     "babel-plugin-react-compiler": "^19.0.0-beta-df7b47d-20241124",
     "eslint-config-expo": "~9.2.0",
     "eslint-plugin-react-compiler": "^19.0.0-beta-df7b47d-20241124",
@@ -75,7 +76,8 @@
     "react-native-web": "^0.20.0",
     "react-native-webview": "13.13.5",
     "reanimated-color-picker": "^3.0.6",
-    "zustand": "^5.0.2"
+    "zustand": "^5.0.2",
+    "@shopify/flash-list": "1.7.6"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
