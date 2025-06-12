@@ -48,6 +48,12 @@ const useTextTranslationRequest = (
       return;
     }
 
+    if (!response.ok) {
+      log.warn(`Unkown error ${response.status}[${response.statusText}].`);
+
+      return;
+    }
+
     const json = await response.json();
 
     json.id = uuid.v4();

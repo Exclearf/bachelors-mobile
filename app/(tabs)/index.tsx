@@ -15,6 +15,7 @@ import History from "@/features/translation/components/shared/layout/History";
 import TextSignTranslation from "@/features/translation/components/textToVideo/feedback/TextSignTranslation";
 import VideoSignTranslation from "@/features/translation/components/videoToText/feedback/VideoSignTranslation";
 import { useTranslationStore } from "@/features/translation/stores/useTranslationStore";
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 const IndexTab = () => {
   const getTranslationKey = useLocalization("indexPage");
@@ -33,7 +34,7 @@ const IndexTab = () => {
       id: "textToSign",
       translationKey: getTranslationKey("textToSign"),
       onClick: () => {},
-      icon: (props: any) => <Ionicons name="text" {...props} />,
+      icon: (props: any) => <MaterialCommunityIcons name="text-recognition" {...props} />,
     },
   ];
   const [mode, activeVideoTranslationResult, activeTextTranslationResult] =
