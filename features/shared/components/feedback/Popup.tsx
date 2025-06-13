@@ -1,3 +1,4 @@
+import { clamp } from "@shopify/react-native-skia";
 import React, {
   createContext,
   Dispatch,
@@ -6,32 +7,38 @@ import React, {
   SetStateAction,
   useContext,
   useRef,
-  useState,
 } from "react";
-import { Pressable, StyleSheet, View } from "react-native";
+import {
+  LayoutChangeEvent,
+  Pressable,
+  useWindowDimensions,
+  View,
+} from "react-native";
+import Animated, {
+  SharedValue,
+  useAnimatedStyle,
+  useSharedValue,
+} from "react-native-reanimated";
 
-import { percentageToDecimal } from "../../utils/helper";
-
-type TriggerPosition = {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-};
+import { LayoutPosition } from "../../types/types";
+import ModalWindow from "../layout/ModalWindow";
 
 type PopupContextType = {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  triggerLayout: TriggerPosition | null;
-  setTriggerLayout: Dispatch<SetStateAction<TriggerPosition | null>>;
+  triggerLayout: SharedValue<LayoutPosition>;
 };
 
-const PopupContext = createContext<PopupContextType>({
-  isOpen: false,
-  setIsOpen: () => {},
-  triggerLayout: null,
-  setTriggerLayout: () => {},
-});
+const InitialLayoutPosition = {
+  x: 0,
+  y: 0,
+  width: 0,
+  height: 0,
+};
+
+const PopupContext = createContext<PopupContextType>(
+  null as unknown as PopupContextType,
+);
 
 const usePopupContext = () => {
   const context = useContext(PopupContext);
@@ -39,12 +46,15 @@ const usePopupContext = () => {
   return context;
 };
 
+type PopupPosition = "top" | "bottom";
+type PopupAlignment = "left" | "center" | "right";
+
 type PopupTriggerProps = PropsWithChildren<object>;
 type PopupContentProps = PropsWithChildren<{
-  position: "top" | "bottom";
+  position: PopupPosition;
   height: number | string;
   width: number | string;
-  verticalAlignment?: "left" | "center" | "right";
+  horizontalAlignment?: PopupAlignment;
 }>;
 
 type PopupComposition = {
@@ -64,12 +74,14 @@ type PopupComponent = React.FC<PopupProps> & {
   Content: React.FC<PopupContentProps>;
 };
 
-// TODO: Add position checking in onLayout (at least for horizontal)
+const popAlignmentMultiplier: Record<PopupAlignment, number> = {
+  left: 1,
+  center: 0.5,
+  right: 0,
+};
 
 const Popup: PopupComponent = ({ isOpen, setIsOpen, children }: PopupProps) => {
-  const [triggerLayout, setTriggerLayout] = useState<TriggerPosition | null>(
-    null,
-  );
+  const triggerLayout = useSharedValue<LayoutPosition>(InitialLayoutPosition);
 
   return (
     <PopupContext.Provider
@@ -77,7 +89,6 @@ const Popup: PopupComponent = ({ isOpen, setIsOpen, children }: PopupProps) => {
         isOpen,
         setIsOpen,
         triggerLayout,
-        setTriggerLayout,
       }}
     >
       {children}
@@ -86,12 +97,12 @@ const Popup: PopupComponent = ({ isOpen, setIsOpen, children }: PopupProps) => {
 };
 
 const Trigger = ({ children }: PopupTriggerProps) => {
-  const { setIsOpen, setTriggerLayout } = usePopupContext();
+  const { setIsOpen, triggerLayout } = usePopupContext();
   const triggerRef = useRef<View>(null);
 
   const onLayout = () => {
-    triggerRef.current?.measure((x, y, width, height) => {
-      setTriggerLayout({
+    triggerRef.current?.measureInWindow((x, y, width, height) => {
+      triggerLayout?.set({
         x,
         y,
         width,
@@ -122,117 +133,87 @@ const Trigger = ({ children }: PopupTriggerProps) => {
   );
 };
 
-const padding = 10;
-
-const createTopPosition = (
-  triggerLayout: TriggerPosition,
-  height: number,
-  horizontalPositionModifier: number,
-): [number, number] => {
-  const top = triggerLayout.y - height - padding;
-  const left =
-    triggerLayout.x + triggerLayout.width / 2 - horizontalPositionModifier;
-  return [top, left];
-};
-
-const createBottomPosition = (
-  triggerLayout: TriggerPosition,
-  horizontalPositionModifier: number,
-): [number, number] => {
-  const top = triggerLayout.y + triggerLayout.height + padding;
-  const left =
-    triggerLayout.x + triggerLayout.width / 2 - horizontalPositionModifier;
-
-  return [top, left];
-};
-
 const Content = ({
   children,
   position,
   width,
   height,
-  verticalAlignment = "center",
+  horizontalAlignment = "center",
 }: PopupContentProps) => {
-  //const { height: screenHeight } = useAppDimensions();
+  // TODO:
+  // 2. Extract into a function
+
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
   const { isOpen, setIsOpen, triggerLayout } = usePopupContext();
+  const padding = 15;
+  const popupLayout = useSharedValue<LayoutPosition | null>(null);
+  const popupRef = useRef<Animated.View>(null);
 
-  if (!isOpen || !triggerLayout) return null;
+  const popupStyle = useAnimatedStyle(() => {
+    const triggerPosition = triggerLayout.get();
+    const popupPosition = popupLayout.get();
 
-  if (typeof width === "string") {
-    width = percentageToDecimal(width) * triggerLayout.width;
-  }
+    if (!popupPosition) return {};
 
-  if (typeof height === "string") {
-    height = percentageToDecimal(height) * triggerLayout.height;
-  }
+    const offsetMultiplier = popAlignmentMultiplier[horizontalAlignment];
 
-  let horizontalPositionModifier = 0;
+    const horizontalPositionCreator = () => {
+      return (
+        triggerPosition.x +
+        triggerPosition.width * offsetMultiplier -
+        popupPosition.width * offsetMultiplier
+      );
+    };
 
-  switch (verticalAlignment) {
-    case "left":
-      horizontalPositionModifier = width - triggerLayout.width / 4;
-      break;
-    case "right":
-      horizontalPositionModifier = triggerLayout.width / 2;
-      break;
-    case "center":
-      horizontalPositionModifier = width / 2;
-    default:
-      horizontalPositionModifier = width / 2;
-  }
+    const topPosition = triggerPosition.y + triggerPosition.height + padding;
 
-  let left, top;
+    return {
+      left: clamp(
+        Math.round(horizontalPositionCreator()),
+        padding,
+        screenWidth - popupPosition.width - padding,
+      ),
+      top: clamp(
+        Math.round(topPosition),
+        padding,
+        screenHeight - popupPosition.height - padding,
+      ),
+    };
+  });
 
-  switch (position) {
-    case "top":
-      [top, left] = createTopPosition(
-        triggerLayout,
+  const onPopupLayout = (e: LayoutChangeEvent) => {
+    popupRef.current?.measureInWindow((x, y, width, height) => {
+      popupLayout.set({
+        x,
+        y,
+        width,
         height,
-        horizontalPositionModifier,
-      );
-      break;
-    case "bottom":
-      [top, left] = createBottomPosition(
-        triggerLayout,
-        horizontalPositionModifier,
-      );
-      break;
-    default:
-      [top, left] = createTopPosition(
-        triggerLayout,
-        height,
-        horizontalPositionModifier,
-      );
-  }
-
-  // TODO: Rewrite to use measure and a global pop-up container
-  // If needed*
-  //if (top + height > screenHeight) {
-  //  console.log(`Tooltip overflow at bottom`);
-  //  [top, left] = createTopPosition(triggerLayout, height, width);
-  //} else if (top < 0) {
-  //  console.log(`Tooltip overflow at top`);
-  //  [top, left] = createBottomPosition(triggerLayout, height);
-  //}
+      });
+    });
+  };
 
   return (
-    <Pressable
-      onPress={() => {
-        setIsOpen(false);
-      }}
-      hitSlop={10000}
-      style={[
-        styles.contentStyle,
-        {
-          top,
-          left,
-          width,
-          height,
-        },
-      ]}
+    <ModalWindow
+      wrapContent={false}
+      isOpen={isOpen}
+      transparent={true}
+      closeCallback={() => setIsOpen(false)}
     >
-      <Pressable>{children}</Pressable>
-    </Pressable>
+      <Animated.View
+        ref={popupRef}
+        onLayout={onPopupLayout}
+        style={[
+          {
+            left: -999,
+            top: -999,
+            position: "absolute",
+          },
+          popupStyle,
+        ]}
+      >
+        {children}
+      </Animated.View>
+    </ModalWindow>
   );
 };
 
@@ -240,10 +221,3 @@ Popup.Content = Content;
 Popup.Trigger = Trigger;
 
 export default Popup;
-
-const styles = StyleSheet.create({
-  contentStyle: {
-    zIndex: 1000,
-    position: "absolute",
-  },
-});

@@ -1,6 +1,6 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
 import React from "react";
-import { StyleSheet, Modal, View, ViewStyle } from "react-native";
+import { StyleSheet, Modal, View, ViewStyle, Pressable } from "react-native";
 
 import { useLocalization } from "../../hooks/useLocalization";
 import { useTheme } from "../../hooks/useTheme";
@@ -14,6 +14,8 @@ export type ModalWindowProps = React.PropsWithChildren<{
   acceptCallback?: () => void;
   title?: string;
   style?: ViewStyle;
+  wrapContent?: boolean;
+  transparent?: boolean;
 }>;
 
 type ModalWindowHeaderProps = {
@@ -25,6 +27,11 @@ type ModalWindowFooterProps = React.PropsWithChildren<{
   acceptCallback?: () => void;
   closeCallback?: () => void;
   buttonStyle?: ViewStyle;
+}>;
+
+type ContentWrapperProps = React.PropsWithChildren<{
+  wrap: boolean;
+  style?: ViewStyle;
 }>;
 
 const ModalHeader = ({
@@ -86,36 +93,49 @@ const ModalFooter = ({
   );
 };
 
+const ContentWrapper = ({ wrap, children, style }: ContentWrapperProps) => {
+  const theme = useTheme();
+
+  return wrap ? (
+    <Pressable
+      style={[
+        {
+          backgroundColor: theme?.background,
+          borderColor: theme?.mutedForeground,
+        },
+        styles.modalBody,
+        style,
+      ]}
+    >
+      {children}
+    </Pressable>
+  ) : (
+    <>{children}</>
+  );
+};
+
 const ModalWindow = ({
   isOpen,
   closeCallback,
   acceptCallback,
   style,
+  wrapContent = true,
+  transparent = false,
   children,
 }: ModalWindowProps) => {
-  const theme = useTheme();
-
   return (
     <Modal
       animationType="none"
-      transparent={false}
-      backdropColor={"transparent"}
+      transparent={transparent}
+      backdropColor={"rgba(0,0,0,0)"}
       visible={isOpen}
+      onRequestClose={closeCallback ?? (() => {})}
     >
-      <View style={[styles.modalContainer]}>
-        <View
-          style={[
-            {
-              backgroundColor: theme?.background,
-              borderColor: theme?.mutedForeground,
-            },
-            styles.modalBody,
-            style,
-          ]}
-        >
+      <Pressable style={[styles.modalContainer]} onPress={closeCallback}>
+        <ContentWrapper style={style} wrap={wrapContent}>
           {children}
-        </View>
-      </View>
+        </ContentWrapper>
+      </Pressable>
     </Modal>
   );
 };

@@ -1,5 +1,5 @@
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import React, { useContext } from "react";
 import { StyleSheet, View } from "react-native";
 import { useShallow } from "zustand/react/shallow";
@@ -15,7 +15,6 @@ import History from "@/features/translation/components/shared/layout/History";
 import TextSignTranslation from "@/features/translation/components/textToVideo/feedback/TextSignTranslation";
 import VideoSignTranslation from "@/features/translation/components/videoToText/feedback/VideoSignTranslation";
 import { useTranslationStore } from "@/features/translation/stores/useTranslationStore";
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 const IndexTab = () => {
   const getTranslationKey = useLocalization("indexPage");
@@ -34,7 +33,9 @@ const IndexTab = () => {
       id: "textToSign",
       translationKey: getTranslationKey("textToSign"),
       onClick: () => {},
-      icon: (props: any) => <MaterialCommunityIcons name="text-recognition" {...props} />,
+      icon: (props: any) => (
+        <MaterialCommunityIcons name="text-recognition" {...props} />
+      ),
     },
   ];
   const [mode, activeVideoTranslationResult, activeTextTranslationResult] =

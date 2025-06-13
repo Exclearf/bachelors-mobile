@@ -16,3 +16,10 @@ export type GlossTranslation = {
   isTime: boolean;
   special: boolean;
 };
+
+export type LayoutPosition = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+};

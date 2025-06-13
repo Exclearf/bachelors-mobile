@@ -71,12 +71,12 @@ const VideoTranslationHistoryItem = ({
         style={{ maxHeight: "50%" }}
       >
         <ModalWindow.Header translationKey={getTranslationKey("info")} />
+
         <ScrollView style={{ flexGrow: 0, marginVertical: 15 }}>
           {gloss.map((item) => (
             <VideoTranslationResult gloss={item} key={item.rank} />
           ))}
         </ScrollView>
-
         <ModalWindow.Footer
           closeCallback={() => setIsItemSettingsOpen(false)}
           buttonStyle={styles.modalButton}

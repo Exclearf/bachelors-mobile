@@ -4,8 +4,7 @@ import { View } from "react-native";
 import { useLocalization } from "@/features/shared/hooks/useLocalization";
 
 import AppLanguageToggle from "./items/AppLanguageToggle";
-import ModelSelect from "./items/ModelSelect";
-import TranslationLanguageToggle from "./items/TranslationLanguageToggle";
+import VideoClassificationTopK from "./items/VideoClassificationTopK";
 import { SettingsSectionsItemType } from "../../../SettingsSections";
 
 type Props = SettingsSectionsItemType;
@@ -17,16 +16,16 @@ const GeneralSection = ({ getTranslationKey, style, textStyle }: Props) => {
 
   return (
     <>
-      {(
-        [AppLanguageToggle, TranslationLanguageToggle, ModelSelect] as const
-      ).map((LanguageToggle, index) => (
-        <View key={index} style={style}>
-          <LanguageToggle
-            getTranslationKey={getTranslationKey}
-            textStyle={textStyle}
-          />
-        </View>
-      ))}
+      {([AppLanguageToggle, VideoClassificationTopK] as const).map(
+        (LanguageToggle, index) => (
+          <View key={index} style={style}>
+            <LanguageToggle
+              getTranslationKey={getTranslationKey}
+              textStyle={textStyle}
+            />
+          </View>
+        ),
+      )}
     </>
   );
 };

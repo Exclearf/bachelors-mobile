@@ -1,5 +1,5 @@
-import React, { Component, useEffect, useState } from "react";
-import { NativeMethods, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { NativeMethods } from "react-native";
 
 export type ComponentSize = {
   x: number;

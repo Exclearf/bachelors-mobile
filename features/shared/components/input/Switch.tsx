@@ -116,11 +116,10 @@ const Switch = ({
     handleToggleStateChange(() => setChecked(!checked));
   };
 
-  const handleToggleStateChange = (callback: () => void) => {
+  const handleToggleStateChange = (callback: () => void) =>
     checkedWhenAnimationEnd
       ? setTimeout(callback, checkedWhenAnimationEndsOffset)
       : callback();
-  };
 
   const customFalseThumbStyle = useAnimatedStyle(() => {
     return {

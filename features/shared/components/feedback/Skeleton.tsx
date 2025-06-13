@@ -22,7 +22,7 @@ const Skeleton = ({ style }: Props) => {
     [theme],
   );
   useEffect(() => {
-    opacity.set(withRepeat(withTiming(1, { duration: 1000 }), -1, true));
+    opacity.set(withRepeat(withTiming(1, { duration: 2000 }), -1, true));
   }, [opacity]);
 
   const animatedStyle = useAnimatedStyle(() => {

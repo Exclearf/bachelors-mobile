@@ -50,12 +50,13 @@ const ToggleGroup = ({
 
   const clickHandler = (item: ToggleItemType) => {
     const handler = () => onChange(item);
-    changeWhenAnimationEnds
-      ? setTimeout(
-          handler,
-          animationDuration - (changeWhenAnimationEndsOffset ?? 0),
-        )
-      : handler();
+    (changeWhenAnimationEnds
+      ? () =>
+          setTimeout(
+            handler,
+            animationDuration - (changeWhenAnimationEndsOffset ?? 0),
+          )
+      : handler)();
   };
 
   const changeActiveIndex = (item: ToggleItemType, index: number) => {

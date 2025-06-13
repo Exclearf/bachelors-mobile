@@ -23,6 +23,7 @@ type Props = {
   currentItem: SelectItemType | null;
   setCurrentItem: (item: SelectItemType) => any;
   width?: number;
+  deferSwitchHandler?: boolean;
 };
 
 type SelectItemProps = {
@@ -88,7 +89,13 @@ const SelectItem = ({ translationKey, isActive, onPress }: SelectItemProps) => {
   );
 };
 
-const Select = ({ items, setCurrentItem, currentItem, width }: Props) => {
+const Select = ({
+  items,
+  setCurrentItem,
+  currentItem,
+  width,
+  deferSwitchHandler = true,
+}: Props) => {
   const expanded = useSharedValue(0);
   const theme = useTheme();
   const fontSize = useFontSize();
@@ -152,8 +159,13 @@ const Select = ({ items, setCurrentItem, currentItem, width }: Props) => {
               >
                 <SelectItem
                   onPress={() => {
-                    expandableRef.current?.close();
-                    setCurrentItem(item);
+                    expandableRef.current?.close(100);
+
+                    if (deferSwitchHandler) {
+                      setTimeout(() => setCurrentItem(item), 50);
+                    } else {
+                      setCurrentItem(item);
+                    }
                   }}
                   isActive={currentItem.id === item.id}
                   translationKey={item.translationKey}

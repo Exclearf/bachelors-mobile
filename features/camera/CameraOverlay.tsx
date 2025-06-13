@@ -12,7 +12,6 @@ import { useBottomSheet } from "@/features/shared/hooks/useBottomSheet";
 import FlashlightButton from "./components/buttons/FlashlightButton";
 import FlipCameraButton from "./components/buttons/FlipCameraButton";
 import GalleryButton from "./components/buttons/GalleryButton";
-import RecordButton from "./components/buttons/RecordButton";
 import SettingsButton from "./components/buttons/SettingsButton";
 import CameraBottomContainer from "./components/containers/CameraBottomContainer";
 import CameraSettingsContainer from "./components/containers/CameraSettingsContainer";
@@ -20,7 +19,6 @@ import CameraTopContainer from "./components/containers/CameraTopContainer";
 import SettingsModal from "./components/modals/SettingsModal";
 import Spinner from "../shared/components/feedback/Spinner";
 import { useTheme } from "../shared/hooks/useTheme";
-import useWrapAuth from "../shared/hooks/useWrapAuth";
 import RecordingTime from "./components/feedback/RecordingTime";
 import { useTranslationStore } from "../translation/stores/useTranslationStore";
 import PhotoRecordButton from "./components/buttons/PhotoRecordButton";
@@ -64,7 +62,8 @@ const CameraOverlay = ({
   const isAvailable = useCameraOptionsStore((state) => state.isAvailable);
   const theme = useTheme();
   const mode = useTranslationStore((state) => state.mode);
-  const wrapAuth = useWrapAuth();
+
+  // TODO: Wrap each handler in a callback made by useWrapAuth
 
   const buttonParameters: ButtonParameters = { buttonStyle: { padding: 10 } };
 

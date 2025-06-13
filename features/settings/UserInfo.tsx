@@ -1,6 +1,6 @@
 import { router } from "expo-router";
 import React, { useState } from "react";
-import { Image, StyleSheet, View } from "react-native";
+import { Image, ImageURISource, StyleSheet, View } from "react-native";
 import { useShallow } from "zustand/react/shallow";
 
 import { defaultPicture } from "@/features/auth/hooks/useAuthFlow";
@@ -28,6 +28,7 @@ const popupPadding = 5;
 
 const UserInfo = ({ getTranslationKey, height }: Props) => {
   getTranslationKey = useLocalization(getTranslationKey("userInfo"));
+
   const [setIsSignedIn, user] = useAuthStore(
     useShallow((state) => [state.setLoggedIn, state.user]),
   );
@@ -74,13 +75,17 @@ const UserInfo = ({ getTranslationKey, height }: Props) => {
                 height: height * 0.06,
                 borderRadius: height * 0.03,
               }}
-              source={picture ?? defaultPicture}
-              onError={() => setPicture(defaultPicture)}
+              source={
+                picture ? ({ uri: picture } as ImageURISource) : defaultPicture
+              }
+              onError={() => {
+                setPicture(defaultPicture);
+              }}
             />
           </Popup.Trigger>
           <Popup.Content
             position="bottom"
-            verticalAlignment="left"
+            horizontalAlignment="left"
             width={128}
             height={48}
           >
@@ -114,9 +119,6 @@ const UserInfo = ({ getTranslationKey, height }: Props) => {
           </Popup.Content>
         </Popup>
       </View>
-      {
-        // TODO: Make as a pop-up on the user profile image
-      }
     </View>
   );
 };

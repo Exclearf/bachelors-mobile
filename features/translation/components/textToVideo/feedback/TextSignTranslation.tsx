@@ -14,7 +14,7 @@ import { TranslatedTextResponse } from "@/features/translation/utils/types";
 import TextSignTranslationControls from "../layout/TextSignTranslationControls";
 
 type Props = {
-  activeTextTranslationResult: TranslatedTextResponse;
+  activeTextTranslationResult: TranslatedTextResponse | null;
   style?: StyleProps;
   resizeMode?: ResizeMode;
 };

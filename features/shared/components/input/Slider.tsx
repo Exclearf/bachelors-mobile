@@ -1,3 +1,4 @@
+import { clamp } from "@shopify/react-native-skia";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
@@ -18,7 +19,6 @@ type Props = {
   onChangeHandler: (sliderIndex: number) => void;
 };
 
-// TODO: Fix coordinates (they are not animated depending on the size)
 const Slider = ({
   width = 100,
   height = 7,
@@ -30,57 +30,74 @@ const Slider = ({
   const availableThumbWidth = width - height * 4;
   const stepSize = availableThumbWidth / totalSteps;
   const thumbPosition = useSharedValue(Math.round(initialValue * stepSize));
-  const thumbSize = useSharedValue(height * 4);
+  const thumbSize = height * 4;
+  const radiusMultiplier = useSharedValue(1.0);
   const theme = useTheme();
 
   const onGestureEnd = () => {
-    //TODO: Rewrite logic to be precise
-    onChangeHandler(Math.round((thumbPosition.get() - height * 2) / stepSize));
+    onChangeHandler(thumbPosition.get() / stepSize);
   };
 
   const panGesture = Gesture.Pan()
     .onBegin(() => {
       "worklet";
-      thumbSize.set(withTiming(height * 5, { duration: 100 }));
+      radiusMultiplier.set(withTiming(1.1, { duration: 100 }));
     })
     .onChange((e) => {
       "worklet";
-      if (e.x < 0 || e.x > availableThumbWidth) {
+      if (e.x <= 0 || e.x > availableThumbWidth + thumbSize) {
         return;
       }
 
-      thumbPosition.set(e.x);
+      thumbPosition.set(
+        clamp(
+          Math.round((e.x - thumbSize / 2) / stepSize - 0.1) * stepSize,
+          0,
+          availableThumbWidth,
+        ),
+      );
     })
     .onEnd(() => {
       "worklet";
-      thumbSize.set(withTiming(height * 4, { duration: 200 }));
+      radiusMultiplier.set(withTiming(1, { duration: 100 }));
       runOnJS(onGestureEnd)();
     });
 
   const tapGesture = Gesture.Tap()
     .onBegin((e) => {
       "worklet";
-      if (e.x < 0 || e.x >= width - height) {
+      radiusMultiplier.set(withTiming(1.1, { duration: 100 }));
+
+      if (e.x < 0 || e.x >= availableThumbWidth + thumbSize) {
         return;
       }
 
-      thumbPosition.set(e.x);
+      thumbPosition.set(
+        clamp(
+          Math.round((e.x - thumbSize / 2) / stepSize - 0.1) * stepSize,
+          0,
+          availableThumbWidth,
+        ),
+      );
     })
     .onEnd(() => {
       "worklet";
-      thumbSize.set(withTiming(height * 4, { duration: 200 }));
+      radiusMultiplier.set(withTiming(1, { duration: 100 }));
+
       runOnJS(onGestureEnd)();
     });
 
   const thumbStyle = useAnimatedStyle(() => {
-    const thumbSizeValue = thumbSize.get();
-    const newValue = Math.round(thumbPosition.get() / stepSize) * stepSize;
+    "worklet";
+
     return {
-      left: newValue,
-      width: thumbSizeValue,
-      height: thumbSizeValue,
-      borderRadius: thumbSizeValue / 2,
-      top: -thumbSizeValue / 2 + height / 2,
+      left:
+        thumbPosition.get() -
+        (thumbSize * Math.abs(1 - radiusMultiplier.get())) / 2,
+      width: thumbSize * radiusMultiplier.get(),
+      height: thumbSize * radiusMultiplier.get(),
+      borderRadius: (thumbSize / 2) * radiusMultiplier.get(),
+      top: (-thumbSize / 2 + height / 2) * radiusMultiplier.get(),
     };
   });
 

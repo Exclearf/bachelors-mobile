@@ -8,11 +8,11 @@ import plPL from "@/assets/i18n/pl-PL.json";
 const translations = {
   "en-US": {
     translation: enUS,
-    displayName: "English (US)",
+    displayName: "English (US) 🇺🇸",
   },
   "pl-PL": {
     translation: plPL,
-    displayName: "Polski",
+    displayName: "Polski 🇵🇱",
   },
 } as const;
 
@@ -30,6 +30,7 @@ const preferredLocale = (Localization.getLocales().find((locale) =>
 const initiateLocalization = async () => {
   if (i18n.isInitialized) return;
 
+  // eslint-disable-next-line import/no-named-as-default-member
   i18n.use(initReactI18next).init({
     resources: translations,
     lng: preferredLocale,

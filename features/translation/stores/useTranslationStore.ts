@@ -3,7 +3,7 @@ import { immer } from "zustand/middleware/immer";
 
 import { ToggleItemType } from "@/features/shared/components/input/ToggleGroup";
 
-import { Gloss, TranslatedText } from "../utils/types";
+import { Gloss, TranslatedTextResponse } from "../utils/types";
 
 type Modes = "signToText" | "textToSign";
 
@@ -31,23 +31,25 @@ type TranslationStoreState = {
   mode: Modes;
   model: Model;
   currentLanguage: LanguageItem;
+  topK: number;
   availableLanguages: typeof availableLanguages;
   activeVideoTranslationResult: Gloss[] | null;
-  activeTextTranslationResult: TranslatedText | null;
+  activeTextTranslationResult: TranslatedTextResponse | null;
   videoTranslationResults: Gloss[][] | null;
-  textTranslationResults: TranslatedText[] | null;
+  textTranslationResults: TranslatedTextResponse[] | null;
 };
 
 type TranslationStoreActions = {
   setMode: (newState: Modes) => void;
   setModel: (newModel: Model) => void;
   setCurrentLanguage: (newLanguage: LanguageItem) => void;
+  setTopK: (newValue: number) => void;
   clearActiveVideoTranslationResult: () => void;
   removeVideoTranslationFromHistory: (video: Gloss[]) => void;
   addVideoTranslationResult: (result: Gloss[]) => void;
   clearActiveTextTranslationResult: () => void;
-  removeTextTranslationFromHistory: (text: TranslatedText) => void;
-  addTextTranslationResult: (result: TranslatedText) => void;
+  removeTextTranslationFromHistory: (text: TranslatedTextResponse) => void;
+  addTextTranslationResult: (result: TranslatedTextResponse) => void;
 };
 
 //TODO: Extract into 2 stores and merge here
@@ -58,6 +60,7 @@ export const useTranslationStore = create<
     mode: "signToText",
     model: null,
     videoTranslationResults: null,
+    topK: 3,
     textTranslationResults: null,
     activeVideoTranslationResult: null,
     activeTextTranslationResult: null,
@@ -76,6 +79,11 @@ export const useTranslationStore = create<
     setMode: (newMode: Modes) => {
       set((state) => {
         state.mode = newMode;
+      });
+    },
+    setTopK(newValue) {
+      set((state) => {
+        state.topK = newValue;
       });
     },
     addVideoTranslationResult: (result) => {

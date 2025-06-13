@@ -3,50 +3,51 @@ import { useTranslation } from "react-i18next";
 
 import { useSettingsItemWidth } from "@/features/settings/hooks/useSettingsItemWidth";
 import { SettingsSectionSubItemType } from "@/features/settings/SettingsSections";
-import ToggleGroup, {
-  ToggleItemType,
-} from "@/features/shared/components/input/ToggleGroup";
+import Select, {
+  SelectItemType,
+} from "@/features/shared/components/input/Select";
 import log from "@/features/shared/utils/log";
 import { locales } from "@/features/translation/i18n/i18n";
 
-import SettingsMenuEntry from "../../shared/SettingsMenuEntryText";
+import SettingsMenuEntryText from "../../shared/SettingsMenuEntryText";
 
-type Props = SettingsSectionSubItemType;
-
-const AppLanguageToggle = ({ getTranslationKey, textStyle }: Props) => {
+const AppLanguageToggle = ({
+  getTranslationKey,
+  textStyle,
+}: SettingsSectionSubItemType) => {
   const { i18n } = useTranslation();
   const [selectedLanguageCode, setSelectedLanguageCode] = useState(
     i18n.language,
   );
   const { width } = useSettingsItemWidth();
-  const appLanguages: ToggleItemType[] = locales.map((item) => ({
+
+  const appLanguages: SelectItemType[] = locales.map((item) => ({
     id: item.code,
-    title: item.displayName,
+    translationKey: item.displayName,
   }));
 
-  const currentAppLanguageIndex = appLanguages.findIndex(
+  const currentAppLanguageItem = appLanguages.find(
     (lang) => lang.id === selectedLanguageCode,
   );
 
-  const changeAppLanguage = (language: ToggleItemType) => {
-    setSelectedLanguageCode(language.id);
-    i18n.changeLanguage(language.id);
-    log.info("Changing the app language to:", language.id);
+  const changeAppLanguage = (languageId: string) => {
+    setSelectedLanguageCode(languageId);
+    i18n.changeLanguage(languageId);
+    log.info("Changing the app language to:", languageId);
   };
 
   return (
     <>
-      <SettingsMenuEntry
+      <SettingsMenuEntryText
         textStyle={textStyle}
         textTranslationKey={getTranslationKey("appLanguage")}
         tooltipTranslationKey={getTranslationKey("appLanguageTooltip")}
       />
-      <ToggleGroup
-        selectedIndex={currentAppLanguageIndex}
-        items={appLanguages}
-        onChange={changeAppLanguage}
+      <Select
         width={width}
-        changeWhenAnimationEnds={true}
+        items={appLanguages}
+        currentItem={currentAppLanguageItem!}
+        setCurrentItem={(item) => changeAppLanguage(item.id as string)}
       />
     </>
   );

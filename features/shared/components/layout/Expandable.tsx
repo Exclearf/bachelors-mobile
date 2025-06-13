@@ -25,7 +25,7 @@ type TriggerPosition = {
 
 type ExpandableContextType = {
   expanded: SharedValue<number>;
-  switchExpanded: () => void;
+  switchExpanded: (animationSpeed?: number) => void;
   triggerLayout: TriggerPosition | null;
   setTriggerLayout: Dispatch<SetStateAction<TriggerPosition | null>>;
 };
@@ -42,7 +42,7 @@ const useExpandableContext = () => {
 
 export type ExpandableRef = {
   switchExpanded: () => void;
-  close: () => void;
+  close: (animationSpeed?: number) => void;
 };
 
 type ExpandableProps = PropsWithChildren<{
@@ -68,14 +68,18 @@ const ExpandableComponent = forwardRef(
       null,
     );
 
-    const switchExpanded = () => {
-      expanded.set(withTiming(isExpanded.current ? 0 : height));
+    const switchExpanded = (animationSpeed?: number) => {
+      expanded.set(
+        withTiming(isExpanded.current ? 0 : height, {
+          duration: animationSpeed ?? 100,
+        }),
+      );
 
       isExpanded.current = !isExpanded.current;
     };
 
-    const closeExpanded = () => {
-      expanded.set(withTiming(0));
+    const closeExpanded = (animationSpeed?: number) => {
+      expanded.set(withTiming(0, { duration: animationSpeed ?? 100 }));
       isExpanded.current = false;
     };
 
@@ -134,7 +138,7 @@ const Trigger = ({ children, style }: ExpandableTriggerProps) => {
     <Pressable
       style={style}
       ref={triggerRef}
-      onPress={switchExpanded}
+      onPress={() => switchExpanded()}
       onLayout={onLayout}
     >
       {children}

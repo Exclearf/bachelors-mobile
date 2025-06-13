@@ -16,14 +16,8 @@
       "generalSettingsSection": {
         "appLanguage": "Application",
         "appLanguageTooltip": "UI language",
-        "translationLanguage": "Translation",
-        "translationLanguageTooltip": "Translate into this",
-        "modelSelect": "AI Model",
-        "modelSelectOptions": {
-          "placeholder": "Select a model",
-          "vivit": "ViViT 🧠",
-          "timesformer": "TimeSformer ⚡"
-        }
+        "topK": "Top K",
+        "topKTooltip": "Number of results per video"
       },
       "personalizationSection": {
         "lightTheme": "Light mode",
@@ -46,7 +40,7 @@
     "translationHistory": "Translation history"
   },
   "studyPage": {
-    "headerText": "Learn ASL!"
+    "headerText": "Learn ASl!"
   },
   "loginPage": {
     "signInTitle": "Log in",

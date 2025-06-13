@@ -4,12 +4,15 @@ import { UseLocalizationFunction } from "@/features/shared/hooks/useLocalization
 import { fetchWithTimoutWrapper } from "@/features/shared/utils/fetch";
 import log from "@/features/shared/utils/log";
 
+import { useTranslationStore } from "../stores/useTranslationStore";
 import { Gloss, UseTranslation } from "../utils/types";
 
 const useVideoTranslationRequest = (
   accessToken: string,
   getTranslationKey: UseLocalizationFunction,
 ) => {
+  const topK = useTranslationStore((state) => state.topK);
+
   const makeRequest: UseTranslation = async (file, controller) => {
     const formData = new FormData();
 
@@ -19,7 +22,7 @@ const useVideoTranslationRequest = (
       type: "video/mp4",
     } as any);
 
-    formData.append("topK", "15");
+    formData.append("topK", topK.toString());
 
     const response = await fetchWithTimoutWrapper(
       "https://bachelors.encape.me/api/translate/video-to-text",

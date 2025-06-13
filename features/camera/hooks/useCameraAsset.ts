@@ -126,7 +126,9 @@ const useCameraAsset = (
     const cancelRecording = async () => {
       await cameraRef?.current?.cancelRecording();
     };
-  }, [mode]);
+
+    cancelRecording();
+  }, [mode, cameraRef, isFetching, setIsFetching]);
 
   const requestAsset = mode === "textToSign" ? takePhoto : takeVideo;
 

@@ -12,14 +12,12 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { useShallow } from "zustand/react/shallow";
 
 import CollapseAnimated from "@/features/shared/components/primitive/CollapseAnimated";
 import TranslatedText from "@/features/shared/components/text/TranslatedText";
 import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
 import { useBottomSheet } from "@/features/shared/hooks/useBottomSheet";
 import ClearTranslationButton from "@/features/translation/components/shared/input/ClearTranslationButton";
-import { useTranslationStore } from "@/features/translation/stores/useTranslationStore";
 
 type Props = PropsWithChildren<{
   initialHeight: number;

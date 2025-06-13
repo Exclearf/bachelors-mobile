@@ -4,7 +4,7 @@ import { useAppDimensions } from "@/features/shared/hooks/useAppDimensions";
 
 import { SettingsItemWidthContext } from "../../contexts/settingsItemWidth";
 
-type Props = PropsWithChildren<{}>;
+type Props = PropsWithChildren<object>;
 
 const SettingsItemWidthProvider = ({ children }: Props) => {
   const { width } = useAppDimensions();

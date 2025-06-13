@@ -25,10 +25,10 @@ const SettingsMenuEntryText = ({
       <TranslatedText style={textStyle} translationKey={textTranslationKey}>
         {tooltipTranslationKey && (
           <Tooltip
-            width={125 + fontSize["large"]}
             iconSize={fontSize["regular"]}
-            height={75}
             position={position}
+            width={"100%"}
+            height={"100%"}
           >
             <TranslatedText
               numberOfLines={2}

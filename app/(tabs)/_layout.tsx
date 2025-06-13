@@ -4,6 +4,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Tabs } from "expo-router";
 import React from "react";
 import { Pressable, StyleSheet } from "react-native";
+import { PressableProps } from "react-native/Libraries/Components/Pressable/Pressable";
 
 import LoginScreen from "@/features/auth/LoginScreen";
 import { useAuthStore } from "@/features/auth/stores/useAuthStore";
@@ -35,7 +36,7 @@ const RootLayout = () => {
         ],
         tabBarItemStyle: styles.centerItems,
         tabBarShowLabel: false,
-        tabBarButton: (props) => (
+        tabBarButton: (props: PressableProps) => (
           <Pressable
             {...props}
             style={[styles.centerItems, styles.tabBarButton]}
