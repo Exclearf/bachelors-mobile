@@ -1,6 +1,6 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
 import React from "react";
-import { StyleSheet, Modal, View, ViewStyle, Pressable } from "react-native";
+import { Pressable, StyleSheet, Modal, View, ViewStyle } from "react-native";
 
 import { useLocalization } from "../../hooks/useLocalization";
 import { useTheme } from "../../hooks/useTheme";

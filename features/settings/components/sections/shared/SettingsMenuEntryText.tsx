@@ -2,22 +2,23 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 
 import { SettingsSectionSubItemType } from "@/features/settings/SettingsSections";
+import { PopupVerticalPosition } from "@/features/shared/components/feedback/Popup";
 import Tooltip from "@/features/shared/components/feedback/Tooltip";
 import TranslatedText from "@/features/shared/components/text/TranslatedText";
 import { useFontSize } from "@/features/shared/hooks/useFontSize";
 
-type Props = {
+type SettingsMenuEntryTextProps = {
   textTranslationKey: string;
   tooltipTranslationKey?: string;
-  position?: "bottom" | "top";
+  position?: PopupVerticalPosition;
 } & Partial<SettingsSectionSubItemType>;
 
 const SettingsMenuEntryText = ({
   textStyle,
   textTranslationKey,
   tooltipTranslationKey,
-  position = "bottom",
-}: Props) => {
+  position = "top",
+}: SettingsMenuEntryTextProps) => {
   const fontSize = useFontSize();
 
   return (
@@ -26,14 +27,11 @@ const SettingsMenuEntryText = ({
         {tooltipTranslationKey && (
           <Tooltip
             iconSize={fontSize["regular"]}
-            position={position}
+            verticalPosition={position}
             width={"100%"}
             height={"100%"}
           >
-            <TranslatedText
-              numberOfLines={2}
-              translationKey={tooltipTranslationKey}
-            />
+            <TranslatedText translationKey={tooltipTranslationKey} />
           </Tooltip>
         )}
       </TranslatedText>

@@ -1,5 +1,6 @@
 import React from "react";
 import { View } from "react-native";
+import { useSharedValue } from "react-native-reanimated";
 import { useShallow } from "zustand/react/shallow";
 
 import { useSettingsItemWidth } from "@/features/settings/hooks/useSettingsItemWidth";
@@ -22,6 +23,10 @@ const FontSizeSlider = ({
   );
   const { width } = useSettingsItemWidth();
 
+  const sharedFontScale = useSharedValue(
+    fontSizeMultipliers.indexOf(fontScale),
+  );
+
   return (
     <>
       <TranslatedText
@@ -31,7 +36,7 @@ const FontSizeSlider = ({
       <View style={[{ width }, containerStyle]}>
         <Slider
           width={width}
-          initialValue={fontSizeMultipliers.indexOf(fontScale)}
+          value={sharedFontScale}
           totalSteps={2}
           onChangeHandler={(newIndex) =>
             setFontScale(fontSizeMultipliers[newIndex])

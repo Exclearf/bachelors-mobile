@@ -47,6 +47,7 @@ type PersonalizationActions = {
   setThemeType: (newTheme: ColorSchemeName) => void;
   setIsHighContrast: (newState: boolean) => void;
   setAccentColor: (newColor: string) => void;
+  getIconSize: () => number;
 };
 
 const baseFontSize = {
@@ -114,6 +115,10 @@ export const usePersonalizationStore = create<
         set((state) => {
           state.isHighContrast = newState;
         }),
+      getIconSize() {
+        const { fontSize, fontScale } = get();
+        return fontScale * fontSize.regular;
+      },
       setAccentColor: (newColor) =>
         set((state) => {
           state.accentColor = newColor;

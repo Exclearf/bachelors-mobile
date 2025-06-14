@@ -68,6 +68,8 @@ const TranslatedText = ({
           {
             textAlign: "center",
             position: "relative",
+            flexWrap: "wrap",
+            verticalAlign: "middle",
           },
           {
             fontFamily: isBold
@@ -76,7 +78,6 @@ const TranslatedText = ({
             color: isSecondary
               ? theme?.secondaryForeground
               : theme?.primaryForeground,
-            verticalAlign: "middle",
           },
           ...userStyle,
           { fontSize: fontSizeOverride ?? currentFontSize[fontSize] },

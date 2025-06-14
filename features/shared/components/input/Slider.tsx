@@ -4,7 +4,9 @@ import { StyleSheet, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
   runOnJS,
+  SharedValue,
   useAnimatedStyle,
+  useDerivedValue,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
@@ -13,29 +15,31 @@ import { useTheme } from "../../hooks/useTheme";
 
 type Props = {
   width: number;
-  initialValue: number;
+  value: SharedValue<number>;
   totalSteps: number;
   height?: number;
-  onChangeHandler: (sliderIndex: number) => void;
+  onChangeHandler?: (sliderIndex: number) => void;
 };
 
 const Slider = ({
   width = 100,
   height = 7,
-  initialValue,
+  value,
   totalSteps,
   onChangeHandler,
 }: Props) => {
   const trackWidth = width;
   const availableThumbWidth = width - height * 4;
   const stepSize = availableThumbWidth / totalSteps;
-  const thumbPosition = useSharedValue(Math.round(initialValue * stepSize));
+  const thumbPosition = useDerivedValue(() =>
+    Math.round(value.get() * stepSize),
+  );
   const thumbSize = height * 4;
   const radiusMultiplier = useSharedValue(1.0);
   const theme = useTheme();
 
   const onGestureEnd = () => {
-    onChangeHandler(thumbPosition.get() / stepSize);
+    onChangeHandler?.(Math.round(thumbPosition.get() / stepSize));
   };
 
   const panGesture = Gesture.Pan()
@@ -49,11 +53,11 @@ const Slider = ({
         return;
       }
 
-      thumbPosition.set(
+      value.set(
         clamp(
-          Math.round((e.x - thumbSize / 2) / stepSize - 0.1) * stepSize,
+          Math.round((e.x - thumbSize / 2) / stepSize),
           0,
-          availableThumbWidth,
+          availableThumbWidth / stepSize,
         ),
       );
     })
@@ -88,8 +92,6 @@ const Slider = ({
     });
 
   const thumbStyle = useAnimatedStyle(() => {
-    "worklet";
-
     return {
       left:
         thumbPosition.get() -

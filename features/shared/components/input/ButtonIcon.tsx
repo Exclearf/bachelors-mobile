@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacity } from "react-native";
+import { Pressable } from "react-native";
 
 type ButtonIconProps = {
   IconComponent: React.JSX.Element;
@@ -7,7 +7,7 @@ type ButtonIconProps = {
 };
 
 const ButtonIcon = ({ IconComponent, onPress }: ButtonIconProps) => {
-  return <TouchableOpacity onPress={onPress}>{IconComponent}</TouchableOpacity>;
+  return <Pressable onPress={onPress}>{IconComponent}</Pressable>;
 };
 
 export default ButtonIcon;

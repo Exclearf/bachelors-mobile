@@ -1,6 +1,6 @@
 import { Canvas, Path } from "@shopify/react-native-skia";
 import React from "react";
-import { Pressable } from "react-native";
+import { Pressable } from "react-native-gesture-handler";
 import {
   interpolate,
   useDerivedValue,

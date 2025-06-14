@@ -21,6 +21,7 @@ import Animated, {
 } from "react-native-reanimated";
 
 import { LayoutPosition } from "../../types/types";
+import { roundToNearestN } from "../../utils/helper";
 import ModalWindow from "../layout/ModalWindow";
 
 type PopupContextType = {
@@ -46,15 +47,15 @@ const usePopupContext = () => {
   return context;
 };
 
-type PopupPosition = "top" | "bottom";
-type PopupAlignment = "left" | "center" | "right";
+export type PopupVerticalPosition = "top" | "bottom";
+export type PopupHorizontalPosition = "left" | "center" | "right";
 
 type PopupTriggerProps = PropsWithChildren<object>;
 type PopupContentProps = PropsWithChildren<{
-  position: PopupPosition;
   height: number | string;
   width: number | string;
-  horizontalAlignment?: PopupAlignment;
+  horizontalPosition?: PopupHorizontalPosition;
+  verticalPosition?: PopupVerticalPosition;
 }>;
 
 type PopupComposition = {
@@ -74,10 +75,18 @@ type PopupComponent = React.FC<PopupProps> & {
   Content: React.FC<PopupContentProps>;
 };
 
-const popAlignmentMultiplier: Record<PopupAlignment, number> = {
+const popupHorizontalMultiplier: Record<PopupHorizontalPosition, number> = {
   left: 1,
   center: 0.5,
   right: 0,
+};
+
+const popupVerticalMultiplier: Record<
+  PopupVerticalPosition,
+  [number, number, number]
+> = {
+  top: [0, -1, -1],
+  bottom: [1, 0, 1],
 };
 
 const Popup: PopupComponent = ({ isOpen, setIsOpen, children }: PopupProps) => {
@@ -135,14 +144,11 @@ const Trigger = ({ children }: PopupTriggerProps) => {
 
 const Content = ({
   children,
-  position,
+  verticalPosition = "top",
   width,
   height,
-  horizontalAlignment = "center",
+  horizontalPosition = "center",
 }: PopupContentProps) => {
-  // TODO:
-  // 2. Extract into a function
-
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
   const { isOpen, setIsOpen, triggerLayout } = usePopupContext();
   const padding = 15;
@@ -155,7 +161,7 @@ const Content = ({
 
     if (!popupPosition) return {};
 
-    const offsetMultiplier = popAlignmentMultiplier[horizontalAlignment];
+    const offsetMultiplier = popupHorizontalMultiplier[horizontalPosition];
 
     const horizontalPositionCreator = () => {
       return (
@@ -165,16 +171,29 @@ const Content = ({
       );
     };
 
-    const topPosition = triggerPosition.y + triggerPosition.height + padding;
+    const verticalPositionCreator = () => {
+      const [
+        triggerHeightMultiplier,
+        popupPositionMultiplier,
+        paddingMultiplier,
+      ] = popupVerticalMultiplier[verticalPosition];
+
+      return (
+        triggerPosition.y +
+        triggerHeightMultiplier * triggerPosition.height +
+        +popupPositionMultiplier * popupPosition.height +
+        paddingMultiplier * padding
+      );
+    };
 
     return {
       left: clamp(
-        Math.round(horizontalPositionCreator()),
+        roundToNearestN(horizontalPositionCreator(), 1),
         padding,
         screenWidth - popupPosition.width - padding,
       ),
       top: clamp(
-        Math.round(topPosition),
+        roundToNearestN(verticalPositionCreator(), 1),
         padding,
         screenHeight - popupPosition.height - padding,
       ),

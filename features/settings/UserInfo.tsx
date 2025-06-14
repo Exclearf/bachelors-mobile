@@ -84,8 +84,8 @@ const UserInfo = ({ getTranslationKey, height }: Props) => {
             />
           </Popup.Trigger>
           <Popup.Content
-            position="bottom"
-            horizontalAlignment="left"
+            verticalPosition="bottom"
+            horizontalPosition="left"
             width={128}
             height={48}
           >

@@ -33,7 +33,7 @@ const TranslationConfirmation = ({
   getTranslationKey = useLocalization(getTranslationKey(mode));
 
   return (
-    <ModalWindow isOpen={fileUri?.length !== 0}>
+    <ModalWindow closeCallback={cancelCallback} isOpen={fileUri?.length !== 0}>
       <ModalWindow.Header
         translationKey={getTranslationKey("translationConfirm")}
         closeCallback={cancelCallback}
@@ -51,17 +51,17 @@ const TranslationConfirmation = ({
         ) : (
           <VideoTranslationPlayer videoSource={fileUri} />
         )}
-        {isFetching && (
-          <View
-            style={[
-              styles.spinnerContainer,
-              { backgroundColor: theme?.background + "CC" },
-            ]}
-          >
-            <Spinner size={32} color={theme?.primaryForeground!} />
-          </View>
-        )}
       </View>
+      {isFetching && (
+        <View
+          style={[
+            styles.spinnerContainer,
+            { backgroundColor: theme?.background + "CC" },
+          ]}
+        >
+          <Spinner size={32} color={theme?.primaryForeground!} />
+        </View>
+      )}
       <ModalWindow.Footer
         closeCallback={cancelCallback}
         acceptCallback={acceptCallback}
@@ -81,5 +81,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     height: "100%",
     width: "100%",
+    flex: 1,
   },
 });

@@ -1,5 +1,8 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { Linking, StyleSheet } from "react-native";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import { Point } from "react-native-gesture-handler/lib/typescript/web/interfaces";
+import { runOnJS } from "react-native-reanimated";
 import {
   Camera,
   useCameraFormat,
@@ -31,15 +34,25 @@ const CameraView = ({ previewFrame }: CameraViewProps) => {
   const { width, height } = useAppDimensions();
   const bboxRef = useRef<PictureBboxRef>(null);
   const mode = useTranslationStore((state) => state.mode);
-  const [isAvailable, setIsAvailable, isTorchOn, switchTorch] =
-    useCameraOptionsStore(
-      useShallow((state) => [
-        state.isAvailable,
-        state.setIsAvailable,
-        state.isTorchOn,
-        state.switchTorch,
-      ]),
-    );
+  const [
+    isAvailable,
+    setIsAvailable,
+    isTorchOn,
+    switchTorch,
+    exposure,
+    setExposure,
+    photoQualityBalance,
+  ] = useCameraOptionsStore(
+    useShallow((state) => [
+      state.isAvailable,
+      state.setIsAvailable,
+      state.isTorchOn,
+      state.switchTorch,
+      state.exposure,
+      state.setExposure,
+      state.photoQualityBalance,
+    ]),
+  );
   const cameraRef = useRef<Camera>(null);
   const screenAspectRatio = height / width;
   const format = useCameraFormat(currentDevice, [
@@ -51,6 +64,7 @@ const CameraView = ({ previewFrame }: CameraViewProps) => {
   ]);
   const { hasPermission, requestPermission } = useCameraPermission();
   const getTranslationKey = useLocalization("translation");
+  const isAppFocused = useIsAppFocused();
 
   const {
     assetUri: cameraAssetUri,
@@ -70,8 +84,6 @@ const CameraView = ({ previewFrame }: CameraViewProps) => {
       requestPermission();
     }
   }, [hasPermission, requestPermission]);
-
-  const isAppFocused = useIsAppFocused();
 
   const isAssetAvailable = useMemo(
     () => cameraAssetUri !== "" || galleryAssetUri !== "",
@@ -99,20 +111,50 @@ const CameraView = ({ previewFrame }: CameraViewProps) => {
     ],
   );
 
+  useEffect(() => {
+    if (currentDevice) {
+      const maxExposure = currentDevice.maxExposure;
+      const minExposure = currentDevice.minExposure;
+      setExposure([
+        minExposure,
+        maxExposure,
+        (maxExposure - Math.abs(minExposure)) / 2,
+      ]);
+    }
+  }, [currentDevice, setExposure]);
+
+  const focus = useCallback((point: Point) => {
+    const camera = cameraRef.current;
+
+    if (camera == null) return;
+
+    camera.focus(point);
+  }, []);
+
+  const gesture = Gesture.Tap().onEnd(({ x, y }) => {
+    runOnJS(focus)({ x, y });
+  });
+
+  const isPhoto = mode === "textToSign" ? true : false;
+
   return (
     <>
-      <Camera
-        style={[StyleSheet.absoluteFill, styles.cameraViewStyle]}
-        device={currentDevice}
-        isActive={isAvailable && isAppFocused && !isAssetAvailable}
-        onInitialized={() => setIsAvailable(true)}
-        ref={cameraRef}
-        torch={isTorchOn}
-        format={format}
-        video={true}
-        photoQualityBalance="quality"
-        photo={true}
-      />
+      <GestureDetector gesture={gesture}>
+        <Camera
+          style={[StyleSheet.absoluteFill, styles.cameraViewStyle]}
+          device={currentDevice}
+          isActive={isAvailable && isAppFocused && !isAssetAvailable}
+          onInitialized={() => setIsAvailable(true)}
+          ref={cameraRef}
+          exposure={exposure?.[2] ?? undefined}
+          torch={isTorchOn}
+          format={format}
+          photoQualityBalance={photoQualityBalance}
+          enableZoomGesture
+          video={!isPhoto}
+          photo={isPhoto}
+        />
+      </GestureDetector>
 
       {mode === "textToSign" && <PictureBbox ref={bboxRef} />}
 

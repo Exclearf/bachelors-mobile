@@ -1,3 +1,4 @@
+import { useSharedValue } from "react-native-reanimated";
 import { useShallow } from "zustand/react/shallow";
 
 import { useSettingsItemWidth } from "@/features/settings/hooks/useSettingsItemWidth";
@@ -17,6 +18,8 @@ const VideoClassificationTopK = ({
     useShallow((state) => [state.topK, state.setTopK]),
   );
 
+  const sharedTopK = useSharedValue(topK);
+
   return (
     <>
       <SettingsMenuEntryText
@@ -28,10 +31,7 @@ const VideoClassificationTopK = ({
 
       <Slider
         width={width}
-        initialValue={
-          // TODO: Unfortunately, due to animation usage, the slider is statefull :<
-          topK - 1
-        }
+        value={sharedTopK}
         totalSteps={10}
         onChangeHandler={(newIndex) => {
           setTopK(Math.floor(Math.pow(newIndex + 1, 1.2)));

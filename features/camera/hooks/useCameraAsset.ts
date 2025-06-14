@@ -121,14 +121,13 @@ const useCameraAsset = (
   };
 
   useEffect(() => {
-    setIsFetching(false);
-
     const cancelRecording = async () => {
+      setIsFetching(false);
       await cameraRef?.current?.cancelRecording();
     };
 
     cancelRecording();
-  }, [mode, cameraRef, isFetching, setIsFetching]);
+  }, [mode, cameraRef, setIsFetching]);
 
   const requestAsset = mode === "textToSign" ? takePhoto : takeVideo;
 

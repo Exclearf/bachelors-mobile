@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, useMemo } from "react";
-import { StyleSheet, TouchableOpacity, ViewStyle } from "react-native";
+import { Pressable, StyleSheet, ViewStyle } from "react-native";
 
 import { useTheme } from "../../hooks/useTheme";
 
@@ -42,7 +42,7 @@ const Button = ({
   );
 
   return (
-    <TouchableOpacity
+    <Pressable
       onPress={() => {
         onPress?.();
       }}
@@ -59,7 +59,7 @@ const Button = ({
       ]}
     >
       {children}
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
