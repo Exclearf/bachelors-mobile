@@ -1,4 +1,5 @@
 import React from "react";
+import { StyleSheet } from "react-native";
 
 import Button from "@/features/shared/components/input/Button";
 import ModalWindow from "@/features/shared/components/layout/ModalWindow";
@@ -14,14 +15,10 @@ const CameraAccessRequestModal = ({ handler, isVisible }: Props) => {
   const getTranslationKey = useLocalization("misc");
 
   return (
-    <ModalWindow
-      isOpen={isVisible}
-      style={{
-        width: "80%",
-        padding: "5%",
-      }}
-    >
+    <ModalWindow style={styles.container} isOpen={isVisible}>
       <ModalWindow.Header
+        textStyle={styles.modalHeaderText}
+        style={styles.modalHeader}
         translationKey={getTranslationKey("allowCameraAccess")}
       />
       <ModalWindow.Footer>
@@ -40,3 +37,17 @@ const CameraAccessRequestModal = ({ handler, isVisible }: Props) => {
 };
 
 export default CameraAccessRequestModal;
+
+const styles = StyleSheet.create({
+  container: {
+    width: "75%",
+    gap: 50,
+  },
+  modalHeaderText: {
+    textAlign: "center",
+    width: "100%",
+  },
+  modalHeader: {
+    alignSelf: "center",
+  },
+});

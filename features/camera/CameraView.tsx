@@ -81,9 +81,16 @@ const CameraView = ({ previewFrame }: CameraViewProps) => {
   useEffect(() => {
     if (!hasPermission) {
       log.debug("Requesting camera permission");
-      requestPermission();
+
+      const tryRequest = async () => {
+        const response = await requestPermission();
+
+        setIsAvailable(response);
+      };
+
+      tryRequest();
     }
-  }, [hasPermission, requestPermission]);
+  }, [hasPermission, requestPermission, setIsAvailable]);
 
   const isAssetAvailable = useMemo(
     () => cameraAssetUri !== "" || galleryAssetUri !== "",
@@ -173,6 +180,8 @@ const CameraView = ({ previewFrame }: CameraViewProps) => {
 
             if (!response) {
               Linking.openSettings();
+            } else {
+              setIsAvailable(response);
             }
           };
           tryToAskForPermission();

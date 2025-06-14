@@ -74,6 +74,7 @@ const SignPage = ({ fetchPage, searchTerm }: Props) => {
       <ModalWindow
         isOpen={currentItem != null}
         style={{ height: "50%", width: "90%", overflow: "hidden" }}
+        closeCallback={() => setCurrentItem(null)}
       >
         <ModalWindow.Header
           closeCallback={() => setCurrentItem(null)}

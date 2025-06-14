@@ -104,7 +104,6 @@ const CameraSettingsContainer = () => {
         )}
         <Button
           onPress={() => {
-            console.log(1);
             exposure != null &&
               setExposure([
                 exposure[0],
@@ -112,9 +111,7 @@ const CameraSettingsContainer = () => {
                 (exposure[1] - Math.abs(exposure[0])) / 2,
               ]);
           }}
-          style={{
-            padding: 5,
-          }}
+          style={styles.exposureResetButton}
         >
           <FontAwesome5
             name="undo-alt"
@@ -146,5 +143,8 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     gap: 10,
+  },
+  exposureResetButton: {
+    padding: 5,
   },
 });

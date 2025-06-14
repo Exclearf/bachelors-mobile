@@ -1,6 +1,13 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
 import React from "react";
-import { Pressable, StyleSheet, Modal, View, ViewStyle } from "react-native";
+import {
+  Pressable,
+  StyleSheet,
+  Modal,
+  View,
+  ViewStyle,
+  TextStyle,
+} from "react-native";
 
 import { useLocalization } from "../../hooks/useLocalization";
 import { useTheme } from "../../hooks/useTheme";
@@ -22,12 +29,15 @@ type ModalWindowHeaderProps = {
   translationKey: string;
   closeCallback?: () => void;
   titleFontSize?: FontSizeDescription;
+  style?: ViewStyle;
+  textStyle?: TextStyle;
 };
 
 type ModalWindowFooterProps = React.PropsWithChildren<{
   acceptCallback?: () => void;
   closeCallback?: () => void;
   buttonStyle?: ViewStyle;
+  style?: ViewStyle;
 }>;
 
 type ContentWrapperProps = React.PropsWithChildren<{
@@ -39,12 +49,15 @@ const ModalHeader = ({
   translationKey,
   closeCallback,
   titleFontSize = "medium",
+  style,
+  textStyle,
 }: ModalWindowHeaderProps) => {
   const theme = useTheme();
 
   return (
-    <View style={styles.modalHeader}>
+    <View style={[styles.modalHeader, style]}>
       <TranslatedText
+        style={textStyle}
         fontSize={titleFontSize}
         translationKey={translationKey}
       />
@@ -70,11 +83,12 @@ const ModalFooter = ({
   closeCallback,
   buttonStyle = {},
   children,
+  style,
 }: ModalWindowFooterProps) => {
   const getTranslationKey = useLocalization("misc");
 
   return (
-    <View style={styles.modalFooter}>
+    <View style={[styles.modalFooter, style]}>
       {children}
       {closeCallback && (
         <Button

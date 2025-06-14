@@ -43,6 +43,7 @@ const Button = ({
 
   return (
     <Pressable
+      hitSlop={5}
       onPress={() => {
         onPress?.();
       }}
@@ -67,7 +68,7 @@ export default Button;
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 10,
+    borderRadius: 5,
     padding: 10,
     borderWidth: 1,
     justifyContent: "center",

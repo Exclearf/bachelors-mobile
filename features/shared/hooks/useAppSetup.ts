@@ -20,11 +20,7 @@ export const useAppSetup = () => {
     OpenSans_600SemiBold,
   });
 
-  const isAppReady =
-    isCameraAvailable &&
-    isBottomSheetRegistered &&
-    isFontLoaded &&
-    theme != null;
+  const isAppReady = isBottomSheetRegistered && isFontLoaded && theme != null;
 
   useEffect(() => {
     if (isAppReady) {
