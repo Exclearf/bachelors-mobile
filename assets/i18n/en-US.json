@@ -17,7 +17,12 @@
         "appLanguage": "Application",
         "appLanguageTooltip": "UI language",
         "topK": "Top K",
-        "topKTooltip": "Number of results per video"
+        "topKTooltip": "Number of results per video",
+        "history": "History",
+        "confirmImportHeader": "Import history?",
+        "confirmImportContent": "This operation will overwrite current history.",
+        "operationComplete": "Exported successfully.",
+        "operationNotComplete": "Failed to export."
       },
       "personalizationSection": {
         "lightTheme": "Light mode",

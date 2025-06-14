@@ -25,6 +25,13 @@ const availableLanguages: ToggleItemType[] = [
   },
 ];
 
+export type HistoryJsonType = {
+  activeTextTranslationResult: TranslatedTextResponse | null;
+  textTranslationResults: TranslatedTextResponse[] | null;
+  activeVideoTranslationResult: Gloss[] | null;
+  videoTranslationResults: Gloss[][] | null;
+};
+
 type LanguageItem = (typeof availableLanguages)[number];
 
 type TranslationStoreState = {
@@ -50,6 +57,8 @@ type TranslationStoreActions = {
   clearActiveTextTranslationResult: () => void;
   removeTextTranslationFromHistory: (text: TranslatedTextResponse) => void;
   addTextTranslationResult: (result: TranslatedTextResponse) => void;
+  getHistory: () => HistoryJsonType;
+  setHistory: (history: HistoryJsonType) => void;
 };
 
 //TODO: Extract into 2 stores and merge here
@@ -152,6 +161,30 @@ export const useTranslationStore = create<
 
       set((state) => {
         state.activeTextTranslationResult = null;
+      });
+    },
+    getHistory() {
+      const {
+        activeTextTranslationResult,
+        textTranslationResults,
+        activeVideoTranslationResult,
+        videoTranslationResults,
+      } = get();
+
+      return {
+        activeTextTranslationResult,
+        textTranslationResults,
+        activeVideoTranslationResult,
+        videoTranslationResults,
+      };
+    },
+    setHistory(history) {
+      set((state) => {
+        state.activeTextTranslationResult = history.activeTextTranslationResult;
+        state.activeVideoTranslationResult =
+          history.activeVideoTranslationResult;
+        state.textTranslationResults = history.textTranslationResults;
+        state.videoTranslationResults = history.videoTranslationResults;
       });
     },
   })),

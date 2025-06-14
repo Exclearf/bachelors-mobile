@@ -6,6 +6,7 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
+import { FontSizeDescription } from "@/features/shared/components/text/TranslatedText";
 import log from "@/features/shared/utils/log";
 
 import {
@@ -14,11 +15,7 @@ import {
   setSaturation,
 } from "../../shared/utils/themes";
 
-export type FontSize = {
-  regular: number;
-  medium: number;
-  large: number;
-};
+export type FontSize = Record<FontSizeDescription, number>;
 
 export type Theme = ReplaceNumbersWithStrings<ThemeGeneratorFunction>;
 
@@ -117,7 +114,7 @@ export const usePersonalizationStore = create<
         }),
       getIconSize() {
         const { fontSize, fontScale } = get();
-        return fontScale * fontSize.regular;
+        return fontScale * fontSize.large;
       },
       setAccentColor: (newColor) =>
         set((state) => {

@@ -17,10 +17,12 @@ type TranslationParameter =
 
 type TranslationParameters = { [key: string]: TranslationParameter };
 
+export type FontSizeDescription = "regular" | "medium" | "large";
+
 type ComponentProps = {
   translationKey: string;
   translationParameters?: Readonly<TranslationParameters>;
-  fontSize?: "regular" | "medium" | "large";
+  fontSize?: FontSizeDescription;
   style?: TextStyle | TextStyle[];
   isSecondary?: boolean;
   isBold?: boolean;

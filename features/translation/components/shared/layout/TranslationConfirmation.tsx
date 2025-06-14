@@ -51,17 +51,17 @@ const TranslationConfirmation = ({
         ) : (
           <VideoTranslationPlayer videoSource={fileUri} />
         )}
+        {isFetching && (
+          <View
+            style={[
+              styles.spinnerContainer,
+              { backgroundColor: theme?.background + "CC" },
+            ]}
+          >
+            <Spinner size={32} color={theme?.primaryForeground!} />
+          </View>
+        )}
       </View>
-      {isFetching && (
-        <View
-          style={[
-            styles.spinnerContainer,
-            { backgroundColor: theme?.background + "CC" },
-          ]}
-        >
-          <Spinner size={32} color={theme?.primaryForeground!} />
-        </View>
-      )}
       <ModalWindow.Footer
         closeCallback={cancelCallback}
         acceptCallback={acceptCallback}

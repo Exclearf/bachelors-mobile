@@ -6,7 +6,7 @@ import { useLocalization } from "../../hooks/useLocalization";
 import { useTheme } from "../../hooks/useTheme";
 import Button from "../input/Button";
 import ButtonIcon from "../input/ButtonIcon";
-import TranslatedText from "../text/TranslatedText";
+import TranslatedText, { FontSizeDescription } from "../text/TranslatedText";
 
 export type ModalWindowProps = React.PropsWithChildren<{
   isOpen: boolean;
@@ -21,6 +21,7 @@ export type ModalWindowProps = React.PropsWithChildren<{
 type ModalWindowHeaderProps = {
   translationKey: string;
   closeCallback?: () => void;
+  titleFontSize?: FontSizeDescription;
 };
 
 type ModalWindowFooterProps = React.PropsWithChildren<{
@@ -37,12 +38,16 @@ type ContentWrapperProps = React.PropsWithChildren<{
 const ModalHeader = ({
   translationKey,
   closeCallback,
+  titleFontSize = "medium",
 }: ModalWindowHeaderProps) => {
   const theme = useTheme();
 
   return (
     <View style={styles.modalHeader}>
-      <TranslatedText translationKey={translationKey} fontSize="medium" />
+      <TranslatedText
+        fontSize={titleFontSize}
+        translationKey={translationKey}
+      />
 
       {closeCallback && (
         <ButtonIcon

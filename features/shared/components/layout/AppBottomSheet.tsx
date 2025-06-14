@@ -35,6 +35,7 @@ const AppBottomSheet = ({ snapPoints, children }: Props) => {
         style={{
           zIndex: 2,
           flex: 1,
+          height: "100%",
         }}
       >
         {children}

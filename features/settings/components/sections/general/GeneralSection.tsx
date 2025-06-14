@@ -4,6 +4,7 @@ import { View } from "react-native";
 import { useLocalization } from "@/features/shared/hooks/useLocalization";
 
 import AppLanguageToggle from "./items/AppLanguageToggle";
+import HistoryControl from "./items/HistoryControl";
 import VideoClassificationTopK from "./items/VideoClassificationTopK";
 import { SettingsSectionsItemType } from "../../../SettingsSections";
 
@@ -16,16 +17,16 @@ const GeneralSection = ({ getTranslationKey, style, textStyle }: Props) => {
 
   return (
     <>
-      {([AppLanguageToggle, VideoClassificationTopK] as const).map(
-        (LanguageToggle, index) => (
-          <View key={index} style={style}>
-            <LanguageToggle
-              getTranslationKey={getTranslationKey}
-              textStyle={textStyle}
-            />
-          </View>
-        ),
-      )}
+      {(
+        [AppLanguageToggle, VideoClassificationTopK, HistoryControl] as const
+      ).map((LanguageToggle, index) => (
+        <View key={index} style={style}>
+          <LanguageToggle
+            getTranslationKey={getTranslationKey}
+            textStyle={textStyle}
+          />
+        </View>
+      ))}
     </>
   );
 };

@@ -1,39 +1,29 @@
-import { router } from "expo-router";
 import React, { useState } from "react";
 import { Image, ImageURISource, StyleSheet, View } from "react-native";
-import { useShallow } from "zustand/react/shallow";
 
 import { defaultPicture } from "@/features/auth/hooks/useAuthFlow";
 import { useTimeTranslationKey } from "@/features/shared/hooks/useTimeTranslationKey";
-import { useTranslationStore } from "@/features/translation/stores/useTranslationStore";
 
 import { useAuthStore } from "../auth/stores/useAuthStore";
 import Popup from "../shared/components/feedback/Popup";
-import Button from "../shared/components/input/Button";
 import TranslatedText from "../shared/components/text/TranslatedText";
 import {
   useLocalization,
   UseLocalizationFunction,
 } from "../shared/hooks/useLocalization";
 import { useTheme } from "../shared/hooks/useTheme";
+import AboutButton from "./components/sections/user/AboutButton";
+import LogOutButton from "./components/sections/user/LogOutButton";
 
 type Props = {
   getTranslationKey: UseLocalizationFunction;
   height: number;
 };
 
-const popupWidth = 140;
-const popupHeight = 60;
-const popupPadding = 5;
-
 const UserInfo = ({ getTranslationKey, height }: Props) => {
   getTranslationKey = useLocalization(getTranslationKey("userInfo"));
-
-  const [setIsSignedIn, user] = useAuthStore(
-    useShallow((state) => [state.setLoggedIn, state.user]),
-  );
+  const user = useAuthStore((state) => state.user);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
-  const setMode = useTranslationStore((state) => state.setMode);
   const [picture, setPicture] = useState(user?.picture);
   const theme = useTheme();
   const translationKey = useTimeTranslationKey(
@@ -99,22 +89,8 @@ const UserInfo = ({ getTranslationKey, height }: Props) => {
                 },
               ]}
             >
-              <Button
-                width={popupWidth - popupPadding * 2}
-                height={popupHeight - popupPadding * 2}
-                style={{ borderRadius: 5 }}
-                variant="destructive"
-                onPress={() => {
-                  setMode("signToText");
-                  router.replace("/");
-                  setIsSignedIn(false);
-                }}
-              >
-                <TranslatedText
-                  isBold={true}
-                  translationKey={getTranslationKey("logOut")}
-                />
-              </Button>
+              <LogOutButton getTranslationKey={getTranslationKey} />
+              <AboutButton />
             </View>
           </Popup.Content>
         </Popup>
@@ -128,9 +104,7 @@ export default UserInfo;
 const styles = StyleSheet.create({
   container: { paddingBottom: 5 },
   logOutContainer: {
-    width: popupWidth,
-    height: popupHeight,
-    padding: popupPadding,
+    padding: 5,
     borderRadius: 10,
     display: "flex",
     justifyContent: "center",
