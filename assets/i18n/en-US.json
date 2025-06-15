@@ -2,6 +2,10 @@
   "settingsPage": {
     "userInfo": {
       "logOut": "Log out",
+      "about": {
+        "title": "About",
+        "content": "The application was made specifically for the thesis at University of Lodz. Any commercial usage is prohibited. Before taking any actions, please, advise the license enclosed with the code."
+      },
       "greetings": {
         "morning": "Good morning{{name, optionalName}}!",
         "afternoon": "Good afternoon{{name, optionalName}}!",

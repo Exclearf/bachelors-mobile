@@ -49,9 +49,10 @@ const useCameraAsset = (
 
       const focusBox = {
         x: topLeft.x.get(),
-        y: topLeft.y.get(),
+        y: topLeft.y.get() + pictureBbox.cornerSize / 3,
         width: bottomRight.x.get() - topLeft.x.get(),
-        height: bottomRight.y.get() - topLeft.y.get(),
+        height:
+          bottomRight.y.get() - topLeft.y.get() - pictureBbox.cornerSize / 3,
       };
 
       const crop = {

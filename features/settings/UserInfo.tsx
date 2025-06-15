@@ -85,12 +85,11 @@ const UserInfo = ({ getTranslationKey, height }: Props) => {
                 {
                   backgroundColor: theme?.mutedBackground,
                   borderColor: theme?.mutedForeground,
-                  borderWidth: 1,
                 },
               ]}
             >
+              <AboutButton getTranslationKey={getTranslationKey} />
               <LogOutButton getTranslationKey={getTranslationKey} />
-              <AboutButton />
             </View>
           </Popup.Content>
         </Popup>
@@ -104,7 +103,10 @@ export default UserInfo;
 const styles = StyleSheet.create({
   container: { paddingBottom: 5 },
   logOutContainer: {
-    padding: 5,
+    padding: 10,
+    paddingHorizontal: 20,
+    borderWidth: 1,
+    gap: 15,
     borderRadius: 10,
     display: "flex",
     justifyContent: "center",

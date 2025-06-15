@@ -45,6 +45,7 @@ const TranslationConfirmation = ({
             style={{
               width: width * 0.85,
               height: height * 0.2,
+              marginVertical: 5,
               resizeMode: "contain",
             }}
           />
@@ -75,7 +76,6 @@ export default TranslationConfirmation;
 const styles = StyleSheet.create({
   container: {
     position: "relative",
-    paddingVertical: 5,
   },
   spinnerContainer: {
     position: "absolute",

@@ -65,12 +65,12 @@ const TranslatedText = ({
       }
     >
       <Text
-        numberOfLines={numberOfLines}
         style={[
           {
             textAlign: "center",
             position: "relative",
             flexWrap: "wrap",
+            flexDirection: "row",
             verticalAlign: "middle",
           },
           {

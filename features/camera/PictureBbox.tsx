@@ -28,6 +28,7 @@ type PictureBboxProps = object;
 export type PictureBboxRef = {
   topLeft: CornerCoordinates;
   bottomRight: CornerCoordinates;
+  cornerSize: number;
 };
 
 const PictureBbox = forwardRef<PictureBboxRef, PictureBboxProps>(
@@ -35,7 +36,7 @@ const PictureBbox = forwardRef<PictureBboxRef, PictureBboxProps>(
     const { width, height } = useContext(AppDimensionsContext);
     const cornerRadius = 3;
     const maxHeight = height * 0.11;
-
+    const cornerSize = 23;
     const initialHeight = height * 0.1;
     const initialY = (height * 0.45 - 10) / 2 - initialHeight / 2;
 
@@ -67,6 +68,7 @@ const PictureBbox = forwardRef<PictureBboxRef, PictureBboxProps>(
           x: bottomRight.x,
           y: bottomRight.y,
         },
+        cornerSize: cornerSize,
       }),
       [topLeft.x, topLeft.y, bottomRight.x, bottomRight.y],
     );
@@ -143,8 +145,8 @@ const PictureBbox = forwardRef<PictureBboxRef, PictureBboxProps>(
     > {
       return {
         corner,
-        width: 23 * sx,
-        height: 23 * sy,
+        width: cornerSize * sx,
+        height: cornerSize * sy,
         offsetX: -7 * sx,
         offsetY: -7 * sy,
         verticalCornerRadius: sy,

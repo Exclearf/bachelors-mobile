@@ -19,9 +19,13 @@ import TextSignTranslation from "../feedback/TextSignTranslation";
 type Props = object;
 
 const TextTranslationHistory = (props: Props) => {
-  const translationHistory = useTranslationStore(
-    (state) => state.textTranslationResults,
-  );
+  const [translationHistory, removeTextTranslationFromHistory] =
+    useTranslationStore(
+      useShallow((state) => [
+        state.textTranslationResults,
+        state.removeTextTranslationFromHistory,
+      ]),
+    );
   const [currentItem, setCurrentItem] = useState<TranslatedTextResponse | null>(
     null,
   );
@@ -29,6 +33,8 @@ const TextTranslationHistory = (props: Props) => {
     useShallow((state) => [state.fontSize, state.fontScale]),
   );
   const theme = useTheme();
+
+  const closeCallback = () => setCurrentItem(null);
 
   return (
     <>
@@ -72,16 +78,25 @@ const TextTranslationHistory = (props: Props) => {
       <ModalWindow
         isOpen={currentItem != null}
         style={{ height: "50%", width: "90%", overflow: "hidden" }}
-        closeCallback={() => setCurrentItem(null)}
+        closeCallback={closeCallback}
       >
-        <ModalWindow.Header
-          closeCallback={() => setCurrentItem(null)}
-          translationKey=""
-        />
+        <ModalWindow.Header closeCallback={closeCallback} translationKey="" />
         <TextSignTranslation
           resizeMode={ResizeMode.CONTAIN}
           activeTextTranslationResult={currentItem!}
         />
+        <ModalWindow.Footer closeCallback={closeCallback}>
+          <Button
+            style={styles.modalButton}
+            variant="destructive"
+            onPress={() => {
+              if (currentItem) removeTextTranslationFromHistory(currentItem);
+              closeCallback();
+            }}
+          >
+            <TranslatedText translationKey="Delete"></TranslatedText>
+          </Button>
+        </ModalWindow.Footer>
       </ModalWindow>
     </>
   );
@@ -104,4 +119,10 @@ const styles = StyleSheet.create({
     borderWidth: 0,
   },
   label: { maxWidth: "85%" },
+  modalButton: {
+    borderRadius: 5,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    width: "35%",
+  },
 });
