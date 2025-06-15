@@ -129,8 +129,8 @@ const Slider = ({
             style={[
               thumbStyle,
               {
-                backgroundColor: theme?.primaryForeground,
-                boxShadow: `0px 0px 5px ${theme?.primaryBackground}`,
+                backgroundColor: theme?.surfaceForeground,
+                boxShadow: `0px 0px 5px ${theme?.surfaceBackground}`,
               },
             ]}
           />

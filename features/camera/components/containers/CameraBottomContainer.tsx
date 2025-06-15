@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 import { StyleSheet } from "react-native";
 import Animated, {
   DerivedValue,
   useAnimatedStyle,
 } from "react-native-reanimated";
 
-import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
+import { useAppDimensions } from "@/features/shared/hooks/useAppDimensions";
 import { useBottomSheet } from "@/features/shared/hooks/useBottomSheet";
 
 type Props = React.PropsWithChildren<{
@@ -14,7 +14,7 @@ type Props = React.PropsWithChildren<{
 
 const CameraBottomContainer = ({ children, scale }: Props) => {
   const { bottomSheet } = useBottomSheet();
-  const { height } = useContext(AppDimensionsContext);
+  const { height } = useAppDimensions();
 
   const bottomStyle = useAnimatedStyle(() => {
     "worklet";

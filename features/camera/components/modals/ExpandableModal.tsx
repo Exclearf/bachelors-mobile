@@ -17,6 +17,7 @@ import CollapseAnimated from "@/features/shared/components/primitive/CollapseAni
 import TranslatedText from "@/features/shared/components/text/TranslatedText";
 import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
 import { useBottomSheet } from "@/features/shared/hooks/useBottomSheet";
+import { useTheme } from "@/features/shared/hooks/useTheme";
 import ClearTranslationButton from "@/features/translation/components/shared/input/ClearTranslationButton";
 
 type Props = PropsWithChildren<{
@@ -40,6 +41,7 @@ const ExpandableModal = ({
   const isExpanding = useRef(false);
   const { height, width } = useContext(AppDimensionsContext);
   const { bottomSheet } = useBottomSheet();
+  const theme = useTheme();
 
   const animateStyle = useAnimatedStyle(() => {
     return {
@@ -74,7 +76,12 @@ const ExpandableModal = ({
         <TranslatedText
           isBold={true}
           fontSize="medium"
-          style={expandableModalStyles.headerText}
+          style={[
+            expandableModalStyles.headerText,
+            {
+              color: theme?.primaryForeground,
+            },
+          ]}
           translationKey={titleTranslationKey}
         />
         <View

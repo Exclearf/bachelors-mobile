@@ -13,7 +13,7 @@ const RecordButton = ({
   return (
     <TouchableOpacity onPress={onClick}>
       {/* TODO:
-       *  Add correct type anoatation
+       *  Add correct type annotation
        */}
       <MaterialCommunityIcons
         name={iconName as any}

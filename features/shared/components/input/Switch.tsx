@@ -68,8 +68,8 @@ const Switch = ({
 }: Props) => {
   const theme = useTheme();
   thumbColor = {
-    false: theme?.secondaryForeground!,
-    true: theme?.primaryForeground!,
+    false: theme?.surfaceBackground!,
+    true: theme?.surfaceForeground!,
   };
   trackColor = {
     false: theme?.primaryBackground!,

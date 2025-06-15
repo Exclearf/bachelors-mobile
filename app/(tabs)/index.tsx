@@ -54,6 +54,12 @@ const IndexTab = () => {
 
   const initialHeight = height - height * 0.11 - height * 0.07 - height * 0.06;
 
+  const staticModalStyle = {
+    backgroundColor: theme?.mutedBackground,
+    borderColor: theme?.mutedForeground,
+    boxShadow: `0px 0px 10px 1px ${theme?.secondaryBackground}CC`,
+  };
+
   return (
     <View
       style={{
@@ -70,13 +76,7 @@ const IndexTab = () => {
           initialHeight={initialHeight / 1.93}
           padding={height * 0.02}
           clearButtonActive={isActiveTranslation}
-          containerStyle={[
-            styles.indexSection,
-            {
-              backgroundColor: theme?.primaryBackground,
-              borderColor: theme?.mutedForeground,
-            },
-          ]}
+          containerStyle={[styles.indexSection, staticModalStyle]}
           titleTranslationKey={getTranslationKey("translation")}
         >
           {mode === "signToText" ? (
@@ -90,13 +90,7 @@ const IndexTab = () => {
         <History
           padding={height * 0.02}
           height={initialHeight / 1.93}
-          containerStyle={[
-            styles.indexSection,
-            {
-              backgroundColor: theme?.primaryBackground,
-              borderColor: theme?.mutedForeground,
-            },
-          ]}
+          containerStyle={[styles.indexSection, staticModalStyle]}
         />
       </View>
     </View>
@@ -122,6 +116,5 @@ const styles = StyleSheet.create({
   indexSection: {
     borderRadius: 10,
     borderWidth: 1,
-    boxShadow: "0px 0px 10px 1px rgba(15,15,15,0.5)",
   },
 });

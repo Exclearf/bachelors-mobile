@@ -37,7 +37,7 @@ const History = ({ padding, containerStyle, height }: Props) => {
   return (
     <Animated.View style={[...containerStyle, style, styles.container]}>
       <LinearGradient
-        colors={[theme?.primaryBackground!, theme?.background!]}
+        colors={[theme?.mutedBackground!, theme?.background!]}
         start={{
           x: 0,
           y: 0,

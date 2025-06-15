@@ -9,6 +9,7 @@ import { StyleSheet, View } from "react-native";
 import { SharedValue } from "react-native-reanimated";
 
 import { useFontSize } from "../../hooks/useFontSize";
+import { useTheme } from "../../hooks/useTheme";
 
 type Props = {
   expanded: SharedValue<number>;
@@ -34,6 +35,7 @@ const createSkiaPath = (
 const ExpandArrow = ({ expanded, maxHeight }: Props) => {
   const fontSize = useFontSize();
   const arrowDimensions = fontSize["regular"] * 1.25;
+  const theme = useTheme();
 
   const arrowPath = usePathInterpolation(
     expanded,
@@ -56,7 +58,7 @@ const ExpandArrow = ({ expanded, maxHeight }: Props) => {
           path={arrowPath}
           style={"stroke"}
           strokeWidth={2}
-          color={"white"}
+          color={theme?.primaryForeground}
           strokeCap={"round"}
         />
       </Canvas>

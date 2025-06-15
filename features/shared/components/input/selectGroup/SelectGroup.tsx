@@ -34,8 +34,8 @@ const SelectGroup = ({ items, containerHeight }: Props) => {
   // TODO: Workaround
   //@ts-expect-error
   styles.item = StyleSheet.compose(styles.item, {
-    borderColor: theme?.mutedForeground,
-    backgroundColor: theme?.mutedBackground,
+    borderColor: theme?.surfaceForeground,
+    backgroundColor: theme?.secondaryBackground,
   });
 
   const baseFontStyle = {
@@ -81,7 +81,7 @@ const SelectGroup = ({ items, containerHeight }: Props) => {
           itemStyle={
             item.id === mode
               ? (StyleSheet.compose(itemChosen as ViewStyle, {
-                  backgroundColor: theme?.primaryBackground,
+                  backgroundColor: theme?.mutedBackground,
                   borderColor: theme?.primaryForeground,
                 }) as ViewStyle)
               : styles.item

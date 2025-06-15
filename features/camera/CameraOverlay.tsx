@@ -4,6 +4,7 @@ import Animated, {
   useAnimatedStyle,
   useDerivedValue,
 } from "react-native-reanimated";
+import { colorKit } from "reanimated-color-picker";
 
 import { useCameraOptionsStore } from "@/features/camera/stores/useCameraOptionsStore";
 import { AppDimensionsContext } from "@/features/shared/contexts/appDimensions";
@@ -68,7 +69,7 @@ const CameraOverlay = ({
   const buttonParameters: ButtonParameters = { buttonStyle: { padding: 10 } };
 
   const iconParameters: IconParameters = {
-    color: theme?.primaryForeground!,
+    color: colorKit.brighten(theme?.surfaceForeground ?? "#000", 20).hex(),
     secondaryColor: theme?.mutedForeground,
     size: 38,
   };

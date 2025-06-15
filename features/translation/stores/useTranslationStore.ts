@@ -1,4 +1,6 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
 import { ToggleItemType } from "@/features/shared/components/input/ToggleGroup";
@@ -65,127 +67,137 @@ type TranslationStoreActions = {
 export const useTranslationStore = create<
   TranslationStoreState & TranslationStoreActions
 >()(
-  immer((set, get) => ({
-    mode: "signToText",
-    model: null,
-    videoTranslationResults: null,
-    topK: 3,
-    textTranslationResults: null,
-    activeVideoTranslationResult: null,
-    activeTextTranslationResult: null,
-    availableLanguages,
-    currentLanguage: availableLanguages[0],
-    setCurrentLanguage: (newLanguage: LanguageItem) => {
-      set((state) => {
-        state.currentLanguage = newLanguage;
-      });
-    },
-    setModel: (newModel: Model) => {
-      set((state) => {
-        state.model = newModel;
-      });
-    },
-    setMode: (newMode: Modes) => {
-      set((state) => {
-        state.mode = newMode;
-      });
-    },
-    setTopK(newValue) {
-      set((state) => {
-        state.topK = newValue;
-      });
-    },
-    addVideoTranslationResult: (result) => {
-      const {
-        activeVideoTranslationResult,
-        clearActiveVideoTranslationResult,
-      } = get();
+  persist(
+    immer((set, get) => ({
+      mode: "signToText",
+      model: null,
+      videoTranslationResults: null,
+      topK: 3,
+      textTranslationResults: null,
+      activeVideoTranslationResult: null,
+      activeTextTranslationResult: null,
+      availableLanguages,
+      currentLanguage: availableLanguages[0],
+      setCurrentLanguage: (newLanguage: LanguageItem) => {
+        set((state) => {
+          state.currentLanguage = newLanguage;
+        });
+      },
+      setModel: (newModel: Model) => {
+        set((state) => {
+          state.model = newModel;
+        });
+      },
+      setMode: (newMode: Modes) => {
+        set((state) => {
+          state.mode = newMode;
+        });
+      },
+      setTopK(newValue) {
+        set((state) => {
+          state.topK = newValue;
+        });
+      },
+      addVideoTranslationResult: (result) => {
+        const {
+          activeVideoTranslationResult,
+          clearActiveVideoTranslationResult,
+        } = get();
 
-      if (activeVideoTranslationResult != null)
-        clearActiveVideoTranslationResult();
+        if (activeVideoTranslationResult != null)
+          clearActiveVideoTranslationResult();
 
-      set((state) => {
-        state.activeVideoTranslationResult = result;
-      });
-    },
-    removeVideoTranslationFromHistory(video) {
-      set((state) => {
-        state.videoTranslationResults =
-          state.videoTranslationResults?.filter(
-            (item) => item[0].id !== video[0].id,
-          ) ?? null;
-      });
-    },
-    clearActiveVideoTranslationResult: () => {
-      const { activeVideoTranslationResult } = get();
+        set((state) => {
+          state.activeVideoTranslationResult = result;
+        });
+      },
+      removeVideoTranslationFromHistory(video) {
+        set((state) => {
+          state.videoTranslationResults =
+            state.videoTranslationResults?.filter(
+              (item) => item[0].id !== video[0].id,
+            ) ?? null;
+        });
+      },
+      clearActiveVideoTranslationResult: () => {
+        const { activeVideoTranslationResult } = get();
 
-      set((state) => {
-        state.videoTranslationResults = [
-          activeVideoTranslationResult!,
-          ...(state.videoTranslationResults ?? []),
-        ];
-      });
+        set((state) => {
+          state.videoTranslationResults = [
+            activeVideoTranslationResult!,
+            ...(state.videoTranslationResults ?? []),
+          ];
+        });
 
-      set((state) => {
-        state.activeVideoTranslationResult = null;
-      });
-    },
-    addTextTranslationResult: (result) => {
-      const { activeTextTranslationResult, clearActiveTextTranslationResult } =
-        get();
+        set((state) => {
+          state.activeVideoTranslationResult = null;
+        });
+      },
+      addTextTranslationResult: (result) => {
+        const {
+          activeTextTranslationResult,
+          clearActiveTextTranslationResult,
+        } = get();
 
-      if (activeTextTranslationResult != null) {
-        clearActiveTextTranslationResult();
-      }
+        if (activeTextTranslationResult != null) {
+          clearActiveTextTranslationResult();
+        }
 
-      set((state) => {
-        state.activeTextTranslationResult = result;
-      });
-    },
-    removeTextTranslationFromHistory(text) {
-      set((state) => {
-        state.textTranslationResults =
-          state.textTranslationResults?.filter((item) => item.id !== text.id) ??
-          null;
-      });
-    },
-    clearActiveTextTranslationResult: () => {
-      const { activeTextTranslationResult } = get();
+        set((state) => {
+          state.activeTextTranslationResult = result;
+        });
+      },
+      removeTextTranslationFromHistory(text) {
+        set((state) => {
+          state.textTranslationResults =
+            state.textTranslationResults?.filter(
+              (item) => item.id !== text.id,
+            ) ?? null;
+        });
+      },
+      clearActiveTextTranslationResult: () => {
+        const { activeTextTranslationResult } = get();
 
-      set((state) => {
-        state.textTranslationResults = [
-          activeTextTranslationResult!,
-          ...(state.textTranslationResults ?? []),
-        ];
-      });
+        set((state) => {
+          state.textTranslationResults = [
+            activeTextTranslationResult!,
+            ...(state.textTranslationResults ?? []),
+          ];
+        });
 
-      set((state) => {
-        state.activeTextTranslationResult = null;
-      });
-    },
-    getHistory() {
-      const {
-        activeTextTranslationResult,
-        textTranslationResults,
-        activeVideoTranslationResult,
-        videoTranslationResults,
-      } = get();
+        set((state) => {
+          state.activeTextTranslationResult = null;
+        });
+      },
+      getHistory() {
+        const {
+          activeTextTranslationResult,
+          textTranslationResults,
+          activeVideoTranslationResult,
+          videoTranslationResults,
+        } = get();
 
-      return {
-        activeTextTranslationResult,
-        textTranslationResults,
-        activeVideoTranslationResult,
-        videoTranslationResults,
-      };
+        return {
+          activeTextTranslationResult,
+          textTranslationResults,
+          activeVideoTranslationResult,
+          videoTranslationResults,
+        };
+      },
+      setHistory(history) {
+        set((state) => {
+          state.activeTextTranslationResult =
+            history.activeTextTranslationResult;
+          state.activeVideoTranslationResult =
+            history.activeVideoTranslationResult;
+          state.textTranslationResults = history.textTranslationResults;
+          state.videoTranslationResults = history.videoTranslationResults;
+        });
+      },
+    })),
+    {
+      name: "personalization-store",
+      storage: createJSONStorage(() => AsyncStorage),
     },
-    setHistory(history) {
-      set((state) => {
-        state.activeTextTranslationResult = history.activeTextTranslationResult;
-        state.activeVideoTranslationResult =
-          history.activeVideoTranslationResult;
-        state.textTranslationResults = history.textTranslationResults;
-        state.videoTranslationResults = history.videoTranslationResults;
-      });
-    },
-  })),
+  ),
 );

@@ -54,6 +54,10 @@ const generateDarkTheme = (palette: Theme, isHighContrast: boolean) => {
 
   return {
     background: palette.palettes.neutral.tone(5 * backgroundMultiplier),
+    surfaceBackground: palette.palettes.neutral.tone(40 * backgroundMultiplier),
+    surfaceForeground: palette.palettes.neutralVariant.tone(
+      85 * foregroundMultipler,
+    ),
     primaryBackground: palette.palettes.neutralVariant.tone(
       13 * backgroundMultiplier,
     ),
@@ -67,7 +71,7 @@ const generateDarkTheme = (palette: Theme, isHighContrast: boolean) => {
       93.5 * foregroundMultipler,
     ),
     mutedBackground: palette.palettes.neutralVariant.tone(
-      7 * backgroundMultiplier,
+      30 * backgroundMultiplier,
     ),
     mutedForeground: palette.palettes.secondary.tone(50 * foregroundMultipler),
     destructive: palette.palettes.error.tone(50 * backgroundMultiplier),
@@ -75,25 +79,29 @@ const generateDarkTheme = (palette: Theme, isHighContrast: boolean) => {
 };
 
 const generateLightTheme = (palette: Theme, isHighContrast: boolean) => {
-  const foregroundMultipler = isHighContrast ? 0.5 : 1;
-  const backgroundMultiplier = isHighContrast ? 1.25 : 1;
+  const foregroundMultipler = isHighContrast ? 0.8 : 1;
+  const backgroundMultiplier = isHighContrast ? 1.2 : 1;
 
   return {
-    background: palette.palettes.neutral.tone(95 * backgroundMultiplier),
+    background: palette.palettes.neutralVariant.tone(90 * backgroundMultiplier),
     primaryBackground: palette.palettes.neutralVariant.tone(
-      85 * foregroundMultipler,
+      40 * foregroundMultipler,
     ),
-    primaryForeground: palette.palettes.primary.tone(15 * foregroundMultipler),
+    surfaceForeground: palette.palettes.tertiary.tone(70 * foregroundMultipler),
+    surfaceBackground: palette.palettes.secondary.tone(
+      80 * backgroundMultiplier,
+    ),
+    primaryForeground: palette.palettes.neutralVariant.tone(
+      30 * foregroundMultipler,
+    ),
     secondaryBackground: palette.palettes.neutralVariant.tone(
-      7 * foregroundMultipler,
+      60 * foregroundMultipler,
     ),
     secondaryForeground: palette.palettes.secondary.tone(
-      20 * foregroundMultipler,
+      10 * foregroundMultipler,
     ),
-    mutedBackground: palette.palettes.neutralVariant.tone(
-      90 * backgroundMultiplier,
-    ),
-    mutedForeground: palette.palettes.tertiary.tone(50 * foregroundMultipler),
+    mutedBackground: palette.palettes.secondary.tone(60 * backgroundMultiplier),
+    mutedForeground: palette.palettes.secondary.tone(75 * foregroundMultipler),
     destructive: palette.palettes.error.tone(80 * backgroundMultiplier),
   };
 };

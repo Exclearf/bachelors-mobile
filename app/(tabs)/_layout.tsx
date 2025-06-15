@@ -42,8 +42,8 @@ const RootLayout = () => {
             style={[styles.centerItems, styles.tabBarButton]}
           />
         ),
-        tabBarInactiveTintColor: theme?.mutedForeground,
-        tabBarActiveTintColor: theme?.secondaryForeground,
+        tabBarInactiveTintColor: theme?.surfaceForeground + "BB",
+        tabBarActiveTintColor: theme?.primaryForeground,
       }}
     >
       <Tabs.Screen
