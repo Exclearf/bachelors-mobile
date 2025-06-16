@@ -2,11 +2,15 @@
   "settingsPage": {
     "userInfo": {
       "logOut": "Wyloguj się",
+      "about": {
+        "title": "O aplikacji",
+        "content": "Aplikacja została stworzona specjalnie na potrzeby pracy dyplomowej na Uniwersytecie Łódzkim. Wykorzystanie komercyjne jest zabronione. Przed podjęciem jakichkolwiek działań prosimy o zapoznanie się z licencją dołączoną do kodu."
+      },
       "greetings": {
         "morning": "Dzień dobry{{name, optionalName}}!",
-        "afternoon": "Dobry wieczór{{name, optionalName}}!",
+        "afternoon": "Dobry dobry{{name, optionalName}}!",
         "evening": "Dobry wieczór{{name, optionalName}}!",
-        "night": "Dobranoc{{name, optionalName}}!"
+        "night": "Dobry wieczór{{name, optionalName}}!"
       }
     },
     "sections": {
@@ -16,22 +20,20 @@
       "generalSettingsSection": {
         "appLanguage": "Aplikacja",
         "appLanguageTooltip": "Język aplikacji",
-        "translationLanguage": "Tłumaczenie",
-        "translationLanguageTooltip": "Język tłumaczenia",
-        "modelSelect": "AI Model",
-        "modelSelectOptions": {
-          "placeholder": "Wybierz model",
-          "vivit": "ViViT 🧠",
-          "timesformer": "TimeSformer ⚡"
-        }
+        "topK": "Top K",
+        "topKTooltip": "Liczba wyników na wideo",
+        "history": "Historia",
+        "confirmImportHeader": "Import historii?",
+        "confirmImportContent": "Ta operacja nadpisze bieżącą historię.",
+        "operationComplete": "Eksport zakończony pomyślnie.",
+        "operationNotComplete": "Nie udało się wyeksportować."
       },
       "personalizationSection": {
         "lightTheme": "Tryb jasny",
         "darkTheme": "Tryb ciemny",
         "appTheme": "Motyw",
         "accentColor": "Akcent",
-        "accentColorTooltip": "Kolor używany jako akcent",
-        "animationSpeed": "Animacja"
+        "accentColorTooltip": "Kolor używany jako akcent"
       },
       "accessibilitySection": {
         "highContrast": "Kontrast",
@@ -40,7 +42,7 @@
     }
   },
   "indexPage": {
-    "signToText": "Znak",
+    "signToText": "Migowy",
     "textToSign": "Tekst",
     "translation": "Tłumaczenie",
     "translationHistory": "Historia tłumaczeń"
@@ -55,14 +57,23 @@
   "misc": {
     "notLoggedInInfo": "Proszę się zalogować!",
     "accept": "Akceptuj",
-    "cancel": "Anuluj"
+    "cancel": "Anuluj",
+    "allowCameraAccess": "Zezwól na dostęp do kamery",
+    "allowCameraAccessAction": "Zezwól"
   },
   "translation": {
-    "textToVideo": {
-      "translationConfirm": "Potwierdź obszar przycięcia.",
-      "noText": "Nie rozpoznano tekstu.",
-      "tryAgain": "Proszę spróbować ponownie."
+    "textToSign": {
+      "translationConfirm": "Potwierdź obszar przycinania."
     },
-    "videoToText": {}
+    "signToText": {
+      "translationConfirm": "Potwierdź wybór wideo."
+    },
+    "shared": {
+      "noText": "Nie wykryto tekstu.",
+      "tryAgain": "Spróbuj ponownie.",
+      "confidence": "Pewność:",
+      "gloss": "Glosa:",
+      "info": "Informacje"
+    }
   }
 }
