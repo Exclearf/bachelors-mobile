@@ -2,6 +2,7 @@ import React from "react";
 import { Pressable, StyleProp, StyleSheet, TextStyle } from "react-native";
 import Animated, {
   AnimatedStyle,
+  BounceOutRight,
   Easing,
   interpolateColor,
   useAnimatedStyle,
@@ -149,7 +150,7 @@ const Switch = ({
           : trackAnimatedStyle,
         styles.trackContainer,
         {
-          width: diameter * 2 + PADDING * 2,
+          width: diameter * 2 + PADDING * 2 + BORDER_WIDTH,
           height: diameter + PADDING * 2 + BORDER_WIDTH * 2,
           borderRadius: diameter / 2 + PADDING * 2,
           borderColor: theme?.mutedForeground,

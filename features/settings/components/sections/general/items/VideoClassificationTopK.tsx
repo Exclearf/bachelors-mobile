@@ -8,6 +8,7 @@ import TranslatedText from "@/features/shared/components/text/TranslatedText";
 import { useTranslationStore } from "@/features/translation/stores/useTranslationStore";
 
 import SettingsMenuEntryText from "../../shared/SettingsMenuEntryText";
+import { useTheme } from "@/features/shared/hooks/useTheme";
 
 const VideoClassificationTopK = ({
   getTranslationKey,
@@ -17,6 +18,7 @@ const VideoClassificationTopK = ({
   const [topK, setTopK] = useTranslationStore(
     useShallow((state) => [state.topK, state.setTopK]),
   );
+  const theme = useTheme();
 
   const sharedTopK = useSharedValue(topK);
 
@@ -27,7 +29,13 @@ const VideoClassificationTopK = ({
         textTranslationKey={getTranslationKey("topK")}
         tooltipTranslationKey={getTranslationKey("topKTooltip")}
       />
-      <TranslatedText translationKey={`(${topK})`} />
+      <TranslatedText 
+        translationKey={`(${topK})`} 
+        translate={false} 
+        style={{
+          color: theme?.secondaryForeground
+        }}
+      />
 
       <Slider
         width={width}
